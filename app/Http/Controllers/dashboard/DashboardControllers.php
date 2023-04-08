@@ -155,6 +155,10 @@ class DashboardControllers extends Controller
             }
         }
 
+        $data['allprods'] = Product::where('deleted_at', null)->count();
+        $data['activeprods'] = Product::where('deleted_at', null)->where('status', 'Active')->count();
+        $data['inactiveprods'] = Product::where('deleted_at', null)->where('status', 'Inactive')->count();
+
         // $data['topproduct'] = Order::whereYear('date', Carbon::now()->year)
         //                         ->whereRaw('MONTH(date) = MONTH(now())')
         //                         ->where('is_deleted',null)

@@ -26,6 +26,38 @@
                 </div>
                 <div class="page-inner mt--5">
                     <div class="row">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-title">Total Products</div>
+                                    <div class="card-body">
+                                        <h3 style="text-align:right;" id="counter_all">0</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-title">Total Active Products</div>
+                                    <div class="card-body">
+                                        <h3 style="text-align:right;" id="counter_active">0</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-title">Total Inactive Products</div>
+                                    <div class="card-body">
+                                        <h3 style="text-align:right;" id="counter_inactive">0</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="card full-height">
                                 <div class="card-body">
@@ -194,6 +226,54 @@
                 </div>
                 @include('layouts.footer')
                 <script>
+
+                    @if($allprods > 0)
+                        let allprods = {{$allprods}};
+                        let counts = setInterval(updatedprods);
+                        let upto = 0;
+
+                        function updatedprods(){
+                            var count= document.getElementById("counter_all");
+                            count.innerHTML=++upto;
+                            if(upto===allprods)
+                            {
+                                clearInterval(counts);
+                            }
+                        }
+                    @endif
+
+                    @if($activeprods > 0)
+                        let active = {{$activeprods}};
+                        let countszz = setInterval(updatedactive);
+                        let uptos = 0;
+
+                        function updatedactive(){
+                            var countx= document.getElementById("counter_active");
+                            countx.innerHTML=++uptos;
+                            if(uptos===active)
+                            {
+                                clearInterval(countszz);
+                            }
+                        }
+                    @endif
+
+                    @if($inactiveprods > 0)
+                        let inactive = {{$inactiveprods}};
+                        let countszzz = setInterval(updateinactive);
+                        let uptosz = 0;
+
+                        function updateinactive(){
+                            var county= document.getElementById("counter_inactive");
+                            county.innerHTML=++uptosz;
+                            if(uptosz===inactive)
+                            {
+                                clearInterval(countszzz);
+                            }
+                        }
+                    @endif
+
+                </script>
+                <script>
                     var ctx = document.getElementById('statisticsChart').getContext('2d');
                     var ctx_2 = document.getElementById('statisticsChartYear').getContext('2d');
 
@@ -318,46 +398,6 @@
                         styleWrapper: true,
                         styleText: true
                     })
-
-                    var totalIncomeChart = document.getElementById('totalIncomeChart').getContext('2d');
-
-                    
-                    var mytotalIncomeChart = new Chart(totalIncomeChart, {
-                        type: 'bar',
-                        data: {
-                            labels: days,
-                            datasets: [{
-                                label: "Total Income",
-                                backgroundColor: '#ff9e27',
-                                borderColor: 'rgb(23, 125, 255)',
-                                data: cal,
-                            }],
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            legend: {
-                                display: false,
-                            },
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        display: false //this will remove only the label
-                                    },
-                                    gridLines: {
-                                        drawBorder: false,
-                                        display: false
-                                    }
-                                }],
-                                xAxes: [{
-                                    gridLines: {
-                                        drawBorder: false,
-                                        display: false
-                                    }
-                                }]
-                            },
-                        }
-                    });
 
                     var statisticsChartYear = new Chart(ctx_2, {
                         type: 'line',
