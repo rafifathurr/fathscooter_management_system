@@ -24,7 +24,7 @@ class SourceControllers extends Controller
     {
         return view('source_payment.index', [
             "title" => "List Source Payment",
-            "sources" => Source::all()->where('is_deleted',null)
+            "sources" => Source::all()->where('deleted_at',null)
         ]);
     }
 

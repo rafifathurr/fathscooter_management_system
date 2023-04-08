@@ -24,7 +24,7 @@ class RoleControllers extends Controller
     {
         return view('role.index', [
             "title" => "List User Roles",
-            "roles" => Role::all()->where('is_deleted',null)
+            "roles" => Role::all()->where('deleted_at',null)
         ]);
     }
 

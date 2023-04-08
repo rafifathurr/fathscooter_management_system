@@ -27,7 +27,7 @@ class ProductControllers extends Controller
     {
         return view('product.index', [
             "title" => "List Products",
-            "products" => Product::all()->where('is_deleted',null)
+            "products" => Product::all()->where('deleted_at',null)
         ]);
     }
 

@@ -24,7 +24,7 @@ class SupplierControllers extends Controller
     {
         return view('supplier.index', [
             "title" => "List Supplier",
-            "suppliers" => Supplier::all()->where('is_deleted',null)
+            "suppliers" => Supplier::all()->where('deleted_at',null)
         ]);
     }
 

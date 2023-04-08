@@ -1182,7 +1182,7 @@ body {
 }
 
 .sidebar.sidebar-style-2 .nav.nav-primary>.nav-item.active>a {
-    background: #1572e8 !important;
+    background: rgb(168, 175, 131) !important;
     box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, .1), 4px 4px 15px -5px rgba(21, 114, 232, .4) !important
 }
 
@@ -2356,11 +2356,11 @@ body {
 }
 
 .logo-header[data-background-color=blue] {
-    background: #1572e8 !important
+    background: #cbd59b !important
 }
 
 .logo-header[data-background-color=blue2] {
-    background: #1269db !important
+    background: #D5DBB3 !important
 }
 
 .navbar-header[data-background-color=blue] {
@@ -2368,7 +2368,7 @@ body {
 }
 
 .navbar-header[data-background-color=blue2] {
-    background: #1269db !important
+    background: rgb(168, 175, 131) !important
 }
 
 .logo-header[data-background-color=purple] {
@@ -14136,11 +14136,11 @@ body[data-background-color=dark] .board {
     background: linear-gradient(-45deg, #0a0b11, #1f283e) !important
 }
 
-.bg-primary-gradient {
+/* .bg-primary-gradient {
     background: #1572e8 !important;
     background: -webkit-linear-gradient(legacy-direction(-45deg), #06418e, #1572e8) !important;
     background: linear-gradient(-45deg, #06418e, #1572e8) !important
-}
+} */
 
 .bg-secondary-gradient {
     background: #6861ce !important;

@@ -2,9 +2,11 @@
     <!-- Logo Header -->
     <div class="logo-header" data-background-color="blue">
         <a @if(Auth::guard('admin')->check()) href="{{route('admin.dashboard.index')}}" @else href="{{route('user.dashboard.index')}}" @endif class="logo mt-2">
-            <span style="display:flex;">
-                <img src="{{ asset('img/fathscooter.png') }}" width="120" style="margin: 12px;" alt="navbar brand" class="navbar-brand">
-            </span>
+            <center>
+                <span style="display:flex;">
+                    <img src="{{ asset('img/fathscooter.png') }}" style="margin: 2px auto; padding:5px; width: 65%;" alt="navbar brand" class="navbar-brand">
+                </span>
+            </center>
         </a>
         <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse"
             aria-expanded="false" aria-label="Toggle navigation">
@@ -71,7 +73,7 @@
 <div class="sidebar sidebar-style-2">
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
-            <div class="user">
+            {{-- <div class="user">
                 <div class="avatar-sm float-left mr-2">
                 @if(Auth::guard('admin')->check())
                     <img src="{{ asset('img/admin.png') }}" alt="..." class="avatar-img rounded-circle">
@@ -99,7 +101,7 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <ul class="nav nav-primary">
             @if(Auth::guard('admin')->check())
                 <li class="nav-item {{ $title === 'Dashboard' ? 'active' : '' }}">

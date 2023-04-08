@@ -16,7 +16,7 @@ class CategoryControllers extends Controller
     {
         return view('category.index', [
             "title" => "List Category Product",
-            "categories" => Category::all()
+            "categories" => Category::all()->where('deleted_at', null)
         ]);
     }
 
@@ -68,11 +68,12 @@ class CategoryControllers extends Controller
     {
         date_default_timezone_set("Asia/Bangkok");
         $datenow = date('Y-m-d H:i:s');
-        $category_prod = Category::where('id', $req->id)->update([  
-            'category' => $req->category,
-            'note' => $req->note,
-            'updated_at' => $datenow
-        ]);
+        $category_prod = Category::where('id', $req->id)
+                        ->update([  
+                            'category' => $req->category,
+                            'note' => $req->note,
+                            'updated_at' => $datenow
+                        ]);
 
         return redirect()->route('admin.category.index')->with(['success' => 'Data successfully updated!']);
     }
@@ -80,7 +81,12 @@ class CategoryControllers extends Controller
     // Delete Data Function
     public function delete(Request $req)
     {
-        $exec = Category::where('id', $req->id )->delete();
+        date_default_timezone_set("Asia/Bangkok");
+        $datenow = date('Y-m-d H:i:s');
+        $exec = Category::where('id', $req->id )
+                ->update([
+                    'deleted_at' => $datenow
+                ]);
 
         if ($exec) {
             Session::flash('success', 'Data successfully deleted!');

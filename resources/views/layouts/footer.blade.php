@@ -20,7 +20,7 @@
             </ul>
         </nav> --}}
         <div class="copyright ml-auto">
-            Copyright ©2022<a class="ml-1" href="#">fru.id</a>
+            Copyright ©2022<a class="ml-1" href="#">FathScooter</a>
         </div>
     </div>
 </footer>

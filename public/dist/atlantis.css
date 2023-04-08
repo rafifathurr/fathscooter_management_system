@@ -2329,11 +2329,11 @@ body {
 }
 
 .logo-header[data-background-color="blue"] {
-    background: #1572E8 !important;
+    background: #D5DBB3 !important;
 }
 
 .logo-header[data-background-color="blue2"] {
-    background: #1269DB !important;
+    background: #D5DBB3 !important;
 }
 
 .navbar-header[data-background-color="blue"] {
@@ -14344,11 +14344,11 @@ body[data-background-color="dark"] .board {
     background: linear-gradient(-45deg, #0A0B11, #1f283e) !important;
 }
 
-.bg-primary-gradient {
+/* .bg-primary-gradient {
     background: #1572E8 !important;
     background: -webkit-linear-gradient(legacy-direction(-45deg), #06418E, #1572E8) !important;
     background: linear-gradient(-45deg, #06418E, #1572E8) !important;
-}
+} */
 
 .bg-secondary-gradient {
     background: #6861CE !important;

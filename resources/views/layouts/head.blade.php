@@ -26,6 +26,17 @@
             }
         });
     </script>
+    <style>
+        .h2{
+            color:black !important;
+        }
+
+        .create{
+            background-color:white;
+            border-radius:5px;
+            padding:5px;
+        }
+    </style>
     <!-- CSS Files -->
     <link rel="stylesheet" href="{{ asset('dist/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('dist/atlantis.min.css') }}">

@@ -8177,7 +8177,9 @@ h1, h2, h3, h4, h5,
   color: #000; }
 
 .img {
-  background-size: cover;
+  background-image: url(../img/bg-1.png);
+  background-size: contain;
+  margin: 10px;
   background-repeat: no-repeat;
   background-position: center center; }
 
@@ -8328,8 +8330,8 @@ h1, h2, h3, h4, h5,
   .btn:hover, .btn:active, .btn:focus {
     outline: none; }
   .btn.btn-primary {
-    background: #e3b04b !important;
-    border: 1px solid #e3b04b !important;
+    background: rgb(168, 175, 131)!important;
+    border: 1px solid rgb(168, 175, 131) !important;
     color: #fff !important; }
     .btn.btn-primary:hover {
       border: 1px solid #e3b04b;

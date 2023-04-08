@@ -13,6 +13,7 @@ html{
    label{
     margin-bottom:20px;
    }
+
    .halaman{
     width: 100%;
     height: 100%;
@@ -20,6 +21,7 @@ html{
     background-image: url(../img/bg-login.jpg) ;
     background-size:cover;
    }
+
    .gambar{
     width: 50%;
     display: flex;

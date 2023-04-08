@@ -11,7 +11,7 @@
                     <div class="page-inner py-5">
                         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                             <div>
-                                <h2 class="text-white pb-2 fw-bold">{{($title)}}</h2>
+                                <h2 class="pb-2 fw-bold">{{($title)}}</h2>
                             </div>
                         </div>
                     </div>
@@ -206,11 +206,19 @@
       }).then((willDelete) => {
           if (willDelete) {
           @if(Auth::guard('admin')->check())
-            $.post("{{route('admin.product.delete')}}",{ id:id,_token:token},function(data){
+            $.post("{{route('admin.product.delete')}}",
+            { 
+                id:id,
+                _token:token
+            },function(data){
                 location.reload();
             })
           @else
-           $.post("{{route('user.product.delete')}}",{ id:id,_token:token},function(data){
+           $.post("{{route('user.product.delete')}}",
+           { 
+                id:id,
+                _token:token
+            },function(data){
                 location.reload();
             })
           @endif

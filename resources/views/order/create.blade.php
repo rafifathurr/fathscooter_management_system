@@ -11,7 +11,7 @@
                     <div class="page-inner py-5">
                         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                             <div>
-                                <h2 class="text-white pb-2 fw-bold">{{ $title }}</h2>
+                                <h2 class="pb-2 fw-bold">{{ $title }}</h2>
                             </div>
                         </div>
                     </div>
@@ -19,7 +19,7 @@
                 <section class="content container-fluid">
                     <section class="content container-fluid">
                         <div class="box box-primary">
-                            <div class="box-body"style="background-color:white;margin:20px;border-radius:5px;padding:5px;">
+                            <div class="box-body create">
                                 @if(Auth::guard('admin')->check())
                                 <form id="form_add" action="{{ route('admin.order.' . $url) }}" method="POST" enctype="multipart/form-data">
                                 @else
@@ -86,7 +86,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <br >
+                                    <br>
                                     <div class="row">
                                         <div class="col-md-12" >
                                             <div style="float: right; margin-right:20px;">
@@ -190,7 +190,6 @@
                                             @endif
                                         </div>
                                     </div>
-                                    
                                 </form>
                             </div>
                         </div>

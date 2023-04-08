@@ -25,8 +25,8 @@ class UsersControllers extends Controller
     {
         return view('users.index', [
             "title" => "List User",
-            "users" => User::all()->where('is_deleted',null),
-            "roles" => Role::all()->where('is_deleted',null)
+            "users" => User::all()->where('deleted_at',null),
+            "roles" => Role::all()->where('deleted_at',null)
         ]);
     }
 
