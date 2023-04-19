@@ -45,7 +45,7 @@ Route::namespace('App\Http\Controllers')->group(function (){
         // ROUTE TO ORDER CONTROLLERS
         Route::namespace('order')->prefix('order')->name('order.')->group(function () {
             Route::get('/', 'OrderControllers@index')->name('index');
-            Route::post('create', 'OrderControllers@create')->name('create');
+            Route::get('create/{type}', 'OrderControllers@create')->name('create');
             Route::post('store', 'OrderControllers@store')->name('store');
             Route::get('getDetailProds', 'OrderControllers@getDetailProds')->name('getDetailProds');
             Route::get('detail/{id}', 'OrderControllers@detail')->name('detail');

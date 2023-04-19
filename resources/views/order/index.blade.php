@@ -208,12 +208,10 @@ $(document).ready(function() {
         })
     })
     $('#create').on('click', function(){
-        const div = document.createElement("form");
-        div.method='POST';
-        div.action='{{route("admin.order.create")}}';
+        const div = document.createElement("div");
         $(div).html(
             "<input name='_token' value='{{ csrf_token() }}' type='hidden'>"+
-            "<select id='type' name='type' onchange='getMonth()' class='form-control'>"+
+            "<select id='type' name='type' class='form-control'>"+
             "<option value='' style='display: none;' selected=''>- Choose Type Buy -</option>"+
             "@foreach($types as $type)" +
             "<option value='{{$type->id}}'>{{ $type->type_buy }}</option>"+
@@ -227,7 +225,12 @@ $(document).ready(function() {
         }).then((result) => {
             if(result == true){
                 if($('#type').val() != ''){
-                    div.submit();
+                    let type = $('#type').val();
+                    @if(Auth::guard('admin')->check())
+                        window.location.href = '{{url("admin/order/create")}}/'+type;
+                    @else
+                        window.location.href = '{{url("user/order/create")}}/'+type;
+                    @endif
                 }else{
                     swal({
                         icon: 'warning',

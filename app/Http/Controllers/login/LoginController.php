@@ -19,13 +19,13 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
         if (Auth::check()) { }
-        // dd(Auth::guard('user')->check(), Auth::guard('admin')->check());
         if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password, 'role_id' => 1])) {
+            $request->session()->regenerate();
             return redirect()->route('admin.dashboard.index');
         } else if (Auth::guard('user')->attempt(['email' => $request->email, 'password' => $request->password, 'role_id' => 2])) {
+            $request->session()->regenerate();
             return redirect()->route('user.dashboard.index');
         } else {
-            // Session::flash('loginError', 'Login Failed!');
             return redirect()->back()->with(['gagal' => 'These credentials do not match our records.']);
         }
     }

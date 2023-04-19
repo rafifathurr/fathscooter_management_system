@@ -43,9 +43,9 @@ class OrderControllers extends Controller
     }
 
     // Create View Data
-    public function create(Request $req)
+    public function create($type)
     {
-        $data['type'] = $req->type;
+        $data['type'] = $type;
         $data['title'] = "Add Order";
         $data['url'] = 'store';
         $data['disabled_'] = '';

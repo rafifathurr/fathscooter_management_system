@@ -31,7 +31,7 @@
                                 <div class="card-body">
                                     <div class="card-title">Total Products</div>
                                     <div class="card-body">
-                                        <h3 style="text-align:right;" id="counter_all">0</h3>
+                                        <h2 style="text-align:right;" id="counter_all">0</h2>
                                     </div>
                                 </div>
                             </div>
@@ -41,7 +41,7 @@
                                 <div class="card-body">
                                     <div class="card-title">Total Active Products</div>
                                     <div class="card-body">
-                                        <h3 style="text-align:right;" id="counter_active">0</h3>
+                                        <h2 style="text-align:right;" id="counter_active">0</h2>
                                     </div>
                                 </div>
                             </div>
@@ -51,7 +51,7 @@
                                 <div class="card-body">
                                     <div class="card-title">Total Inactive Products</div>
                                     <div class="card-body">
-                                        <h3 style="text-align:right;" id="counter_inactive">0</h3>
+                                        <h2 style="text-align:right;" id="counter_inactive">0</h2>
                                     </div>
                                 </div>
                             </div>
