@@ -358,7 +358,6 @@
                         scrollTop: $(
                         'html, body').get(0).scrollHeight
                     }, 2000);
-x
                 }else{
                     AlertData();
                 }
