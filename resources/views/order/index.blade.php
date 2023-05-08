@@ -208,40 +208,45 @@ $(document).ready(function() {
         })
     })
     $('#create').on('click', function(){
-        const div = document.createElement("div");
-        $(div).html(
-            "<input name='_token' value='{{ csrf_token() }}' type='hidden'>"+
-            "<select id='type' name='type' class='form-control'>"+
-            "<option value='' style='display: none;' selected=''>- Choose Type Buy -</option>"+
-            "@foreach($types as $type)" +
-            "<option value='{{$type->id}}'>{{ $type->type_buy }}</option>"+
-            "@endforeach"+
-            "</select><br>"
-        );
-        swal({
-            title: "Create Order",
-            content: div,
-            buttons: [true, "Create"]
-        }).then((result) => {
-            if(result == true){
-                if($('#type').val() != ''){
-                    let type = $('#type').val();
-                    @if(Auth::guard('admin')->check())
-                        window.location.href = '{{url("admin/order/create")}}/'+type;
-                    @else
-                        window.location.href = '{{url("user/order/create")}}/'+type;
-                    @endif
-                }else{
-                    swal({
-                        icon: 'warning',
-                        title: 'Oops !',
-                        button: false,
-                        text: 'Please Choose Type First!',
-                        timer: 1500
-                    });
-                }
-            }
-        })
+        @if(Auth::guard('admin')->check())
+            window.location.href = '{{url("admin/order/create")}}/'+1;
+        @else
+            window.location.href = '{{url("user/order/create")}}/'+1;
+        @endif
+        // const div = document.createElement("div");
+        // $(div).html(
+        //     "<input name='_token' value='{{ csrf_token() }}' type='hidden'>"+
+        //     "<select id='type' name='type' class='form-control'>"+
+        //     "<option value='' style='display: none;' selected=''>- Choose Type Buy -</option>"+
+        //     "@foreach($types as $type)" +
+        //     "<option value='{{$type->id}}'>{{ $type->type_buy }}</option>"+
+        //     "@endforeach"+
+        //     "</select><br>"
+        // );
+        // swal({
+        //     title: "Create Order",
+        //     content: div,
+        //     buttons: [true, "Create"]
+        // }).then((result) => {
+        //     if(result == true){
+        //         if($('#type').val() != ''){
+        //             let type = $('#type').val();
+        //             @if(Auth::guard('admin')->check())
+        //                 window.location.href = '{{url("admin/order/create")}}/'+type;
+        //             @else
+        //                 window.location.href = '{{url("user/order/create")}}/'+type;
+        //             @endif
+        //         }else{
+        //             swal({
+        //                 icon: 'warning',
+        //                 title: 'Oops !',
+        //                 button: false,
+        //                 text: 'Please Choose Type First!',
+        //                 timer: 1500
+        //             });
+        //         }
+        //     }
+        // })
     })
 })
 

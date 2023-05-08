@@ -12,7 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.60/inputmask/jquery.inputmask.js"></script>
     <script>
         WebFont.load({
-            google: {
+            google: {   
                 "families": ["Lato:300,400,700,900"]
             },
             custom: {

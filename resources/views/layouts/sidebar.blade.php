@@ -1,7 +1,7 @@
 <div class="main-header">
     <!-- Logo Header -->
     <div class="logo-header" data-background-color="blue">
-        <a @if(Auth::guard('admin')->check()) href="{{route('admin.dashboard.index')}}" @else href="{{route('user.dashboard.index')}}" @endif class="logo mt-2">
+        <a @if(Auth::guard('admin')->check()) href="{{route('admin.dashboard.index')}}" @else href="{{route('user.order.index')}}" @endif class="logo mt-2">
             <center>
                 <span style="display:flex;">
                     <img src="{{ asset('img/fathscooter.png') }}" style="margin: 2px auto; padding:5px; width: 65%;" alt="navbar brand" class="navbar-brand">
@@ -167,12 +167,6 @@
                     </a>
                 </li>
             @else
-                <li class="nav-item {{ $title === 'Dashboard' ? 'active' : '' }}">
-                    <a href="{{route('user.dashboard.index')}}" aria-expanded="false">
-                        <i class="fas fa-home"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
                 <li class="nav-item {{ $title === 'List Order' || $title === 'Add Order' || $title === 'Edit Order' || $title === 'Detail Order'? 'active' : '' }}">
                     <a href="{{route('user.order.index')}}" aria-expanded="false">
                         <i class="fas fa-clipboard-list"></i>

@@ -24,7 +24,7 @@ class LoginController extends Controller
             return redirect()->route('admin.dashboard.index');
         } else if (Auth::guard('user')->attempt(['email' => $request->email, 'password' => $request->password, 'role_id' => 2])) {
             $request->session()->regenerate();
-            return redirect()->route('user.dashboard.index');
+            return redirect()->route('user.order.index');
         } else {
             return redirect()->back()->with(['gagal' => 'These credentials do not match our records.']);
         }

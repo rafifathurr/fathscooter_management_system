@@ -54,45 +54,45 @@
                                                     aria-label="Name: activate to sort column descending">
                                                     <center>No</center>
                                                 </th>
-                                                <th width:"25%" class="sorting" tabindex="0" aria-controls="add-row"
+                                                <th width="30%" class="sorting" tabindex="0" aria-controls="add-row"
                                                     rowspan="1" colspan="1"
                                                     aria-label="Position: activate to sort column ascending"
                                                     style="font-weight:900;">
                                                     <center>Product</center>
                                                 </th>
-                                                <th width:"25%" class="sorting" tabindex="0" aria-controls="add-row"
+                                                <th width="10%" class="sorting" tabindex="0" aria-controls="add-row"
                                                     rowspan="1" colspan="1"
                                                     aria-label="Position: activate to sort column ascending"
                                                     style="font-weight:900;">
                                                     <center>Code</center>
                                                 </th>
                                                 @if(Auth::guard('admin')->check())
-                                                    <th width:"25%" class="sorting" tabindex="0" aria-controls="add-row"
+                                                    <th width="15%" class="sorting" tabindex="0" aria-controls="add-row"
                                                         rowspan="1" colspan="1"
                                                         aria-label="Position: activate to sort column ascending"
                                                         style="width: 15%; font-weight:900;">
                                                         <center>Base Price</center>
                                                     </th>
                                                 @endif
-                                                <th width:"25%" class="sorting" tabindex="0" aria-controls="add-row"
+                                                <th width="15%" class="sorting" tabindex="0" aria-controls="add-row"
                                                     rowspan="1" colspan="1"
                                                     aria-label="Position: activate to sort column ascending"
                                                     style="width: 15%; font-weight:900;">
                                                     <center>Selling Price</center>
                                                 </th>
-                                                <th width:"25%" class="sorting" tabindex="0" aria-controls="add-row"
-                                                    rowspan="1" colspan="1"
-                                                    aria-label="Position: activate to sort column ascending"
-                                                    style="font-weight:900;">
-                                                    <center>Stock</center>
-                                                </th>
-                                                <th width:"25%" class="sorting" tabindex="0" aria-controls="add-row"
+                                                <th width="10%" class="sorting" tabindex="0" aria-controls="add-row"
                                                     rowspan="1" colspan="1"
                                                     aria-label="Position: activate to sort column ascending"
                                                     style="font-weight:900;">
                                                     <center>Status</center>
                                                 </th>
-                                                <th width="15%" class="sorting" tabindex="0"
+                                                <th width="10%" class="sorting" tabindex="0" aria-controls="add-row"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Position: activate to sort column ascending"
+                                                    style="font-weight:900;">
+                                                    <center>Stock</center>
+                                                </th>
+                                                <th width="10%" class="sorting" tabindex="0"
                                                     aria-controls="add-row" rowspan="1" colspan="1"
                                                     aria-label="Action: activate to sort column ascending"
                                                     style="font-weight:900;">
@@ -107,30 +107,30 @@
                                                 <td>
                                                     <center>{{$num=$num+1}}</center>
                                                 </td>
-                                                <td class="sorting_1">
-                                                    <center>{{$prod->product_name}}</center>
+                                                <td>
+                                                    {{$prod->product_name}}
                                                 </td>
-                                                <td class="sorting_1">
+                                                <td>
                                                     <center>{{$prod->code}}</center>
                                                 </td>
                                                 @if(Auth::guard('admin')->check())
-                                                    <td class="sorting_1">
-                                                        <center>Rp. {{number_format($prod->base_price,0,',','.')}}</center>
+                                                    <td style="text-align:right">
+                                                        Rp. {{number_format($prod->base_price,0,',','.')}}
                                                     </td>
                                                 @endif
-                                                <td class="sorting_1">
-                                                    <center>Rp. {{number_format($prod->selling_price,0,',','.')}}</center>
+                                                <td style="text-align:right">
+                                                    Rp. {{number_format($prod->selling_price,0,',','.')}}
                                                 </td>
-                                                <td class="sorting_1">
+                                                <td>
+                                                    @if($prod->status == "Active")
+                                                        <center style="background-color:#05c305; color:white; padding:2px; border-radius:5px;">{{$prod->status}}</center>
+                                                    @else
+                                                        <center style="background-color:red; color:white; padding:2px; border-radius:5px;">{{$prod->status}}</center>
+                                                    @endif
+                                                </td>
+                                                <td>
                                                    <center>{{$prod->stock}}</center>
                                                 </td>
-                                                <td class="sorting_1">
-                                                    @if($prod->status == "Active")
-                                                        <center style="color:#05c305;">{{$prod->status}}</center>
-                                                    @else
-                                                        <center style="color:red;">{{$prod->status}}</center>
-                                                    @endif
-                                                 </td>
                                                 <td>
                                                     <center>
                                                         <div class="form-button-action">

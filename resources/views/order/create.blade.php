@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 @include('layouts.head')
-
 <body>
     <div class="wrapper">
         @include('layouts.sidebar')
@@ -17,7 +16,7 @@
                     </div>
                 </div>
                 <section class="content container-fluid">
-                    <section class="content container-fluid">
+                    <div class="content container-fluid">
                         <div class="box box-primary">
                             <div class="box-body create">
                                 @if(Auth::guard('admin')->check())
@@ -118,6 +117,7 @@
                                                                         value="{{ $prod->id }}" item-value="{{ $prod }}">{{ $prod->product_name }}</option>
                                                                     @endforeach
                                                                 </select>
+                                                                <input type="hidden" id="id_product">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-2">
@@ -186,7 +186,7 @@
                                                                 <input type="hidden" min="0" name="stock" id="stock" class="form-control"
                                                                     @if (isset($orders)) value="{{ $orders->product->stock }}" @endisset step="1" required="" style="width:35%" {{$disabled_}}>
                                                                 <input type="number" min="0" name="qty" id="qty" class="form-control"
-                                                                    @if (isset($orders)) value="{{ $orders->qty }}" @endisset step="1" required="" style="width:35%" {{$disabled__}} {{$disabled_}}>
+                                                                    @if (isset($orders)) value="{{ $orders->qty }}" @endisset step="1" required="" style="width:35%" {{$disabled__}}>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -199,277 +199,349 @@
                                 </form>
                             </div>
                         </div>
-                    </section>
+                    </div>
                 </section>
-    </div>
-    @include('layouts.footer')
-    <script>
-        var sell_price = 0;
-        var base_price = 0;
-
-        function removedata(id){
-            $(document).ready(function() {
-            $('#table_body > tr').eq(id).children('td').remove();
-            });
-        }
-
-        function getProds() {
-            var token = $('meta[name="csrf-token"]').attr('content');
-            var id_prods = document.getElementById("prods").value;
-            $.ajax({
-                type: 'GET',
-                @if(Auth::guard('admin')->check())
-                    url: "{{ route('admin.order.getDetailProds') }}",
-                @else
-                    url: "{{ route('user.order.getDetailProds') }}",
-                @endif
-                data: {
-                    'id_prod': id_prods
-                },
-                success: function(data) {
-                    $("#entry_price").val(0);
-                    $("#cal_tax").val(0);
-                    $("#cal_profit").val(0);
-                    $('#qty').removeAttr('disabled');
-
-                    base_price = data["base_price"];
-                    sell_price = data["selling_price"];
-                    max_qty = data["stock"];
-
-                    $('#qty').val(1);
-                    $('#base_price').val(base_price);
-                    $("#base_price_old").val(base_price);
-                    $('#sell_price').val(sell_price);
-                    $("#sell_price_old").val(sell_price);
-                    $("#stock").val(max_qty);
-
-                    var input = document.getElementById("qty");
-                    input.setAttribute("max",max_qty);
+            </div>
+            @include('layouts.footer')
+            <script>
+                let sell_price = 0;
+                let base_price = 0;
+        
+                function removedata(id){
+                    $(document).ready(function() {
+                    $('#table_body > tr').eq(id).children('td').remove();
+                    });
                 }
-            });
-        }
-        function sell_price_update(e){
-            var qty = $("#qty_"+e).val();
-            var max_stock = $("#max_stock_"+e).val();
-            var sell_price_table = $("#sell_price_data_"+e).val();
-
-            // //Calculation
-            if(sell_price != 0){
-                if(qty.length <= max_qty.length) {
-                    if(qty > max_stock && qty.length >= max_stock.length){
-                    $('#save_data').attr('disabled', 'disabled');
-                    alert("Item Quantity Exceed Stock Limit!");
-                        $("#qty").val(1);
-                        // $("#base_price").val(base_price);
-                        $("#sell_price_"+e).val(sell_price_table);
-                    }else{
-                        $('#save_data').removeAttr('disabled');
-                        // var result_base = base_price * qty;
-                        var result_sell = sell_price_table * qty;
-                        $("#sell_price_"+e).val(result_sell);
-                        // $("#base_price").val(result_base);
-                    }
-                }else{
-                    $('#save_data').attr('disabled', 'disabled');
-                    alert("Item Quantity Exceed Stock Limit!");
-                        $("#qty").val(1);
-                        // $("#base_price").val(base_price);
-                        $("#sell_price_"+e).val(sell_price_table);
-                }
-
-            }else{
-                // var input = document.getElementById("qty");
-                // input.setAttribute("max",max_stock);
-
-                // if(qty > max_stock){
-                //     $('#save_data').attr('disabled', 'disabled');
-                //     alert("Item Quantity Exceed Stock Limit!");
-                // }else{
-                //     $('#save_data').removeAttr('disabled');
-                //     $("#entry_price").val(0);
-                //     $("#cal_tax").val(0);
-                //     $("#cal_profit").val(0);
-                    var result_base = base_price_old * qty;
-                    var result_sell = sell_price_old * qty;
-                    $("#base_price").val(result_base);
-                    $("#sell_price").val(result_sell);
-                // }
-            }   
-        }
-    </script>
-    <script>
-        $(document).ready(function() {
-            $("#btn-collapse").click(function(){
-                // let invoice = $('#invoice').val();
-                // let source = $('#source_pay').val();
-                // let tgl = $('#tgl').val();
-                // if(invoice == '' && source == '' && tgl == ''){
-                //     AlertData();
-                // }else{
-                    $("#collapse").collapse('show');
-                    $("html, body").animate({
-                        scrollTop: $(
-                        'html, body').get(0).scrollHeight
-                    }, 2000);
+        
+                function getProds() {
                     
-                // }
-                
-            });
+                    var token = $('meta[name="csrf-token"]').attr('content');
+                    var id_prods = document.getElementById("prods").value;
 
-            $('#btn_tambahToTable').on('click', function() {
-                var table_body = $('#tabel_body');
-
-                var product = $('#prods').val();
-                var qty = $('#qty').val();
-                var max_stock = $('#stock').val();
-                var base = $('#base_price').val();
-                var sell = $('#sell_price').val();
-
-                if(product != ''){
-                    var products = $('#prods option:selected').attr('item-value');
-                    prodSelected = products.replace(/\'/g, '"');
-                    var productData = JSON.parse(prodSelected);
-
-                    var i = $('#dt-detail tbody tr').length;
-
-                    $('#table_body').append("<tr id='"+(i+1)+"'>"+
-                    "<td style='text-align:left;'><input type='hidden' name='product_id[]' value='"+productData.id+"' readonly>"+productData.product_name+"</td>"+
-                    "<input type='hidden' name='max_stock[]' value='"+max_stock+"' id='max_stock_"+i+"' readonly>"+
-                    "<td><center><input type='number' style='width:100px !important; height:25px !important; text-align:center;' class='form-control' name='qty[]' id='qty_"+i+"' value='"+qty+"' onkeyup ='sell_price_update("+i+")'></center></td>"+
-                    "<td><center><input type='text' style='width:100px !important; height:25px !important; text-align:center;' class='form-control numeric' name='base_price_arr[]' id='base_price_"+i+"' value='"+base+"' disabled></center></td>"+
-                    "<input type='hidden' style='width:100px !important; height:25px !important; text-align:center;' name='sell_price_data[]' id='sell_price_data_"+i+"' value='"+sell_price+"'>"+
-                    "<td><center><input type='text' style='width:100px !important; height:25px !important; text-align:center;' class='form-control numeric' name='sell_price_arr[]' id='sell_price_"+i+"' value='"+sell+"' disabled></center></td>"+
-                    "<td><center><button type='button' id='jumlah_"+i+"' class='btn btn-link btn-simple-danger' onclick='removedata("+i+")' title='Hapus'><i class='fa fa-trash' style='color:red;''></i></button></center></td>"+
-                    "</tr>");
-
-                    if(i==0){
-                    $('#num_tbl_'+i).text(i+1);
-                    }else{
-                    $('#num_tbl_'+i).text(i);
-                    }
-
-                    $('#prods').val("");
-                    $('#qty').val("");
-                    $('#qty').attr('disabled','disabled');
-                    $('#base_price').val("");
-                    $('#sell_price').val("");
-
-                    $("html, body").animate({
-                        scrollTop: $(
-                        'html, body').get(0).scrollHeight
-                    }, 2000);
-                }else{
-                    AlertData();
+                    $.ajax({
+                        type: 'GET',
+                        @if(Auth::guard('admin')->check())
+                            url: "{{ route('admin.order.getDetailProds') }}",
+                        @else
+                            url: "{{ route('user.order.getDetailProds') }}",
+                        @endif
+                        data: {
+                            'id_prod': id_prods
+                        },
+                        success: function(data) {
+                            $("#entry_price").val(0);
+                            $("#cal_tax").val(0);
+                            $("#cal_profit").val(0);
+                            $('#qty').removeAttr('disabled');
+        
+                            base_price = data["base_price"];
+                            sell_price = data["selling_price"];
+                            max_qty = data["stock"];
+        
+                            $('#qty').val(1);
+                            $('#id_product').val(data["id"]);
+                            $('#base_price').val(base_price);
+                            // $("#base_price_old").val(base_price);
+                            $('#sell_price').val(sell_price);
+                            // $("#sell_price_old").val(sell_price);
+                            $("#stock").val(max_qty);
+        
+                            let input = document.getElementById("qty");
+                            input.setAttribute("max",max_qty);
+                        }
+                    });
                 }
 
-            });
-
-            $('#qty').on('keyup textInput input', function() {
-                var qty = $("#qty").val();
-                var max_stock = $("#stock").val();
-                var base = $("#base_price").val();
-                var base_price_old = $("#base_price_old").val();
-                var sell_price_old = $("#sell_price_old").val();
-
-                //Calculation
-                if(sell_price != 0){
-                    if(qty.length <= max_qty.length) {
-                        if(qty > max_qty && qty.length >= max_qty.length){
-                        $('#save_data').attr('disabled', 'disabled');
-                        alert("Item Quantity Exceed Stock Limit!");
-                            $("#qty").val(1);
-                            $("#base_price").val(base_price);
-                            $("#sell_price").val(sell_price);
+                function sell_price_update(e){
+                    let qty = $("#qty_"+e).val();
+                    let max_stock = $("#max_stock_"+e).val();
+                    let base_price_table = $("#base_price_data_"+e).val();
+                    let sell_price_table = $("#sell_price_data_"+e).val();
+        
+                    // //Calculation
+                    if(sell_price != 0){
+                        if(qty.length <= max_qty.length) {
+                            if(qty > max_stock && qty.length >= max_stock.length){
+                                $('#save_data').attr('disabled', 'disabled');
+                                alert("Item Quantity Exceed Stock Limit!");
+                                $("#qty_"+e).val(1);
+                                $("#base_price_"+e).val(base_price_table);
+                                $("#sell_price_"+e).val(sell_price_table);
+                            }else{
+                                $('#save_data').removeAttr('disabled');
+                                let result_base = base_price_table * qty;
+                                let result_sell = sell_price_table * qty;
+                                $("#sell_price_"+e).val(result_sell);
+                                $("#base_price_"+e).val(result_base);
+                            }
                         }else{
-                            $('#save_data').removeAttr('disabled');
-                            var result_base = base_price * qty;
-                            var result_sell = sell_price * qty;
-                            $("#sell_price").val(result_sell);
+                            $('#save_data').attr('disabled', 'disabled');
+                            alert("Item Quantity Exceed Stock Limit!");
+                                $("#qty_"+e).val(1);
+                                $("#base_price"+e).val(base_price_table);
+                                $("#sell_price_"+e).val(sell_price_table);
+                        }
+        
+                    }else{
+                        // let input = document.getElementById("qty");
+                        // input.setAttribute("max",max_stock);
+        
+                        // if(qty > max_stock){
+                        //     $('#save_data').attr('disabled', 'disabled');
+                        //     alert("Item Quantity Exceed Stock Limit!");
+                        // }else{
+                        //     $('#save_data').removeAttr('disabled');
+                        //     $("#entry_price").val(0);
+                        //     $("#cal_tax").val(0);
+                        //     $("#cal_profit").val(0);
+                            let result_base = base_price_old * qty;
+                            let result_sell = sell_price_old * qty;
                             $("#base_price").val(result_base);
-                        }
-                    }else{
-                        $('#save_data').attr('disabled', 'disabled');
-                        alert("Item Quantity Exceed Stock Limit!");
-                            $("#qty").val(1);
-                            $("#base_price").val(base_price);
-                            $("#sell_price").val(sell_price);
-                    }
-
-                }else{
-                    // var input = document.getElementById("qty");
-                    // input.setAttribute("max",max_stock);
-
-                    // if(qty > max_stock){
-                    //     $('#save_data').attr('disabled', 'disabled');
-                    //     alert("Item Quantity Exceed Stock Limit!");
-                    // }else{
-                    //     $('#save_data').removeAttr('disabled');
-                    //     $("#entry_price").val(0);
-                    //     $("#cal_tax").val(0);
-                    //     $("#cal_profit").val(0);
-                        var result_base = base_price_old * qty;
-                        var result_sell = sell_price_old * qty;
-                        $("#base_price").val(result_base);
-                        $("#sell_price").val(result_sell);
-                    // }
+                            $("#sell_price").val(result_sell);
+                        // }
+                    }   
                 }
-            });
+            </script>
+            <script>
+                $(document).ready(function() {
 
-            $('#entry_price').on('keyup textInput input', function() {
-                var entry_price = $("#entry_price").val();
-                var sell_price_old = $("#sell_price_old").val();
-                var base_price = $("#base_price").val();
-                var entry = entry_price.split('.').join('').replace(/^Rp/, '');
-                var base = base_price.split('.').join('').replace(/^Rp/, '');
-                var qty = $("#qty").val();
+                    $("#btn-collapse").click(function(){
+                        // let invoice = $('#invoice').val();
+                        // let source = $('#source_pay').val();
+                        // let tgl = $('#tgl').val();
+                        // if(invoice == '' && source == '' && tgl == ''){
+                        //     AlertData();
+                        // }else{
+                            $("#collapse").collapse('show');
+                            $("html, body").animate({
+                                scrollTop: $(
+                                'html, body').get(0).scrollHeight
+                            }, 2000);
+                            
+                        // }
+                        
+                    });
+        
+                    $('#btn_tambahToTable').on('click', function() {
+                        var table_body = $('#tabel_body');
+        
+                        let id_product = $('#id_product').val();
+                        let product = $('#prods').val();
+                        let qty = parseInt($('#qty').val());
+                        let max_stock = $('#stock').val();
+                        let base = $('#base_price').val();
+                        let sell = $('#sell_price').val();
+                        
+                        var data = $('input[name^="product_id"]').val();
 
-                //Calculation
-                if(sell_price != 0){
-                    if(entry == 0){
-                        var tax = 0;
-                        var profit = 0;
-                    }else{
-                        var profit = entry - base;
-                        var sell_total = sell_price * qty;
-                        if(entry > sell_total){
-                            var tax = 0;
+                        if(data){
+                            $('input[name^="product_id"]').each( function(index) {
+                                let id_prods = parseInt(this.value);
+                                if(id_product == id_prods){
+
+                                    let qty_prods = parseInt($('#qty_'+index).val());
+                                    let result_qty = qty_prods+qty;
+
+                                    $('#qty_'+index).val(result_qty);
+                                    $('#base_price_'+index).val(result_qty*base_price);
+                                    $('#sell_price_'+index).val(result_qty*sell_price);
+                
+                                    $('#prods').val("");
+                                    $('#qty').val("");
+                                    $('#qty').attr('disabled','disabled');
+                                    $('#base_price').val("");
+                                    $('#sell_price').val("");
+
+                                }else{
+                                    if(product != ''){
+
+                                        var products = $('#prods option:selected').attr('item-value');
+                                        prodSelected = products.replace(/\'/g, '"');
+                                        var productData = JSON.parse(prodSelected);
+                    
+                                        var i = $('#dt-detail tbody tr').length;
+                    
+                                        $('#table_body').append("<tr id='"+(i+1)+"'>"+
+                                        "<td style='text-align:left;'><input type='hidden' name='product_id[]' value='"+productData.id+"' readonly>"+productData.product_name+"</td>"+
+                                        "<input type='hidden' name='max_stock[]' value='"+max_stock+"' id='max_stock_"+productData.id+"' readonly>"+
+                                        "<td><center><input type='number' style='width:100px !important; height:25px !important; text-align:center;' class='form-control' name='qty[]' id='qty_"+productData.id+"' value='"+qty+"' onchange='sell_price_update("+productData.id+")'></center></td>"+
+                                        "<input type='hidden' name='base_price_data[]' id='base_price_data_"+productData.id+"' value='"+base_price+"'>"+
+                                        "<td><center><input type='text' style='width:100px !important; height:25px !important; text-align:center;' class='form-control numeric' name='base_price_arr[]' id='base_price_"+productData.id+"' value='"+base+"' disabled></center></td>"+
+                                        "<input type='hidden' name='sell_price_data[]' id='sell_price_data_"+productData.id+"' value='"+sell_price+"'>"+
+                                        "<td><center><input type='text' style='width:100px !important; height:25px !important; text-align:center;' class='form-control numeric' name='sell_price_arr[]' id='sell_price_"+productData.id+"' value='"+sell+"' disabled></center></td>"+
+                                        "<td><center><button type='button' id='jumlah_"+productData.id+"' class='btn btn-link btn-simple-danger' onclick='removedata("+productData.id+")' title='Hapus'><i class='fa fa-trash' style='color:red;''></i></button></center></td>"+
+                                        "</tr>");
+                    
+                                        if(i==0){
+                                            $('#num_tbl_'+i).text(i+1);
+                                        }else{
+                                            $('#num_tbl_'+i).text(i);
+                                        }
+                    
+                                        $('#prods').val("");
+                                        $('#qty').val("");
+                                        $('#qty').attr('disabled','disabled');
+                                        $('#base_price').val("");
+                                        $('#sell_price').val("");
+                    
+                                        $("html, body").animate({
+                                            scrollTop: $(
+                                            'html, body').get(0).scrollHeight
+                                        }, 2000);
+
+                                    }else{
+                                        AlertData();
+                                    }
+                                }
+                            });
                         }else{
-                            var tax = sell_total - entry;
-                        }
-                    }
-                }else{
-                    if(entry == 0){
-                        var tax = 0;
-                        var profit = 0;
-                    }else{
-                        var profit = entry - base;
-                        var sell_total = sell_price_old * qty;
-                        if(entry > sell_total){
-                            var tax = 0;
-                        }else{
-                            var tax = sell_total - entry;
-                        }
-                    }
-                }
-                $("#cal_tax").val(tax);
-                $("#cal_profit").val(profit);
-            });
+                            if(product != ''){
 
-            $("#tgl_date").on("change", function() {
-                if (this.value == "") {
-                    this.setAttribute("data-date", "DD-MM-YYYY")
-                } else {
-                    this.setAttribute(
-                        "data-date",
-                        moment(this.value, "dd/mm/yyyy")
-                        .format(this.getAttribute("data-date-format"))
-                    )
-                }
-            }).trigger("change");
-        });
-    </script>
-</div>
-</div>
+                                var products = $('#prods option:selected').attr('item-value');
+                                prodSelected = products.replace(/\'/g, '"');
+                                var productData = JSON.parse(prodSelected);
+            
+                                var i = $('#dt-detail tbody tr').length;
+            
+                                $('#table_body').append("<tr id='"+(i+1)+"'>"+
+                                "<td style='text-align:left;'><input type='hidden' name='product_id[]' value='"+productData.id+"' readonly>"+productData.product_name+"</td>"+
+                                "<input type='hidden' name='max_stock[]' value='"+max_stock+"' id='max_stock_"+productData.id+"' readonly>"+
+                                "<td><center><input type='number' style='width:100px !important; height:25px !important; text-align:center;' min=0 max='"+max_stock+"' class='form-control' name='qty[]' id='qty_"+productData.id+"' value='"+qty+"' onchange ='sell_price_update("+productData.id+")'></center></td>"+
+                                "<input type='hidden' name='base_price_data[]' id='base_price_data_"+productData.id+"' value='"+base_price+"'>"+
+                                "<td><center><input type='text' style='width:100px !important; height:25px !important; text-align:center;' class='form-control numeric' name='base_price_arr[]' id='base_price_"+productData.id+"' value='"+base+"' disabled></center></td>"+
+                                "<input type='hidden' name='sell_price_data[]' id='sell_price_data_"+productData.id+"' value='"+sell_price+"'>"+
+                                "<td><center><input type='text' style='width:100px !important; height:25px !important; text-align:center;' class='form-control numeric' name='sell_price_arr[]' id='sell_price_"+productData.id+"' value='"+sell+"' disabled></center></td>"+
+                                "<td><center><button type='button' id='jumlah_"+productData.id+"' class='btn btn-link btn-simple-danger' onclick='removedata("+productData.id+")' title='Hapus'><i class='fa fa-trash' style='color:red;''></i></button></center></td>"+
+                                "</tr>");
+            
+                                if(i==0){
+                                    $('#num_tbl_'+i).text(i+1);
+                                }else{
+                                    $('#num_tbl_'+i).text(i);
+                                }
+            
+                                $('#prods').val("");
+                                $('#qty').val("");
+                                $('#qty').attr('disabled','disabled');
+                                $('#base_price').val("");
+                                $('#sell_price').val("");
+            
+                                $("html, body").animate({
+                                    scrollTop: $(
+                                    'html, body').get(0).scrollHeight
+                                }, 2000);
+                                
+                            }else{
+                                AlertData();
+                            }
+                        }
+                    });
+        
+                    $('#qty').on('keyup textInput input', function() {
+                        let qty = $("#qty").val();
+                        let max_stock = $("#stock").val();
+                        let base = $("#base_price").val();
+                        let base_price_old = $("#base_price_old").val();
+                        let sell_price_old = $("#sell_price_old").val();
+        
+                        //Calculation
+                        if(sell_price != 0){
+                            if(qty.length <= max_qty.length) {
+                                if(qty > max_qty && qty.length >= max_qty.length){
+                                    $('#save_data').attr('disabled', 'disabled');
+                                    alert("Item Quantity Exceed Stock Limit!");
+                                    $("#qty").val(1);
+                                    $("#base_price").val(base_price);
+                                    $("#sell_price").val(sell_price);
+                                }else{
+                                    $('#save_data').removeAttr('disabled');
+                                    let result_base = base_price * qty;
+                                    let result_sell = sell_price * qty;
+                                    $("#sell_price").val(result_sell);
+                                    $("#base_price").val(result_base);
+                                }
+                            }else{
+                                $('#save_data').attr('disabled', 'disabled');
+                                alert("Item Quantity Exceed Stock Limit!");
+                                $("#qty").val(1);
+                                $("#base_price").val(base_price);
+                                $("#sell_price").val(sell_price);
+                            }
+        
+                        }else{
+                            // var input = document.getElementById("qty");
+                            // input.setAttribute("max",max_stock);
+        
+                            // if(qty > max_stock){
+                            //     $('#save_data').attr('disabled', 'disabled');
+                            //     alert("Item Quantity Exceed Stock Limit!");
+                            // }else{
+                            //     $('#save_data').removeAttr('disabled');
+                            //     $("#entry_price").val(0);
+                            //     $("#cal_tax").val(0);
+                            //     $("#cal_profit").val(0);
+                                let result_base = base_price_old * qty;
+                                let result_sell = sell_price_old * qty;
+                                $("#base_price").val(result_base);
+                                $("#sell_price").val(result_sell);
+                            // }
+                        }
+                    });
+        
+                    // $('#entry_price').on('keyup textInput input', function() {
+                    //     let entry_price = $("#entry_price").val();
+                    //     let sell_price_old = $("#sell_price_old").val();
+                    //     let base_price = $("#base_price").val();
+                    //     let entry = entry_price.split('.').join('').replace(/^Rp/, '');
+                    //     let base = base_price.split('.').join('').replace(/^Rp/, '');
+                    //     let qty = $("#qty").val();
+        
+                    //     //Calculation
+                    //     if(sell_price != 0){
+                    //         if(entry == 0){
+                    //             let tax = 0;
+                    //             let profit = 0;
+                    //         }else{
+                    //             let profit = entry - base;
+                    //             let sell_total = sell_price * qty;
+                    //             if(entry > sell_total){
+                    //                 let tax = 0;
+                    //             }else{
+                    //                 let tax = sell_total - entry;
+                    //             }
+                    //         }
+                    //     }else{
+                    //         if(entry == 0){
+                    //             let tax = 0;
+                    //             let profit = 0;
+                    //         }else{
+                    //             let profit = entry - base;
+                    //             let sell_total = sell_price_old * qty;
+                    //             if(entry > sell_total){
+                    //                 let tax = 0;
+                    //             }else{
+                    //                 let tax = sell_total - entry;
+                    //             }
+                    //         }
+                    //     }
+                    //     $("#cal_tax").val(tax);
+                    //     $("#cal_profit").val(profit);
+                    // });
+        
+                    $("#tgl_date").on("change", function() {
+                        if (this.value == "") {
+                            this.setAttribute("data-date", "DD-MM-YYYY")
+                        } else {
+                            this.setAttribute(
+                                "data-date",
+                                moment(this.value, "dd/mm/yyyy")
+                                .format(this.getAttribute("data-date-format"))
+                            )
+                        }
+                    }).trigger("change");
+                });
+            </script>
+        </div>
+    </div>
 </body>
-
 </html>

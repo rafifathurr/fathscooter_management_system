@@ -40,7 +40,7 @@ class CategoryControllers extends Controller
             'created_at' => $datenow
         ]);
 
-        return redirect()->route('category.index')->with(['success' => 'Data successfully stored!']);
+        return redirect()->route('admin.category.index')->with(['success' => 'Data successfully stored!']);
     }
 
     // Detail Data View by id

@@ -20,6 +20,7 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+// AUTH
 Route::namespace('App\Http\Controllers')->group(function (){
 
     Route::namespace('login')->prefix('auth')->name('login.')->group(function () {
@@ -36,6 +37,8 @@ Route::namespace('App\Http\Controllers')->group(function (){
 });
 
 Route::namespace('App\Http\Controllers')->group(function (){
+
+    // ADMIN
     Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function () {
         // ROUTE TO DASHBOARD CONTROLLERS
         Route::namespace('dashboard')->name('dashboard.')->group(function () {
@@ -123,12 +126,13 @@ Route::namespace('App\Http\Controllers')->group(function (){
         });
     });
     
+    // USER
     Route::middleware('auth:user')->prefix('user')->name('user.')->group(function () {
 
          // ROUTE TO DASHBOARD CONTROLLERS
-         Route::namespace('dashboard')->name('dashboard.')->group(function () {
-            Route::get('/dashboard-user', 'DashboardControllers@index')->name('index');
-        });
+        //  Route::namespace('dashboard')->name('dashboard.')->group(function () {
+        //     Route::get('/dashboard-user', 'DashboardControllers@index')->name('index');
+        // });
 
         // ROUTE TO ORDER CONTROLLERS
         Route::namespace('order')->prefix('order')->name('order.')->group(function () {
