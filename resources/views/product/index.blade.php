@@ -25,7 +25,7 @@
                             Add Product
                         </a>
                     @else
-                        <div class="mb-3"">
+                        <div class="mb-3">
                             <br>
                         </div>
                     @endif
@@ -50,7 +50,7 @@
                                         <thead>
                                             <tr role="row">
                                                 <th class="sorting_asc" tabindex="0" aria-controls="add-row"
-                                                    rowspan="1" colspan="1" aria-sort="ascending"
+                                                    rowspan="1" colspan="1" aria-sort="ascending" width="10%"
                                                     aria-label="Name: activate to sort column descending">
                                                     <center>No</center>
                                                 </th>
@@ -66,7 +66,7 @@
                                                     style="font-weight:900;">
                                                     <center>Code</center>
                                                 </th>
-                                                @if(Auth::guard('admin')->check())
+                                                {{-- @if(Auth::guard('admin')->check())
                                                     <th width="15%" class="sorting" tabindex="0" aria-controls="add-row"
                                                         rowspan="1" colspan="1"
                                                         aria-label="Position: activate to sort column ascending"
@@ -79,7 +79,7 @@
                                                     aria-label="Position: activate to sort column ascending"
                                                     style="width: 15%; font-weight:900;">
                                                     <center>Selling Price</center>
-                                                </th>
+                                                </th> --}}
                                                 <th width="10%" class="sorting" tabindex="0" aria-controls="add-row"
                                                     rowspan="1" colspan="1"
                                                     aria-label="Position: activate to sort column ascending"
@@ -113,14 +113,14 @@
                                                 <td>
                                                     <center>{{$prod->code}}</center>
                                                 </td>
-                                                @if(Auth::guard('admin')->check())
+                                                {{-- @if(Auth::guard('admin')->check())
                                                     <td style="text-align:right">
                                                         Rp. {{number_format($prod->base_price,0,',','.')}}
                                                     </td>
                                                 @endif
                                                 <td style="text-align:right">
                                                     Rp. {{number_format($prod->selling_price,0,',','.')}}
-                                                </td>
+                                                </td> --}}
                                                 <td>
                                                     @if($prod->status == "Active")
                                                         <center style="background-color:#05c305; color:white; padding:2px; border-radius:5px;">{{$prod->status}}</center>
