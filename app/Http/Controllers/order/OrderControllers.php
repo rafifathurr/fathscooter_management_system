@@ -8,14 +8,12 @@ use App\Models\source_payment\Source;
 use App\Models\type_buy\Type;
 use App\Models\product\Product;
 use App\Exports\ReportOrderExport;
-use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 use Illuminate\Http\Request;
 use Auth;
 use Session;
 use DB;
-use PDF;
 
 class OrderControllers extends Controller
 {
@@ -43,16 +41,30 @@ class OrderControllers extends Controller
     }
 
     // Create View Data
-    public function create($type)
+    public function create()
     {
-        $data['type'] = $type;
         $data['title'] = "Add Order";
         $data['url'] = 'store';
         $data['disabled_'] = '';
         $data['disabled__'] = 'disabled';
-        $data['products'] = Product::orderBy('product_name', 'asc')->where('status', 'Active')->get();
-        $data['sources'] = Source::orderBy('id', 'asc')->get();
+        $data['types'] = Type::orderBy('id', 'asc')
+                        ->where('deleted_at', null)
+                        ->get();
+        $data['products'] = Product::orderBy('product_name', 'asc')
+                            ->where('status', 'Active')
+                            ->where('deleted_at', null)
+                            ->get();
+        $data['sources'] = Source::orderBy('id', 'asc')
+                            ->where('deleted_at', null)
+                            ->get();
         return view('order.create', $data);
+    }
+
+    // get Detail Product View Data
+    public function getProds(Request $req)
+    {
+        $data = Product::where('deleted_at', null)->get();
+        return response()->json($data);
     }
 
     // get Detail Product View Data

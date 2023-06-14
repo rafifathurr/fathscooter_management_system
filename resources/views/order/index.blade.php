@@ -20,16 +20,16 @@
                     <!-- Button -->
                     <div class="d-flex">
                     @if(Auth::guard('admin')->check())
-                        <button id="export" class="btn btn-primary btn-round ml-auto mb-3" style="background-color:green !important;" @if(count($years)==0) disabled @endif>
+                        <button id="export" class="btn btn-primary btn-round ml-auto mb-3" style="background-color:green !important; margin-right: 10px;" @if(count($years)==0) disabled @endif>
                             <i class="fa fa-file-excel"></i>
                             Export Excel
                         </button>
-                        <button class="btn btn-primary btn-round mb-3" style="margin-left:10px;" id="create">
+                        <a class="btn btn-primary btn-round mb-3" href="{{route('admin.order.create')}}">
                             <i class="fa fa-plus"></i>
                             Add Order
-                        </button>
+                        </a>
                     @else
-                        <a class="btn btn-primary btn-round ml-auto mb-3" href="{{route('user.order.create')}}">
+                        <a class="btn btn-primary btn-round mb-3" href="{{route('user.order.create')}}">
                             <i class="fa fa-plus"></i>
                             Add Order
                         </a>
@@ -206,47 +206,6 @@ $(document).ready(function() {
                 }
             }
         })
-    })
-    $('#create').on('click', function(){
-        @if(Auth::guard('admin')->check())
-            window.location.href = '{{url("admin/order/create")}}/'+1;
-        @else
-            window.location.href = '{{url("user/order/create")}}/'+1;
-        @endif
-        // const div = document.createElement("div");
-        // $(div).html(
-        //     "<input name='_token' value='{{ csrf_token() }}' type='hidden'>"+
-        //     "<select id='type' name='type' class='form-control'>"+
-        //     "<option value='' style='display: none;' selected=''>- Choose Type Buy -</option>"+
-        //     "@foreach($types as $type)" +
-        //     "<option value='{{$type->id}}'>{{ $type->type_buy }}</option>"+
-        //     "@endforeach"+
-        //     "</select><br>"
-        // );
-        // swal({
-        //     title: "Create Order",
-        //     content: div,
-        //     buttons: [true, "Create"]
-        // }).then((result) => {
-        //     if(result == true){
-        //         if($('#type').val() != ''){
-        //             let type = $('#type').val();
-        //             @if(Auth::guard('admin')->check())
-        //                 window.location.href = '{{url("admin/order/create")}}/'+type;
-        //             @else
-        //                 window.location.href = '{{url("user/order/create")}}/'+type;
-        //             @endif
-        //         }else{
-        //             swal({
-        //                 icon: 'warning',
-        //                 title: 'Oops !',
-        //                 button: false,
-        //                 text: 'Please Choose Type First!',
-        //                 timer: 1500
-        //             });
-        //         }
-        //     }
-        // })
     })
 })
 
