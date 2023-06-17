@@ -48,9 +48,10 @@ Route::namespace('App\Http\Controllers')->group(function (){
         // ROUTE TO ORDER CONTROLLERS
         Route::namespace('order')->prefix('order')->name('order.')->group(function () {
             Route::get('/', 'OrderControllers@index')->name('index');
-            Route::get('create/{type}', 'OrderControllers@create')->name('create');
+            Route::get('create', 'OrderControllers@create')->name('create');
             Route::post('store', 'OrderControllers@store')->name('store');
-            Route::get('getDetailProds', 'OrderControllers@getDetailProds')->name('getDetailProds');
+            Route::post('getProds', 'OrderControllers@getProds')->name('getProds');
+            Route::post('getDetailProds', 'OrderControllers@getDetailProds')->name('getDetailProds');
             Route::get('detail/{id}', 'OrderControllers@detail')->name('detail');
             Route::get('edit/{id}', 'OrderControllers@edit')->name('edit');
             Route::post('update', 'OrderControllers@update')->name('update');
@@ -139,7 +140,8 @@ Route::namespace('App\Http\Controllers')->group(function (){
             Route::get('/', 'OrderControllers@index')->name('index');
             Route::get('create', 'OrderControllers@create')->name('create');
             Route::post('store', 'OrderControllers@store')->name('store');
-            Route::get('getDetailProds', 'OrderControllers@getDetailProds')->name('getDetailProds');
+            Route::post('getProds', 'OrderControllers@getProds')->name('getProds');
+            Route::post('getDetailProds', 'OrderControllers@getDetailProds')->name('getDetailProds');
             Route::get('detail/{id}', 'OrderControllers@detail')->name('detail');
             Route::get('edit/{id}', 'OrderControllers@edit')->name('edit');
             Route::post('update', 'OrderControllers@update')->name('update');

@@ -26,19 +26,18 @@
                                 @endif
                                     {{ csrf_field() }}
                                     <br>
-                                    <input type="hidden" name="type_order" id="type_order" class="form-control" autocomplete="off" value="{{$type}}" required {{$disabled_}}>
                                     <div class="row">
-                                        <div class="col-md-5">
+                                        <div class="col-md-3">
                                             <label class="col-md-12">No Invoice <span style="color: red;">*</span></label>
                                             <div class="col-md-12">
                                                 <input type="text" name="invoice" id="invoice" class="form-control" placeholder="No Invoice Order" @if(isset($orders)) value="{{$orders->invoice}}" @endisset autocomplete="off" required {{$disabled_}}>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <label class="col-md-12">Source Payment <span style="color: red;">*</span></label>
                                             <div class="col-md-12">
                                                 <select name="source_pay" id="source_pay" class="form-control" required {{$disabled_}}>
-                                                    <option value="" style="display: none;" selected="">- Choose Sources -
+                                                    <option value="" style="display: none;" selected="">- Choose Source -
                                                     </option>
                                                     @foreach ($sources as $source)
                                                         <option @if (isset($orders))
@@ -46,6 +45,22 @@
                                                             echo 'selected';
                                                         } ?> @endisset
                                                         value="{{ $source->id }}">{{ $source->source }}</option>
+                                                @endforeach
+                                            </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="col-md-12">Type Selling <span style="color: red;">*</span></label>
+                                            <div class="col-md-12">
+                                                <select name="type_buy" id="type_buy" class="form-control" required {{$disabled_}}>
+                                                    <option value="" style="display: none;" selected="">- Choose Type -
+                                                    </option>
+                                                    @foreach ($types as $type)
+                                                        <option @if (isset($orders))
+                                                        <?php if ($orders->type_buy == $type->id) {
+                                                            echo 'selected';
+                                                        } ?> @endisset
+                                                        value="{{ $type->id }}">{{ $type->type_buy }}</option>
                                                 @endforeach
                                             </select>
                                             </div>
@@ -96,9 +111,6 @@
                                     <br>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            @if($type==1)
-
-                                            {{-- FORM PRODUCT STOCK --}}
                                             <div id="collapse" class="panel-collapse collapse">
                                                 <hr><br>
                                                 <div class="panel-body">
@@ -106,17 +118,8 @@
                                                         <div class="col-md-4">
                                                             <label class="col-md-12">Product <span style="color: red;">*</span></label>
                                                             <div class="col-md-12">
-                                                                <select name="prods" id="prods" onchange="getProds()" class="form-control"
+                                                                <select name="prods" id="prods" onchange="getDetails()" class="form-control"
                                                                     @if (isset($orders)) @endisset {{$disabled_}}>
-                                                                    <option value="" style="display: none;">- Choose Products -
-                                                                    </option>
-                                                                    @foreach ($products as $prod)
-                                                                        <option @if (isset($orders))
-                                                                        <?php if ($orders->product_id == $prod->id) {
-                                                                            echo 'selected';
-                                                                        } ?> @endisset
-                                                                        value="{{ $prod->id }}" item-value="{{ $prod }}">{{ $prod->product_name }}</option>
-                                                                    @endforeach
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -158,13 +161,23 @@
                                                 <br>
                                                 <table id="dt-detail" class="table table-striped table-bordered table-hover" width="100%" style="text-align: center;">
                                                     <thead style="background-color: #fbfbfb;">
-                                                      <tr>
-                                                        <th style="vertical-align: middle;"><center>Products</center></th>
-                                                        <th style="vertical-align: middle;" width="15%"><center>Qty</center></th>
-                                                        <th style="vertical-align: middle;"><center>Base Price</center></th>
-                                                        <th style="vertical-align: middle;"><center>Selling Price</center></th>
-                                                        <th style="vertical-align: middle;" width="15%"><center>Action</center></th>
-                                                      </tr>
+                                                        <tr>
+                                                            <th style="vertical-align: middle;">
+                                                                <center>Products</center>
+                                                            </th>
+                                                            <th style="vertical-align: middle;" width="15%">
+                                                                <center>Qty</center>
+                                                            </th>
+                                                            <th style="vertical-align: middle;">
+                                                                <center>Base Price</center>
+                                                            </th>
+                                                            <th style="vertical-align: middle;">
+                                                                <center>Selling Price</center>
+                                                            </th>
+                                                            <th style="vertical-align: middle;" width="15%">
+                                                                <center>Action</center>
+                                                            </th>
+                                                        </tr>
                                                     </thead>
                                                     <tbody id="table_body">
                                                     </tbody>
@@ -177,33 +190,70 @@
                                                         </tr> 
                                                     </tbody>
                                                 </table>
-                                            </div>
-                                            @else
-
-                                            {{-- FORM DROPSHIP --}}
-                                            <div id="collapse" class="panel-collapse collapse">
-                                                <div class="panel-body">
-                                                    <div class="row">
-                                                        <div class="col-md-8">
-                                                            <label class="col-md-5">Product <span style="color: red;">*</span></label>
-                                                            <div class="col-md-12">
-                                                                <input type="text" placeholder="Input Product" required>
+                                                <div class="modal-footer">
+                                                    <div style="float:right;">
+                                                        @if ($title == 'Add Order')
+                                                            <div class="col-md-10" style="margin-right: 20px;">
+                                                               @if(Auth::guard('admin')->check())
+                                                                    <a href="{{route('admin.order.index')}}" type="button" class="btn btn-danger">
+                                                                        <i class="fa fa-arrow-left"></i>&nbsp;
+                                                                        Back
+                                                                    </a>
+                                                                    <button type="submit" class="btn btn-primary" style="margin-left:10px;">
+                                                                        <i class="fa fa-check"></i>&nbsp;
+                                                                        Save
+                                                                    </button>
+                                                                @else
+                                                                    <a href="{{route('user.order.index')}}" type="button" class="btn btn-danger">
+                                                                        <i class="fa fa-arrow-left"></i>&nbsp;
+                                                                        Back
+                                                                    </a>
+                                                                    <button type="submit" class="btn btn-primary" style="margin-left:10px;">
+                                                                        <i class="fa fa-check"></i>&nbsp;
+                                                                        Save
+                                                                    </button>
+                                                                @endif
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <label class="col-md-5">Qty <span style="color: red;">*</span></label>
-                                                            <div class="col-md-12">
-                                                                <input type="hidden" min="0" name="stock" id="stock" class="form-control"
-                                                                    @if (isset($orders)) value="{{ $orders->product->stock }}" @endisset step="1" required="" style="width:35%" {{$disabled_}}>
-                                                                <input type="number" min="0" name="qty" id="qty" class="form-control"
-                                                                    @if (isset($orders)) value="{{ $orders->qty }}" @endisset step="1" required="" style="width:35%" {{$disabled__}}>
+                                                        @elseif ($title == 'Edit Order')
+                                                            <div class="col-md-10" style="margin-right: 20px;">
+                                                                @if(Auth::guard('admin')->check())
+                                                                    <a href="{{route('admin.order.index')}}" type="button" class="btn btn-danger">
+                                                                        <i class="fa fa-arrow-left"></i>&nbsp;
+                                                                        Back
+                                                                    </a>
+                                                                    <button type="submit" class="btn btn-primary" style="margin-left:10px;">
+                                                                        <i class="fa fa-check"></i>&nbsp;
+                                                                        Save
+                                                                    </button>
+                                                                @else
+                                                                    <a href="{{route('user.order.index')}}" type="button" class="btn btn-danger">
+                                                                        <i class="fa fa-arrow-left"></i>&nbsp;
+                                                                        Back
+                                                                    </a>
+                                                                    <button type="submit" class="btn btn-primary" style="margin-left:10px;">
+                                                                        <i class="fa fa-check"></i>&nbsp;
+                                                                        Save
+                                                                    </button>
+                                                                @endif
                                                             </div>
-                                                        </div>
+                                                        @else
+                                                            <div class="col-md-10" style="margin-right: 20px;">
+                                                                @if(Auth::guard('admin')->check())
+                                                                    <a href="{{route('admin.order.index')}}" type="button" class="btn btn-danger">
+                                                                        <i class="fa fa-arrow-left"></i>&nbsp;
+                                                                        Back
+                                                                    </a>
+                                                                @else
+                                                                    <a href="{{route('user.order.index')}}" type="button" class="btn btn-danger">
+                                                                        <i class="fa fa-arrow-left"></i>&nbsp;
+                                                                        Back
+                                                                    </a>
+                                                                @endif
+                                                            </div>
+                                                        @endif
                                                     </div>
-                                                    <br>
                                                 </div>
                                             </div>
-                                            @endif
                                         </div>
                                     </div>
                                 </form>
@@ -215,20 +265,47 @@
             @include('layouts.footer')
             {{-- FUNCTIONS --}}
             <script>
+                getProds();
 
-                function getProds() {
-
+                function getProds(){
                     var token = $('meta[name="csrf-token"]').attr('content');
-                    var id_prods = document.getElementById("prods").value;
 
                     $.ajax({
-                        type: 'GET',
+                        type: 'POST',
+                        @if(Auth::guard('admin')->check())
+                            url: "{{ route('admin.order.getProds') }}",
+                        @else
+                            url: "{{ route('user.order.getProds') }}",
+                        @endif
+                        data: {
+                            '_token' : token
+                        },
+                        success: function(data) {
+                            $('#prods').append("<option style='display:none;'>Choose Product</option>");
+                            data.forEach(function(item){
+                                $('#prods').append($('<option>', {
+                                    value: item.id,
+                                    text: item.product_name
+                                }));
+                            });
+                        }
+                    });
+                }
+
+                function getDetails() {
+
+                    var token = $('meta[name="csrf-token"]').attr('content');
+                    var id_prods = $("#prods").val();
+
+                    $.ajax({
+                        type: 'POST',
                         @if(Auth::guard('admin')->check())
                             url: "{{ route('admin.order.getDetailProds') }}",
                         @else
                             url: "{{ route('user.order.getDetailProds') }}",
                         @endif
                         data: {
+                            '_token' : token,
                             'id_prod': id_prods
                         },
                         success: function(data) {
@@ -308,12 +385,19 @@
                 }
 
                 function price_update(e){
+
+                    let id_prods = $('#product_id_'+e+'').val();
+                    let prods = $('#product_name_'+e+'').text();
                     
                     let qty = $("#qty_"+e).val();
                     let max_stock = $("#max_stock_"+e).val();
 
                     let base_price_table = $("#base_price_data_"+e).val();
                     let sell_price_table = $("#sell_price_data_"+e).val();
+                    
+                    if(qty == max_stock){
+                        $("#prods option[value='"+e+"']").remove();
+                    }
 
                     // //Calculation
                     if(sell_price != 0){
@@ -387,14 +471,50 @@
                         $("#base_price").val(result_base);
                         $("#sell_price").val(result_sell);
                     }
+
+                    allprice();
+
                 }
 
                 function removedata(id){
                     if(id){
-                        document.getElementById(id).remove();  
+                       let prods = $('#product_name_'+id+'').text();
+                       let id_prods = $('#product_id_'+id+'').val();
+                       let max_stock = $('#max_stock_'+id+'').val();
+                       let qty = $('#qty_'+id+'').val();
+                       
+                        if(qty == max_stock){
+                            $('#prods').append($('<option>', {
+                                value: id_prods,
+                                text: prods
+                            }));
+                        }
+                       
+                       document.getElementById(id).remove();  
                     }else{
                         $('#table_body').empty();
+                        $('#prods').empty();
+                        $('#total_base_price').val(0);
+                        $('#total_sell_price').val(0);
+                        getProds();
                     }
+                }
+
+                function allprice(){
+
+                    console.log('masuk');
+                    let total_base = 0;
+                    let total_sell = 0;
+
+                    $("input[name='base_price_data[]']").map(function(){
+                        total_base += parseInt($(this).val());
+                    });
+                    $("input[name='sell_price_data[]']").map(function(){
+                        total_sell += parseInt($(this).val());
+                    });
+
+                    $('#total_base_price').val(total_base);
+                    $('#total_sell_price').val(total_sell);
                 }
             </script>
 
@@ -437,112 +557,92 @@
                                     return $(this).val();
                                 }).get();
 
-                        if(id_product != ""){
+                        if(id_product != ""){ 
 
-                            if(data.length > 0){
-                                let length = $('#product_id_'+id_product).length;
+                            let length = $('#product_id_'+id_product).length;
+
+                            if(data.length > 0 && length > 0){
+                                
                                 let id_prods = $('#product_id_'+id_product).val();
+                                max_stock = $('#max_stock_'+id_product).val();
+                                let qty_prods = parseInt($('#qty_'+id_prods).val());
+                                let result_qty = qty_prods+qty;
+
+                                if(result_qty == max_stock){
+
+                                    $("#prods option[value='"+id_product+"']").remove();
+
+                                }
+
+                                $('#qty_'+id_prods).val(result_qty);
+
+                                $('#base_price_'+id_prods).val(result_qty*base_price);
+                                $('#base_price_'+id_prods).inputmask({
+                                    alias:"numeric",
+                                    prefix: "Rp.",
+                                    digits:0,
+                                    repeat:20,
+                                    digitsOptional:false,
+                                    decimalProtect:true,
+                                    groupSeparator:".",
+                                    placeholder: '0',
+                                    radixPoint:",",
+                                    radixFocus:true,
+                                    autoGroup:true,
+                                    autoUnmask:false,
+                                    clearMaskOnLostFocus: false,
+                                    onBeforeMask: function (value, opts) {
+                                        return value;
+                                    },
+                                    removeMaskOnSubmit:true
+                                });
+
+                                $('#sell_price_'+id_prods).val(result_qty*sell_price);
+                                $("#sell_price_"+id_prods).inputmask({
+                                    alias:"numeric",
+                                    prefix: "Rp.",
+                                    digits:0,
+                                    repeat:20,
+                                    digitsOptional:false,
+                                    decimalProtect:true,
+                                    groupSeparator:".",
+                                    placeholder: '0',
+                                    radixPoint:",",
+                                    radixFocus:true,
+                                    autoGroup:true,
+                                    autoUnmask:false,
+                                    clearMaskOnLostFocus: false,
+                                    onBeforeMask: function (value, opts) {
+                                        return value;
+                                    },
+                                    removeMaskOnSubmit:true
+                                });
+
+                                $('#prods').val("");
+
+                                $('#qty').val("");
+                                $('#qty').attr('disabled','disabled');
+
+                                $('#base_price').val("");
+                                $('#sell_price').val("");
+                                
+                            }else{
+
+                                var product_name = $('#prods option:selected').text();
 
                                 if(qty == max_stock){
-                                    
+                                    $("#prods option[value='"+id_product+"']").remove();
                                 }
 
-                                if(length > 0){
-                                    let qty_prods = parseInt($('#qty_'+id_prods).val());
-                                    let result_qty = qty_prods+qty;
-
-                                    $('#qty_'+id_prods).val(result_qty);
-
-                                    $('#base_price_'+id_prods).val(result_qty*base_price);
-                                    $('#base_price_'+id_prods).inputmask({
-                                        alias:"numeric",
-                                        prefix: "Rp.",
-                                        digits:0,
-                                        repeat:20,
-                                        digitsOptional:false,
-                                        decimalProtect:true,
-                                        groupSeparator:".",
-                                        placeholder: '0',
-                                        radixPoint:",",
-                                        radixFocus:true,
-                                        autoGroup:true,
-                                        autoUnmask:false,
-                                        clearMaskOnLostFocus: false,
-                                        onBeforeMask: function (value, opts) {
-                                            return value;
-                                        },
-                                        removeMaskOnSubmit:true
-                                    });
-
-                                    $('#sell_price_'+id_prods).val(result_qty*sell_price);
-                                    $("#sell_price_"+id_prods).inputmask({
-                                        alias:"numeric",
-                                        prefix: "Rp.",
-                                        digits:0,
-                                        repeat:20,
-                                        digitsOptional:false,
-                                        decimalProtect:true,
-                                        groupSeparator:".",
-                                        placeholder: '0',
-                                        radixPoint:",",
-                                        radixFocus:true,
-                                        autoGroup:true,
-                                        autoUnmask:false,
-                                        clearMaskOnLostFocus: false,
-                                        onBeforeMask: function (value, opts) {
-                                            return value;
-                                        },
-                                        removeMaskOnSubmit:true
-                                    });
-
-                                    $('#prods').val("");
-
-                                    $('#qty').val("");
-                                    $('#qty').attr('disabled','disabled');
-
-                                    $('#base_price').val("");
-                                    $('#sell_price').val("");
-                                }else{
-                                    var products = $('#prods option:selected').attr('item-value');
-                                    prodSelected = products.replace(/\'/g, '"');
-                                    var productData = JSON.parse(prodSelected);
-
-                                    $('#table_body').append("<tr id='"+productData.id+"'>"+
-                                    "<td style='text-align:left;'><input type='hidden' name='product_id[]' id='product_id_"+productData.id+"' value='"+productData.id+"' readonly>"+productData.product_name+"</td>"+
-                                    "<input type='hidden' name='max_stock[]' value='"+max_stock+"' id='max_stock_"+productData.id+"' readonly>"+
-                                    "<td><center><input type='number' style='width:100px !important; height:25px !important; text-align:center;' class='form-control' name='qty[]' id='qty_"+productData.id+"' value='"+qty+"' oninput='price_update("+productData.id+")'></center></td>"+
-                                    "<input type='hidden' name='base_price_data[]' id='base_price_data_"+productData.id+"' value='"+base_price+"'>"+
-                                    "<td><center><input type='text' style='width:100px !important; height:25px !important; text-align:center;' class='form-control numeric' name='base_price_arr[]' id='base_price_"+productData.id+"' value='"+base+"' readonly></center></td>"+
-                                    "<input type='hidden' name='sell_price_data[]' id='sell_price_data_"+productData.id+"' value='"+sell_price+"'>"+
-                                    "<td><center><input type='text' style='width:100px !important; height:25px !important; text-align:center;' class='form-control numeric' name='sell_price_arr[]' id='sell_price_"+productData.id+"' value='"+sell+"' readonly></center></td>"+
-                                    "<td><center><button type='button' class='btn btn-link btn-simple-danger' onclick='removedata("+productData.id+")' title='Hapus'><i class='fa fa-trash' style='color:red;''></i></button></center></td>"+
-                                    "</tr>");
-
-                                    $('#prods').val("");
-                                    $('#qty').val("");
-                                    $('#qty').attr('disabled','disabled');
-                                    $('#base_price').val("");
-                                    $('#sell_price').val("");
-
-                                    $("html, body").animate({
-                                        scrollTop: $(
-                                        'html, body').get(0).scrollHeight
-                                    }, 2000);
-                                }
-                            }else{
-                                var products = $('#prods option:selected').attr('item-value');
-                                prodSelected = products.replace(/\'/g, '"');
-                                var productData = JSON.parse(prodSelected);
-
-                                $('#table_body').append("<tr id='"+productData.id+"'>"+
-                                "<td style='text-align:left;'><input type='hidden' name='product_id[]' id='product_id_"+productData.id+"' value='"+productData.id+"' readonly>"+productData.product_name+"</td>"+
-                                "<input type='hidden' name='max_stock[]' value='"+max_stock+"' id='max_stock_"+productData.id+"' readonly>"+
-                                "<td><center><input type='number' style='width:100px !important; height:25px !important; text-align:center;' min=0 max='"+max_stock+"' class='form-control' name='qty[]' id='qty_"+productData.id+"' value='"+qty+"' oninput ='price_update("+productData.id+")'></center></td>"+
-                                "<input type='hidden' name='base_price_data[]' id='base_price_data_"+productData.id+"' value='"+base_price+"'>"+
-                                "<td><center><input type='text' style='width:100px !important; height:25px !important; text-align:center;' class='form-control numeric' name='base_price_arr[]' id='base_price_"+productData.id+"' value='"+base+"' readonly></center></td>"+
-                                "<input type='hidden' name='sell_price_data[]' id='sell_price_data_"+productData.id+"' value='"+sell_price+"'>"+
-                                "<td><center><input type='text' style='width:100px !important; height:25px !important; text-align:center;' class='form-control numeric' name='sell_price_arr[]' id='sell_price_"+productData.id+"' value='"+sell+"' readonly></center></td>"+
-                                "<td><center><button type='button' class='btn btn-link btn-simple-danger' onclick='removedata("+productData.id+")' title='Hapus'><i class='fa fa-trash' style='color:red;''></i></button></center></td>"+
+                                $('#table_body').append("<tr id='"+id_product+"'>"+
+                                "<td style='text-align:left;'><input type='hidden' name='product_id[]' id='product_id_"+id_product+"' value='"+id_product+"' readonly><span id='product_name_"+id_product+"'>"+product_name+"</span></td>"+
+                                "<input type='hidden' name='max_stock[]' value='"+max_stock+"' id='max_stock_"+id_product+"' readonly>"+
+                                "<td><center><input type='number' style='width:100px !important; height:25px !important; text-align:center;' min=0 max='"+max_stock+"' class='form-control' name='qty[]' id='qty_"+id_product+"' value='"+qty+"' oninput ='price_update("+id_product+")'></center></td>"+
+                                "<input type='hidden' name='base_price_data[]' id='base_price_data_"+id_product+"' value='"+base_price+"'>"+
+                                "<td><center><input type='text' style='width:100px !important; height:25px !important; text-align:center;' class='form-control numeric' name='base_price_arr[]' id='base_price_"+id_product+"' value='"+base+"' readonly></center></td>"+
+                                "<input type='hidden' name='sell_price_data[]' id='sell_price_data_"+id_product+"' value='"+sell_price+"'>"+
+                                "<td><center><input type='text' style='width:100px !important; height:25px !important; text-align:center;' class='form-control numeric' name='sell_price_arr[]' id='sell_price_"+id_product+"' value='"+sell+"' readonly></center></td>"+
+                                "<td><center><button type='button' class='btn btn-link btn-simple-danger' onclick='removedata("+id_product+")' title='Hapus'><i class='fa fa-trash' style='color:red;''></i></button></center></td>"+
                                 "</tr>");
 
                                 $('#prods').val("");
@@ -555,7 +655,10 @@
                                     scrollTop: $(
                                     'html, body').get(0).scrollHeight
                                 }, 2000);
+
                             }
+
+                            allprice();
 
                         }else{
                             AlertData();

@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 @include('layouts.head')
+<style>
+.v-center {
+   display: flex;
+   align-items: center;
+}
 
+</style>
 <body>
     @csrf
     <div class="wrapper">
@@ -29,9 +35,16 @@
                         <div class="col-md-4">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="card-title">Total Products</div>
-                                    <div class="card-body">
-                                        <h2 style="text-align:right;" id="counter_all">0</h2>
+                                    <div class="row">
+                                        <div class="col-md-4 v-center" >
+                                            <i class="fa fa-list" style="font-size:50px;"></i>
+                                        </div>
+                                        <div class="col-md-8">
+                                        <div class="card-title">Total Products</div>
+                                            <div class="card-body">
+                                                <h2 style="text-align:right;" id="counter_all">0</h2>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -39,9 +52,16 @@
                         <div class="col-md-4">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="card-title">Total Active Products</div>
-                                    <div class="card-body">
-                                        <h2 style="text-align:right;" id="counter_active">0</h2>
+                                    <div class="row">
+                                        <div class="col-md-4 v-center" >
+                                            <i class="fa fa-check-circle" style="font-size:50px;color:#05c305;"></i>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-title">Total Active Products</div>
+                                            <div class="card-body">
+                                                <h2 style="text-align:right;" id="counter_active">0</h2>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -49,9 +69,16 @@
                         <div class="col-md-4">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="card-title">Total Inactive Products</div>
-                                    <div class="card-body">
-                                        <h2 style="text-align:right;" id="counter_inactive">0</h2>
+                                    <div class="row">
+                                        <div class="col-md-4 v-center" >
+                                            <i class="fa fa-ban" style="font-size:50px;color:red;"></i>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-title">Total Inactive Products</div>
+                                            <div class="card-body">
+                                                <h2 style="text-align:right;" id="counter_inactive">0</h2>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

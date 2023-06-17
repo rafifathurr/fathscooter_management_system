@@ -15,9 +15,9 @@ class Order extends Model
 
       public $timestamps = false;
 
-      public function product()
+      public function details()
       {
-        return $this->belongsTo('App\Models\product\Product', 'product_id', 'id');
+        return $this->belongsTo('App\Models\order\DetailOrder', 'id_order', 'id');
       }
 
       public function source()
