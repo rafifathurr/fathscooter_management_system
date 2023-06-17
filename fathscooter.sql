@@ -11,7 +11,7 @@
  Target Server Version : 80030 (8.0.30)
  File Encoding         : 65001
 
- Date: 19/04/2023 15:32:18
+ Date: 17/05/2023 15:24:22
 */
 
 SET NAMES utf8mb4;
@@ -29,7 +29,7 @@ CREATE TABLE `category_prod`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of category_prod
@@ -38,6 +38,7 @@ INSERT INTO `category_prod` VALUES (1, 'Engine', 'Parts of Engine', '2022-11-18 
 INSERT INTO `category_prod` VALUES (3, 'Body', 'Parts of Body', '2022-11-18 13:49:21', NULL, NULL);
 INSERT INTO `category_prod` VALUES (4, 'Electrical', 'Parts of Electic', '2022-11-18 13:49:45', '2023-01-06 13:22:43', '2023-04-08 17:32:56');
 INSERT INTO `category_prod` VALUES (5, 'Accessories', 'Acc', '2022-11-18 13:49:56', NULL, NULL);
+INSERT INTO `category_prod` VALUES (11, 'Brake System', NULL, '2023-04-29 22:53:36', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for failed_jobs
@@ -195,16 +196,12 @@ CREATE TABLE `product`  (
   `created_by` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `updated_by` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of product
 -- ----------------------------
-INSERT INTO `product` VALUES (3, 'Cover Engine Vespa 3v Iget (1 Set)', 3, 4, 'A1231F/A1231B', 125000, 175000, '100', 'Active', NULL, NULL, '2022-12-10 03:58:44', '2023-01-08 07:09:36', NULL, 'rafifathur', 'rafifathur');
-INSERT INTO `product` VALUES (4, 'Brake Cable Vespa 3v', 1, 4, 'A00001', 120000, 165000, '57', 'Active', NULL, '1672071720__93032919_aksisweepingfpiduaafp.jpg', '2022-12-10 21:56:32', '2023-01-08 07:10:33', NULL, 'rafifathur', 'rafifathur');
-INSERT INTO `product` VALUES (5, 'Spakbor front List Bumper Lx Lxv S 125', 5, 1, 'B00001', 75000, 120000, '56', 'Active', NULL, NULL, '2023-01-08 05:54:18', '2023-01-08 07:08:29', NULL, 'rafifathur', 'rafifathur');
-INSERT INTO `product` VALUES (6, 'SEAL SIL KRUK AS VESPA BESAR BAGIAN KANAN MAGNET', 1, 1, 'A00002', 90000, 130000, '43', 'Active', NULL, NULL, '2023-01-08 06:10:29', '2023-01-08 07:12:26', NULL, 'rafifathur', 'rafifathur');
-INSERT INTO `product` VALUES (7, 'KARBU KARBURATOR VESPA SPACO DELLORTO 20 20 NOS', 1, 1, 'A00003', 350000, 800000, '37', 'Active', NULL, NULL, '2023-01-08 06:56:41', '2023-04-08 10:28:27', '2023-04-08 10:28:27', 'rafifathur', 'rafifathur');
+INSERT INTO `product` VALUES (8, 'Kabel Rem Vespa Primavera / Sprint Iget', 4, 1, '1C002832', 145500, 165000, '3', 'Active', NULL, NULL, '2023-04-29 22:50:22', '2023-04-30 01:32:28', NULL, 'rafifathur', 'rafifathur');
 
 -- ----------------------------
 -- Table structure for source_payment
