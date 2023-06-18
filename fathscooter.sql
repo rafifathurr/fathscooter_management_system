@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : Local
+ Source Server         : computer
  Source Server Type    : MySQL
  Source Server Version : 80030 (8.0.30)
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80030 (8.0.30)
  File Encoding         : 65001
 
- Date: 17/05/2023 15:24:22
+ Date: 19/06/2023 06:19:35
 */
 
 SET NAMES utf8mb4;
@@ -39,6 +39,33 @@ INSERT INTO `category_prod` VALUES (3, 'Body', 'Parts of Body', '2022-11-18 13:4
 INSERT INTO `category_prod` VALUES (4, 'Electrical', 'Parts of Electic', '2022-11-18 13:49:45', '2023-01-06 13:22:43', '2023-04-08 17:32:56');
 INSERT INTO `category_prod` VALUES (5, 'Accessories', 'Acc', '2022-11-18 13:49:56', NULL, NULL);
 INSERT INTO `category_prod` VALUES (11, 'Brake System', NULL, '2023-04-29 22:53:36', NULL, NULL);
+
+-- ----------------------------
+-- Table structure for details_order
+-- ----------------------------
+DROP TABLE IF EXISTS `details_order`;
+CREATE TABLE `details_order`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_order` int NULL DEFAULT NULL,
+  `id_product` int NULL DEFAULT NULL,
+  `qty` int NULL DEFAULT NULL,
+  `base_price_save` int NULL DEFAULT NULL,
+  `selling_price_save` int NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of details_order
+-- ----------------------------
+INSERT INTO `details_order` VALUES (1, 1, 9, 1, 110000, 150000, '2023-06-18 20:28:31', NULL, NULL);
+INSERT INTO `details_order` VALUES (2, 1, 8, 2, 291000, 330000, '2023-06-18 20:28:31', NULL, NULL);
+INSERT INTO `details_order` VALUES (3, 2, 8, 1, 145500, 165000, '2023-06-18 20:36:56', NULL, NULL);
+INSERT INTO `details_order` VALUES (4, 3, 8, 1, 145500, 165000, '2023-06-18 21:30:34', NULL, NULL);
+INSERT INTO `details_order` VALUES (5, 4, 8, 1, 145500, 165000, '2023-06-19 06:16:56', NULL, NULL);
+INSERT INTO `details_order` VALUES (6, 4, 9, 2, 220000, 300000, '2023-06-19 06:16:56', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for failed_jobs
@@ -89,8 +116,6 @@ CREATE TABLE `orders`  (
   `date_order` date NULL DEFAULT NULL,
   `source_id` int NULL DEFAULT NULL,
   `type_buy` int NULL DEFAULT NULL,
-  `detail_orders` int NULL DEFAULT NULL,
-  `note` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL,
   `entry_price` int NULL DEFAULT NULL,
   `total_base_price` int NULL DEFAULT NULL,
   `total_sell_price` int NULL DEFAULT NULL,
@@ -102,11 +127,15 @@ CREATE TABLE `orders`  (
   `created_by` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `updated_by` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of orders
 -- ----------------------------
+INSERT INTO `orders` VALUES (1, '1234DDE', '2023-06-18', 10, 1, 470000, 401000, 480000, 10000, 69000, '2023-06-18 20:28:31', NULL, NULL, '1', NULL);
+INSERT INTO `orders` VALUES (2, 'INV/18/06/2023/TOKOPEDIA', '2023-06-18', 9, 1, 160000, 145500, 165000, 5000, 14500, '2023-06-18 20:36:56', NULL, NULL, '1', NULL);
+INSERT INTO `orders` VALUES (3, '2324', '2023-06-18', 9, 1, 150000, 145500, 165000, 15000, 4500, '2023-06-18 21:30:34', NULL, NULL, '2', NULL);
+INSERT INTO `orders` VALUES (4, '12DSD', '2023-06-19', 9, 1, 450000, 365500, 465000, 15000, 84500, '2023-06-19 06:16:56', NULL, NULL, '1', NULL);
 
 -- ----------------------------
 -- Table structure for orders_old
@@ -196,12 +225,13 @@ CREATE TABLE `product`  (
   `created_by` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `updated_by` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of product
 -- ----------------------------
-INSERT INTO `product` VALUES (8, 'Kabel Rem Vespa Primavera / Sprint Iget', 4, 1, '1C002832', 145500, 165000, '3', 'Active', NULL, NULL, '2023-04-29 22:50:22', '2023-04-30 01:32:28', NULL, 'rafifathur', 'rafifathur');
+INSERT INTO `product` VALUES (8, 'Kabel Rem Vespa Primavera / Sprint Iget', 11, 1, '1C002832', 145500, 165000, '2', 'Active', NULL, NULL, '2023-04-29 22:50:22', '2023-06-19 06:16:56', NULL, '1', '1');
+INSERT INTO `product` VALUES (9, 'Kabel Rem Vespa Sprint / Primavera 3v', 11, 1, '1E34324', 110000, 150000, '3', 'Active', NULL, NULL, '2023-06-17 12:40:53', '2023-06-19 06:16:56', NULL, '1', '1');
 
 -- ----------------------------
 -- Table structure for source_payment
@@ -256,7 +286,7 @@ CREATE TABLE `type_buy`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of type_buy
@@ -290,8 +320,8 @@ CREATE TABLE `users`  (
 -- Records of users
 -- ----------------------------
 INSERT INTO `users` VALUES (1, 'Rafi Fathur Rahman', 'rafifathur.rahman20@gmail.com', NULL, '$2y$10$WuhaBsABM6rn0TFpTca.1uEsoZuGc0VHWNnAcfr.NLsdYszkDDDt6', NULL, 'rafifathur', '081364243280', 1, 'Depok, Indonesia', '2022-12-02 00:49:19', '2023-02-06 12:38:14', NULL);
-INSERT INTO `users` VALUES (2, 'Fadhil MDA', 'fadhilmda@gmail.com', NULL, '$2y$10$D0Mmqps/8VnFPWG1G135beMs9w0K91boneN94zRE.c1EME2StjE2S', NULL, 'fadhilmda', '08123434555', 2, 'Condet', '2022-12-11 02:47:34', '2022-12-28 15:36:18', NULL);
-INSERT INTO `users` VALUES (5, 'Umar', 'umarabd@gmail.com', NULL, '$2y$10$n75UDUDIBLb5vjEGrRhodOxqEDvPYSKA6djJk.l.UQmgiej4X4.xa', NULL, 'umarabd', '081364243280', 2, 'Selangor. Malaysia', '2022-12-28 15:45:39', NULL, NULL);
+INSERT INTO `users` VALUES (2, 'User Store', 'userfathscooter@gmail.com', NULL, '$2y$10$bKFXo2QE4m4v6AwOh2odhOuLffW7YDJR30q2kiwLKgkHW03U0hOyW', NULL, 'fadhilmda', '08123434555', 2, 'Condet', '2022-12-11 02:47:34', '2023-06-18 15:35:57', NULL);
+INSERT INTO `users` VALUES (5, 'Umar', 'umarabd@gmail.com', NULL, '$2y$10$n75UDUDIBLb5vjEGrRhodOxqEDvPYSKA6djJk.l.UQmgiej4X4.xa', NULL, 'umarabd', '081364243280', 2, 'Selangor. Malaysia', '2022-12-28 15:45:39', '2023-06-18 08:35:11', '2023-06-18 08:35:11');
 
 -- ----------------------------
 -- Table structure for users_role

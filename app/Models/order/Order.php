@@ -17,7 +17,7 @@ class Order extends Model
 
       public function details()
       {
-        return $this->belongsTo('App\Models\order\DetailOrder', 'id_order', 'id');
+        return $this->belongsTo('App\Models\order\DetailOrder', 'id', 'id_order');
       }
 
       public function source()
@@ -27,11 +27,11 @@ class Order extends Model
 
       public function createdby()
       {
-        return $this->belongsTo('App\Models\users\User', 'created_by', 'username');
+        return $this->belongsTo('App\Models\users\User', 'created_by', 'id');
       }
 
       public function updatedby()
       {
-        return $this->belongsTo('App\Models\users\User', 'updated_by', 'username');
+        return $this->belongsTo('App\Models\users\User', 'updated_by', 'id');
       }
   }

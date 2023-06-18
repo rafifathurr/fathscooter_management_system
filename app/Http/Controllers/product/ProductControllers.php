@@ -59,7 +59,7 @@ class ProductControllers extends Controller
             'category_id' => $req->category,
             'supplier_id' => $req->supplier,
             'created_at' => $datenow,
-            'created_by' => Auth::user()->username
+            'created_by' => Auth::user()->id
         ]);
 
         $destination='Uploads/Product/'.$product_pay->id.'/uploads\\';
@@ -75,8 +75,8 @@ class ProductControllers extends Controller
         }else{
             return redirect()->route('user.product.index')->with(['success' => 'Data successfully stored!']);
         }
-            
-        
+
+
     }
 
     // Detail Data View by id
@@ -119,7 +119,7 @@ class ProductControllers extends Controller
             'category_id' => $req->category,
             'supplier_id' => $req->supplier,
             'updated_at' => $datenow,
-            'updated_by' => Auth::user()->username
+            'updated_by' => Auth::user()->id
         ]);
 
         $destination='Uploads/Product/'.$req->id.'/uploads\\';

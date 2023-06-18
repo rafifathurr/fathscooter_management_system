@@ -85,7 +85,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-7">
                             <div class="card full-height">
                                 <div class="card-body">
                                     <div class="card-title">Today Statistics</div>
@@ -111,7 +111,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-5">
                             <div class="card full-height">
                                 <div class="card-body">
                                     <div class="card-title">Financial Accumulation <br><strong>{{date('M Y')}}</strong></div>
@@ -155,7 +155,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        {{-- <div class="col-md-3">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="card-title">Potential Orders</div>
@@ -172,7 +172,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -213,7 +213,7 @@
                                     <div class="card-title">Top Sales Products</div>
                                 </div>
                                 <div class="card-body pb-0">
-                                {{-- @foreach($topproduct as $tp)
+                                @foreach($topproduct as $tp)
                                     <div class="d-flex">
                                         <div class="flex-1 pt-1 ml-2">
                                             <h6 class="fw-bold mb-1">{{$tp->product->product_name}}</h6>
@@ -223,7 +223,7 @@
                                         </div>
                                     </div>
                                     <div class="separator-dashed"></div>
-                                @endforeach --}}
+                                @endforeach
                                 </div>
                             </div>
                         </div>
@@ -233,7 +233,7 @@
                                     <div class="card-title">Top Sales Payment Type</div>
                                 </div>
                                 <div class="card-body pb-0">
-                                    {{-- @foreach($topsource as $ts)
+                                    @foreach($topsource as $ts)
                                     <div class="d-flex">
                                         <div class="flex-1 pt-1 ml-2">
                                             <h6 class="fw-bold mb-1">{{$ts->source->source}}</h6>
@@ -243,7 +243,7 @@
                                         </div>
                                     </div>
                                     <div class="separator-dashed"></div>
-                                    @endforeach --}}
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -302,7 +302,7 @@
                     var ctx = document.getElementById('statisticsChart').getContext('2d');
                     var ctx_2 = document.getElementById('statisticsChartYear').getContext('2d');
 
-                    <?php 
+                    <?php
                         $year=[];
                         $mos=[];
                         $inc=[];
@@ -310,44 +310,44 @@
                         $profsyear=[];
                     ?>
                     @foreach($years as $y)
-                            <?php 
+                            <?php
                             $year[] = $y;
                             ?>
                     @endforeach
                     @foreach($month as $mo)
                         @foreach($mo as $m)
-                            <?php 
+                            <?php
                             $mos[] = $m;
                             ?>
                         @endforeach
                     @endforeach
                     @foreach($incomepermonth as $in)
-                        <?php 
+                        <?php
                         $inc[] = $in->income;
                         ?>
                     @endforeach
                     @foreach($profityear as $py)
                         @foreach($py as $p)
-                            <?php 
+                            <?php
                             $profsyear[] = $p;
                             ?>
                         @endforeach
                     @endforeach
                     @foreach($profitpermonth as $pm)
                         @foreach($pm as $p)
-                            <?php 
+                            <?php
                             $profs[] = $p;
                             ?>
                         @endforeach
                     @endforeach
                     @if(json_encode($dayofweeks)!='[]')
                         @foreach($dayofweeks as $day)
-                            <?php 
+                            <?php
                             $days[] = $day->name_day;
                             ?>
                         @endforeach
                         @foreach($calofday as $cal)
-                            <?php 
+                            <?php
                             $cals[] = $cal->total;
                             ?>
                         @endforeach
@@ -467,7 +467,7 @@
                                         beginAtZero: true,
                                         maxTicksLimit: 10,
                                         padding: 10,
-                                        precision:0 
+                                        precision:0
                                     },
                                     gridLines: {
                                         drawTicks: false,
@@ -531,7 +531,7 @@
                                 caretPadding:10,
                                 callbacks: {
                                     label: (item) => `Rp. ${item.yLabel} ,-`,
-                                },  
+                                },
                             },
                             layout:{
                                 padding:{left:5,right:5,top:15,bottom:15}

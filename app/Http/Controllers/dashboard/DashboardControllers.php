@@ -4,6 +4,7 @@ namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\order\Order;
+use App\Models\order\DetailOrder;
 use App\Models\product\Product;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -159,18 +160,24 @@ class DashboardControllers extends Controller
         $data['activeprods'] = Product::where('deleted_at', null)->where('status', 'Active')->count();
         $data['inactiveprods'] = Product::where('deleted_at', null)->where('status', 'Inactive')->count();
 
-        // $data['topproduct'] = Order::whereYear('date', Carbon::now()->year)
-        //                         ->whereRaw('MONTH(date) = MONTH(now())')
-        //                         ->where('is_deleted',null)
-        //                         ->select(DB::raw('product_id, sum(qty) as total'))
-        //                         ->groupBy(DB::raw('product_id'))
-        //                         ->get();
-        // $data['topsource'] = Order::whereYear('date', Carbon::now()->year)
-        //                         ->whereRaw('MONTH(date) = MONTH(now())')
-        //                         ->where('is_deleted',null)
-        //                         ->select(DB::raw('source_id, count(*) as total'))
-        //                         ->groupBy(DB::raw('source_id'))
-        //                         ->get();
+        $data['topproduct'] = DetailOrder::with('product')
+                                ->select(DB::raw('details_order.id_product, sum(qty) as total'))
+                                ->join('orders', 'orders.id', '=', 'details_order.id_order')
+                                ->whereYear('orders.date_order', Carbon::now()->year)
+                                ->whereRaw('MONTH(orders.date_order) = MONTH(now())')
+                                ->where('orders.deleted_at',null)
+                                ->groupBy('details_order.id_product')
+                                ->orderBy('total', 'desc')
+                                ->get();
+
+        $data['topsource'] = Order::with('source')
+                                ->whereYear('date_order', Carbon::now()->year)
+                                ->whereRaw('MONTH(date_order) = MONTH(now())')
+                                ->where('deleted_at',null)
+                                ->select(DB::raw('source_id, count(*) as total'))
+                                ->groupBy('source_id')
+                                ->orderBy('total', 'desc')
+                                ->get();
 
         // RETURN VIEW
         return view('dashboard', $data);

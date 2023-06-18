@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <section class="content container-fluid">
-                    <section class="content container-fluid">
+                    <div class="content container-fluid">
                         <div class="box box-primary">
                             <div class="box-body">
                                 @if(Auth::guard('admin')->check())
@@ -32,7 +32,7 @@
                                     <div class="row">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-10" style="display:block !important  ">
-                                            <label class="col-md-7">Name Product <span style="color: red;">*</span></label>
+                                            <label class="col-md-12">Name Product <span style="color: red;">*</span></label>
                                             <div class="col-md-12">
                                                 <input type="hidden" class="form-control" id="id" name="id" autocomplete="off" @isset($products) value="{{ $products->id }}" readonly @endisset required>
                                                 <input type="text" name="name" id="name " class="form-control"
@@ -46,7 +46,7 @@
                                     <div class="row">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-4">
-                                            <label class="col-md-6">Part Code <span style="color: red;">*</span></label>
+                                            <label class="col-md-12">Part Code <span style="color: red;">*</span></label>
                                             <div class="col-md-12">
                                                 <input type="text" name="code" id="code" class="form-control"
                                                     step="1" @if (isset($products)) value="{{ $products->code }}" @endisset autocomplete="off" required
@@ -54,7 +54,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <label class="col-md-6">Status <span style="color: red;">*</span></label>
+                                            <label class="col-md-12">Status <span style="color: red;">*</span></label>
                                             <div class="col-md-12">
                                                 <select class="form-control selectpicker" id="status"
                                                     name="status" data-size="8" data-show-subtext="true"
@@ -69,10 +69,10 @@
                                                         <option value="Inactive">Inactive</option>
                                                     @endisset
                                                 </select>
-                                            </div>  
+                                            </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <label class="col-md-6">Stock <span style="color: red;">*</span></label>
+                                            <label class="col-md-12">Stock <span style="color: red;">*</span></label>
                                             <div class="col-md-12">
                                                 <input type="number" style="text-align:center;" name="stock" id="stock" class="form-control"
                                                     step="1" @if (isset($products)) value="{{ $products->stock }}" @endisset autocomplete="off" required
@@ -83,16 +83,16 @@
                                     @else
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-5">
-                                            <label class="col-md-6">Part Code <span style="color: red;">*</span></label>
+                                        <div class="col-md-3">
+                                            <label class="col-md-12">Part Code <span style="color: red;">*</span></label>
                                             <div class="col-md-12">
                                                 <input type="text" name="code" id="code" class="form-control"
                                                     step="1" @if (isset($products)) value="{{ $products->code }}" @endisset autocomplete="off" required
                                                     {{ $disabled_ }} style="width:100%;">
                                             </div>
                                         </div>
-                                        <div class="col-md-5">
-                                            <label class="col-md-6">Status <span style="color: red;">*</span></label>
+                                        <div class="col-md-2">
+                                            <label class="col-md-12">Status <span style="color: red;">*</span></label>
                                             <div class="col-md-12">
                                                 <select class="form-control selectpicker" id="status"
                                                     name="status" data-size="8" data-show-subtext="true"
@@ -107,7 +107,26 @@
                                                         <option value="Inactive">Inactive</option>
                                                     @endisset
                                                 </select>
-                                            </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="hidden" name="base_price" id="base_price" class="form-control numeric"
+                                                step="1" @if (isset($products)) value="{{ $products->base_price }}" @endisset autocomplete="off" required
+                                                {{ $disabled_ }} style="width:100%;">
+                                            <label class="col-md-12">Selling Price <span style="color: red;">*</span></label>
+                                            <div class="col-md-12">
+                                                <input type="text" name="selling_price" id="selling_price" class="form-control numeric"
+                                                    step="1" @if (isset($products)) value="{{ $products->selling_price }}" @endisset autocomplete="off" required
+                                                    {{ $disabled_ }} style="width:100%;">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="col-md-12">Stock <span style="color: red;">*</span></label>
+                                            <div class="col-md-12">
+                                                <input type="number" style="text-align:center;" name="stock" id="stock" class="form-control"
+                                                    step="1" @if (isset($products)) value="{{ $products->stock }}" @endisset autocomplete="off" required
+                                                    {{ $disabled_ }} style="width:100%;">
+                                            </div>
                                         </div>
                                     </div>
                                     @endif
@@ -116,7 +135,7 @@
                                     <div class="row">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-5">
-                                            <label class="col-md-6">Base Price <span style="color: red;">*</span></label>
+                                            <label class="col-md-12">Base Price <span style="color: red;">*</span></label>
                                             <div class="col-md-12">
                                                 <input type="text" name="base_price" id="base_price" class="form-control numeric"
                                                     step="1" @if (isset($products)) value="{{ $products->base_price }}" @endisset autocomplete="off" required
@@ -124,33 +143,10 @@
                                             </div>
                                         </div>
                                         <div class="col-md-5">
-                                            <label class="col-md-6">Selling Price <span style="color: red;">*</span></label>
+                                            <label class="col-md-12">Selling Price <span style="color: red;">*</span></label>
                                             <div class="col-md-12">
                                                 <input type="text" name="selling_price" id="selling_price" class="form-control numeric"
                                                     step="1" @if (isset($products)) value="{{ $products->selling_price }}" @endisset autocomplete="off" required
-                                                    {{ $disabled_ }} style="width:100%;">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @else
-                                    <div class="row">
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-7">
-                                            <input type="hidden" name="base_price" id="base_price" class="form-control numeric"
-                                                step="1" @if (isset($products)) value="{{ $products->base_price }}" @endisset autocomplete="off" required
-                                                {{ $disabled_ }} style="width:100%;">
-                                            <label class="col-md-6">Selling Price <span style="color: red;">*</span></label>
-                                            <div class="col-md-12">
-                                                <input type="text" name="selling_price" id="selling_price" class="form-control numeric"
-                                                    step="1" @if (isset($products)) value="{{ $products->selling_price }}" @endisset autocomplete="off" required
-                                                    {{ $disabled_ }} style="width:100%;">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="col-md-6">Stock <span style="color: red;">*</span></label>
-                                            <div class="col-md-12">
-                                                <input type="number" style="text-align:center;" name="stock" id="stock" class="form-control"
-                                                    step="1" @if (isset($products)) value="{{ $products->stock }}" @endisset autocomplete="off" required
                                                     {{ $disabled_ }} style="width:100%;">
                                             </div>
                                         </div>
@@ -160,7 +156,7 @@
                                     <div class="row">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-10" style="display:block !important">
-                                            <label class="col-md-6">Description </label>
+                                            <label class="col-md-12">Description </label>
                                             <div class="col-md-12">
                                                 <textarea class="form-control" name="desc" id="desc" rows="5" cols="10" autocomplete="off"
                                                     {{ $disabled_ }} style="width:100%">@if (isset($products)) {{ $products->desc }} @endisset</textarea>
@@ -171,7 +167,7 @@
                                     <div class="row">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-5">
-                                            <label class="col-md-6">Category <span style="color: red;">*</span></label>
+                                            <label class="col-md-12">Category <span style="color: red;">*</span></label>
                                             <div class="col-md-12">
                                                 <select class="form-control selectpicker" id="category"
                                                     name="category" data-size="8" data-show-subtext="true"
@@ -184,7 +180,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-5">
-                                            <label class="col-md-6">Supplier <span style="color: red;">*</span></label>
+                                            <label class="col-md-12">Supplier <span style="color: red;">*</span></label>
                                             <div class="col-md-12">
                                                 <select class="form-control selectpicker" id="supplier"
                                                     name="supplier" data-size="8" data-show-subtext="true"
@@ -201,13 +197,13 @@
                                     <div class="row">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-10" style="display:block!important">
-                                            <label class="col-md-6">Attachment </span></label>
+                                            <label class="col-md-12">Attachment </span></label>
                                             <div class="col-md-12">
                                                 @if ($title == 'Add Products' || $title == 'Edit Products')
                                                     <input type="file" id="uploads" name="uploads" class="form-control"
                                                         accept=".doc, .docx, .pdf, .png, .jpg, .jpeg">
                                                     <br>
-                                                    @if(isset($products))    
+                                                    @if(isset($products))
                                                         @if($products->upload != null)
                                                             <?php
                                                             $newtext = wordwrap($products->upload, 50, "<br>", true);
@@ -225,7 +221,7 @@
                                                         <span style="font-size: 13px;color: red">*) .doc .docx .pdf .png .jpg .jpeg</span>
                                                     @endif
                                                 @else
-                                                    @if(isset($products))    
+                                                    @if(isset($products))
                                                         @if($products->upload != null)
                                                             <?php
                                                             $newtext = wordwrap($products->upload, 50, "<br>", true);
@@ -348,7 +344,7 @@
                                 </form>
                             </div>
                         </div>
-                    </section>
+                    </div>
                 </section>
             </div>
             @include('layouts.footer')

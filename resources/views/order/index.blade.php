@@ -49,6 +49,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
+                                    {{-- ADMIN --}}
+                                    @if(Auth::guard('admin')->check())
                                     <table id="add-row" class="display table table-striped table-hover dataTable"
                                         cellspacing="0" width="100%" role="grid" aria-describedby="add-row_info"
                                         style="width: 100%;">
@@ -98,54 +100,45 @@
                                                 <td>
                                                     <center>{{$num=$num+1}}</center>
                                                 </td>
-                                                <td class="sorting_1">
-                                                    <center>{{$order->date}}</center>
+                                                <td class="sorting_1"style="text-align:left;">
+                                                    {{$order->invoice}}
                                                 </td>
                                                 <td class="sorting_1">
-                                                    <center>{{$order->date}}</center>
+                                                    <center>
+                                                        <?php
+                                                            $time = $order->date_order;
+                                                            $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                                                            $pisah = explode(" ", $time);
+                                                            $pisahfix = explode("-", $pisah[0]);
+                                                            $blnf = $pisahfix[1] - 1;
+                                                        ?>
+                                                        {{$pisahfix[2] . " " . $bulan[$blnf] . " " . $pisahfix[0] . " " }}
+                                                    </center>
                                                 </td>
                                                 <td class="sorting_1">
                                                     <center>{{$order->source->source}}</center>
                                                 </td>
-                                                <td class="sorting_1">
-                                                    <center>Rp. {{number_format($order->profit,0,',','.')}}</center>
+                                                <td class="sorting_1" style="text-align:right;">
+                                                    Rp. {{number_format($order->profit,0,',','.')}}
                                                  </td>
                                                 <td>
                                                     <center>
                                                         <div class="form-button-action">
-                                                        @if(Auth::guard('admin')->check())
                                                             <a href="{{route('admin.order.detail', $order->id) }}" data-toggle="tooltip" title="Detail"
                                                                 class="btn btn-link btn-simple-primary btn-lg"
                                                                 data-original-title="Detail" control-id="ControlID-16">
                                                                 <i class="fa fa-eye"></i>
                                                             </a>
-                                                            <a href="{{route('admin.order.edit', $order->id) }}" data-toggle="tooltip" title="Edit"
+                                                            {{-- <a href="{{route('admin.order.edit', $order->id) }}" data-toggle="tooltip" title="Edit"
                                                                 class="btn btn-link btn-simple-primary btn-lg"
                                                                 data-original-title="Edit" control-id="ControlID-16">
-                                                                <i class="fa fa-edit" style="color:grey;"></i>
+                                                                <i class="fa fa-edit" style="color:grey;"></i> --}}
                                                             </a>
                                                             <button type="submit" onclick="destroy({{$order->id}})" data-toggle="tooltip" title="Delete"
                                                                 class="btn btn-link btn-simple-danger"
                                                                 data-original-title="Delete" control-id="ControlID-17">
                                                                 <i class="fa fa-trash" style="color:red;"></i>
                                                             </button>
-                                                        @else
-                                                            <a href="{{route('user.order.detail', $order->id) }}" data-toggle="tooltip" title="Detail"
-                                                                class="btn btn-link btn-simple-primary btn-lg"
-                                                                data-original-title="Detail" control-id="ControlID-16">
-                                                                <i class="fa fa-eye"></i>
-                                                            </a>
-                                                            <a href="{{route('user.order.edit', $order->id) }}" data-toggle="tooltip" title="Edit"
-                                                                class="btn btn-link btn-simple-primary btn-lg"
-                                                                data-original-title="Edit" control-id="ControlID-16">
-                                                                <i class="fa fa-edit" style="color:grey;"></i>
-                                                            </a>
-                                                            <button type="submit" onclick="destroy({{$order->id}})" data-toggle="tooltip" title="Delete"
-                                                                class="btn btn-link btn-simple-danger"
-                                                                data-original-title="Delete" control-id="ControlID-17">
-                                                                <i class="fa fa-trash" style="color:red;"></i>
-                                                            </button>
-                                                        @endif
                                                         </div>
                                                     </center>
                                                 </td>
@@ -153,6 +146,104 @@
                                         @endforeach
                                         </tbody>
                                     </table>
+                                    {{-- USER --}}
+                                    @else
+                                    <table id="add-row" class="display table table-striped table-hover dataTable"
+                                        cellspacing="0" width="100%" role="grid" aria-describedby="add-row_info"
+                                        style="width: 100%;">
+                                        <thead>
+                                            <tr role="row">
+                                                <th class="sorting_asc" tabindex="0" aria-controls="add-row"
+                                                    rowspan="1" colspan="1" aria-sort="ascending"
+                                                    aria-label="Name: activate to sort column descending">
+                                                    <center>No</center>
+                                                </th>
+                                                <th width:"25%" class="sorting" tabindex="0" aria-controls="add-row"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Position: activate to sort column ascending"
+                                                    style="font-weight:900;">
+                                                    <center>No Invoice</center>
+                                                </th>
+                                                <th width:"25%" class="sorting" tabindex="0" aria-controls="add-row"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Position: activate to sort column ascending"
+                                                    style="font-weight:900;">
+                                                    <center>Date</center>
+                                                </th>
+                                                <th width:"25%" class="sorting" tabindex="0" aria-controls="add-row"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Position: activate to sort column ascending"
+                                                    style="width: 15%; font-weight:900;">
+                                                    <center>Source Payment</center>
+                                                </th>
+                                                <th width:"25%" class="sorting" tabindex="0" aria-controls="add-row"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Position: activate to sort column ascending"
+                                                    style="font-weight:900;">
+                                                    <center>Entry Price</center>
+                                                </th>
+                                                <th width="15%" class="sorting" tabindex="0"
+                                                    aria-controls="add-row" rowspan="1" colspan="1"
+                                                    aria-label="Action: activate to sort column ascending"
+                                                    style="font-weight:900;">
+                                                    <center>Action</center>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php $num = 0; ?>
+                                        @foreach($orders as $order)
+                                            <tr role="row" class="odd">
+                                                <td>
+                                                    <center>{{$num=$num+1}}</center>
+                                                </td>
+                                                <td class="sorting_1"style="text-align:left;">
+                                                    {{$order->invoice}}
+                                                </td>
+                                                <td class="sorting_1">
+                                                    <center>
+                                                        <?php
+                                                            $time = $order->date_order;
+                                                            $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                                                            $pisah = explode(" ", $time);
+                                                            $pisahfix = explode("-", $pisah[0]);
+                                                            $blnf = $pisahfix[1] - 1;
+                                                        ?>
+                                                        {{$pisahfix[2] . " " . $bulan[$blnf] . " " . $pisahfix[0] . " " }}
+                                                    </center>
+                                                </td>
+                                                <td class="sorting_1">
+                                                    <center>{{$order->source->source}}</center>
+                                                </td>
+                                                <td class="sorting_1" style="text-align:right;">
+                                                    Rp. {{number_format($order->entry_price,0,',','.')}}
+                                                </td>
+                                                <td>
+                                                    <center>
+                                                        <div class="form-button-action">
+                                                            <a href="{{route('user.order.detail', $order->id) }}" data-toggle="tooltip" title="Detail"
+                                                                class="btn btn-link btn-simple-primary btn-lg"
+                                                                data-original-title="Detail" control-id="ControlID-16">
+                                                                <i class="fa fa-eye"></i>
+                                                            </a>
+                                                            {{-- <a href="{{route('user.order.edit', $order->id) }}" data-toggle="tooltip" title="Edit"
+                                                                class="btn btn-link btn-simple-primary btn-lg"
+                                                                data-original-title="Edit" control-id="ControlID-16">
+                                                                <i class="fa fa-edit" style="color:grey;"></i> --}}
+                                                            </a>
+                                                            <button type="submit" onclick="destroy({{$order->id}})" data-toggle="tooltip" title="Delete"
+                                                                class="btn btn-link btn-simple-danger"
+                                                                data-original-title="Delete" control-id="ControlID-17">
+                                                                <i class="fa fa-trash" style="color:red;"></i>
+                                                            </button>
+                                                        </div>
+                                                    </center>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                    @endif
                                 </div>
                             </div>
                             <div class="row">
@@ -221,19 +312,19 @@ $(document).ready(function() {
             },
         }).done(function(result){
             $('#bulan').empty();
-            $('#bulan').append($('<option>', { 
+            $('#bulan').append($('<option>', {
                 value: '0',
-                text : 'All' 
+                text : 'All'
             }));
             $.each(JSON.parse(result), function(i, item) {
-                $('#bulan').append($('<option>', { 
+                $('#bulan').append($('<option>', {
                     value: item.bulan,
-                    text : item.nama_bulan 
+                    text : item.nama_bulan
                 }));
             });
         });
     }
-    
+
     function destroy(id) {
     var token = $('meta[name="csrf-token"]').attr('content');
 
