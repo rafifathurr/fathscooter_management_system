@@ -263,18 +263,41 @@ class OrderControllers extends Controller
     public function export(Request $req)
     {
         if($req->bulan==0){
-            $orders= Order::whereYear('date', $req->tahun)->orderBy('date', 'ASC')->get();
-            $sum= Order::selectRaw(DB::raw("SUM(base_price_product) as total_base, SUM(qty) as total_qty, SUM(tax) as total_tax, SUM(profit) as total_profit"))->whereYear('date', $req->tahun)->first();
+            $orders = Order::with('details.product', 'source')
+                        ->whereYear('date_order', $req->tahun)
+                        ->orderBy('date_order', 'ASC')
+                        ->get();
+
+            $sum = Order::selectRaw("
+                        SUM(entry_price) as total_income,
+                        SUM(platform_fee) as total_platform_fee,
+                        SUM(profit) as total_profit")
+                    ->whereYear('date_order', $req->tahun)
+                    ->first();
+
             $data =  [
                 'success' => 'success',
-                'orders' => $orders,
                 'sum' => $sum,
+                'orders' => $orders,
                 'year' => $req->tahun
             ];
+
             return Excel::download(new ReportOrderExport($data), 'Reports_Order_'.$req->tahun.'.xlsx');
         }else{
-            $orders= Order::whereMonth('date', $req->bulan)->whereYear('date', $req->tahun)->get();
-            $sum= Order::selectRaw(DB::raw("SUM(base_price_product) as total_base, SUM(qty) as total_qty, SUM(tax) as total_tax, SUM(profit) as total_income, SUM(profit) as total_profit"))->whereMonth('date', $req->bulan)->whereYear('date', $req->tahun)->orderBy('date', 'ASC')->first();
+            $orders = Order::with('details.product', 'source')
+                        ->whereYear('date_order', $req->tahun)
+                        ->whereMonth('date', $req->bulan)
+                        ->orderBy('date_order', 'ASC')
+                        ->get();
+
+            $sum = Order::selectRaw("
+                        SUM(entry_price) as total_income,
+                        SUM(platform_fee) as total_platform_fee,
+                        SUM(profit) as total_profit")
+                    ->whereYear('date_order', $req->tahun)
+                    ->whereMonth('date', $req->bulan)
+                    ->first();
+
             $data =  [
                 'success' => 'success',
                 'orders' => $orders,
@@ -282,6 +305,7 @@ class OrderControllers extends Controller
                 'year' => $req->tahun,
                 'month' => $req->bulan
             ];
+
             return Excel::download(new ReportOrderExport($data), 'Reports_Order_'.date("F", mktime(0, 0, 0, $req->month, 10)).'_'.$req->tahun.'.xlsx');
         }
 

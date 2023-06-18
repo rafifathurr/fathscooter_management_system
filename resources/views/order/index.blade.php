@@ -272,7 +272,7 @@ $(document).ready(function() {
         $(div).html(
             "<input name='_token' value='{{ csrf_token() }}' type='hidden'>"+
             "<select id='tahun' name='tahun' onchange='getMonth()' class='form-control'>"+
-            "<option value='' style='display: none;' selected=''>- Choose Type Buy -</option>"+
+            "<option value='' style='display: none;' selected=''>- Choose Year -</option>"+
             "@foreach($years as $year)" +
             "<option value='{{$year->tahun}}'>{{ $year->tahun }}</option>"+
             "@endforeach"+
