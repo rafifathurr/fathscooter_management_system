@@ -106,8 +106,14 @@
             @if(Auth::guard('admin')->check())
                 <li class="nav-item {{ $title === 'Dashboard' ? 'active' : '' }}">
                     <a href="{{route('admin.dashboard.index')}}" aria-expanded="false">
-                        <i class="fas fa-home"></i>
+                        <i class="fas fa-chart-bar"></i>
                         <p>Dashboard</p>
+                    </a>
+                </li>
+                <li class="nav-item {{ $title === 'Analysis' || $title === 'Add Analysis' || $title === 'Edit Analysis' || $title === 'Detail Analysis'? 'active' : '' }}">
+                    <a href="{{route('admin.order.index')}}" aria-expanded="false">
+                        <i class="fas fa-chart-line"></i>
+                        <p>Analysis</p>
                     </a>
                 </li>
                 <li class="nav-item {{ $title === 'List Order' || $title === 'Add Order' || $title === 'Edit Order' || $title === 'Detail Order'? 'active' : '' }}">
