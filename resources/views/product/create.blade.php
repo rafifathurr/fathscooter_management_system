@@ -243,13 +243,14 @@
                                     <div class="row">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-11">
-                                            <div class="col-md-2"></div>
-                                            <label class="col-md-2"> <i><b>Created By</b></i> </label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-12">
+                                                <i><b>Created By</b></i>
+                                            </label>
+                                            <div class="col-md-12">
                                                 <label for=""><i><b>{{$products->createdby->name}}</b></i></label>
                                             </div>
-                                            <div class="col-md-4">
-                                                <label for=""><i><b>{{$products->created_at}}</b></i></label>
+                                            <div class="col-md-12">
+                                                <label for=""><i><b>{{date('l, j F Y  h:i A', strtotime($products->created_at))}}</b></i></label>
                                             </div>
                                         </div>
                                     </div>
@@ -258,13 +259,13 @@
                                         <div class="col-md-1"></div>
                                         <div class="col-md-11">
                                             <div class="col-md-2"></div>
-                                            <label class="col-md-2"> <i><b>Updated By</b></i> </label>
+                                            <label class="col-md-12"> <i><b>Updated By</b></i> </label>
                                             @if($products->updated_by != null)
-                                            <div class="col-md-2">
+                                            <div class="col-md-12">
                                                 <label for=""><i><b>{{$products->updatedby->name}}</b></i></label>
                                             </div>
-                                            <div class="col-md-4">
-                                                <label for=""><i><b>{{$products->updated_at}}</b></i></label>
+                                            <div class="col-md-12">
+                                                <label for=""><i><b>{{date('l, j F Y  h:i A', strtotime($products->updated_at))}}</b></i></label>
                                             </div>
                                             @else
                                             <div class="col-md-2">

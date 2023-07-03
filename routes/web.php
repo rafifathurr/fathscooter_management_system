@@ -46,6 +46,15 @@ Route::namespace('App\Http\Controllers')->group(function (){
         });
 
         // ROUTE TO ORDER CONTROLLERS
+        Route::namespace('analysis')->prefix('analysis')->name('analysis.')->group(function(){
+            Route::get('/', 'AnalysisControllers@index')->name('index');
+            Route::get('create', 'AnalysisControllers@create')->name('create');
+            Route::get('store', 'AnalysisControllers@store')->name('store');
+            Route::get('detail/{id}', 'AnalysisControllers@detail')->name('detail');
+            Route::post('delete', 'AnalysisControllers@delete')->name('delete');
+        });
+
+        // ROUTE TO ORDER CONTROLLERS
         Route::namespace('order')->prefix('order')->name('order.')->group(function () {
             Route::get('/', 'OrderControllers@index')->name('index');
             Route::get('create', 'OrderControllers@create')->name('create');
@@ -126,7 +135,7 @@ Route::namespace('App\Http\Controllers')->group(function (){
             Route::post('delete', 'RoleControllers@delete')->name('delete');
         });
     });
-    
+
     // USER
     Route::middleware('auth:user')->prefix('user')->name('user.')->group(function () {
 

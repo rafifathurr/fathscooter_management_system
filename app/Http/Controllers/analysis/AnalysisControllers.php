@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\analysis;
 
 use App\Http\Controllers\Controller;
-use App\Models\order\Order;
+use App\Models\analysis\Analysis;
+use App\Models\analysis\DetailAnalysis;
 use App\Models\order\DetailOrder;
-use App\Models\source_payment\Source;
 use App\Models\type_buy\Type;
 use App\Models\product\Product;
 use App\Exports\ReportOrderExport;
@@ -27,51 +27,35 @@ class AnalysisControllers extends Controller
     // Index View and Scope Data
     public function index()
     {
-        return view('order.index', [
-            "title" => "List Order",
-            "years" => Order::select(DB::raw('YEAR(date_order) as tahun'))->orderBy(DB::raw('YEAR(date_order)'))->where('deleted_at',null)->groupBy(DB::raw("YEAR(date_order)"))->get(),
-            "months" => Order::select(DB::raw('MONTH(date_order) as bulan'))->orderBy(DB::raw('MONTH(date_order)'))->where('deleted_at',null)->groupBy(DB::raw("MONTH(date_order)"))->get(),
-            "types" => Type::orderBy('id', 'ASC')->where('deleted_at',null)->get(),
-            "orders" => Order::orderBy('date_order', 'DESC')->where('deleted_at',null)->get()
-        ]);
-    }
 
-    public function getMonth(Request $req){
-        $months = Order::select(DB::raw('MONTH(date) as bulan, MONTHNAME(date) as nama_bulan'))->whereYear('date', $req->tahun)->orderBy(DB::raw('MONTH(date)'))->where('is_deleted',null)->groupBy(DB::raw("MONTHNAME(date)"))->groupBy(DB::raw("MONTH(date)"))->get();
-        return json_encode($months);
+        return view('analysis.index', [
+            "title" => "Analysis",
+            "analysis" => Analysis::orderBy('month', 'DESC')->where('deleted_at',null)->get()
+        ]);
     }
 
     // Create View Data
     public function create()
     {
-        $data['title'] = "Add Order";
+        date_default_timezone_set("Asia/Jakarta");
+        $year = date('Y');
+        $month = date('m', strtotime('-1 month'));
+
+        $data['title'] = "Add Analysis";
         $data['url'] = 'store';
+        $data['details'] = DetailOrder::selectRaw('
+                                    product.product_name,
+                                    AVG(details_order.base_price_save) as setupcost,
+                                    SUM(details_order.qty) as demandpermonth
+                                ')
+                                ->join('orders', 'orders.id', '=', 'details_order.id_order')
+                                ->join('product', 'product.id', '=', 'details_order.id_product')
+                                ->whereMonth('orders.date_order', $month)
+                                ->whereYear('orders.date_order', $year)
+                                ->groupBy('product.product_name')
+                                ->get();
         $data['disabled_'] = '';
-        $data['types'] = Type::orderBy('id', 'asc')
-                        ->where('deleted_at', null)
-                        ->get();
-        $data['products'] = Product::orderBy('product_name', 'asc')
-                            ->where('status', 'Active')
-                            ->where('deleted_at', null)
-                            ->get();
-        $data['sources'] = Source::orderBy('id', 'asc')
-                            ->where('deleted_at', null)
-                            ->get();
-        return view('order.create', $data);
-    }
-
-    // get Detail Product View Data
-    public function getProds(Request $req)
-    {
-        $data = Product::where('deleted_at', null)->get();
-        return response()->json($data);
-    }
-
-    // get Detail Product View Data
-    public function getDetailProds(Request $req)
-    {
-        $data["prods"] = Product::where("id", $req->id_prod)->first();
-        return $data["prods"];
+        return view('analysis.create', $data);
     }
 
     // Store Function to Database

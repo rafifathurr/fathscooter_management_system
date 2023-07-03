@@ -186,22 +186,49 @@
                                                     </thead>
                                                     <tbody id="table_body">
                                                     @isset($orders)
-                                                        @foreach($details_order as $details)
-                                                        <tr>
-                                                            <td style="text-align:left;">
-                                                                {{  $details->product->product_name  }}
-                                                            </td>
-                                                            <td style="text-align:right;">
-                                                                {{  $details->qty  }}
-                                                            </td>
-                                                            <td style="text-align:right;">
-                                                                Rp. {{number_format($details->base_price_save,0,',','.')}}
-                                                            </td>
-                                                            <td style="text-align:right;">
-                                                                Rp. {{number_format($details->selling_price_save,0,',','.')}}
-                                                            </td>
-                                                        </tr>
-                                                        @endforeach
+                                                        @if($title == 'Edit Order')
+                                                            @foreach($details_order as $details)
+                                                            <tr id='{{ $details->id_product }}'>
+                                                                <td style="text-align:left;">
+                                                                    {{  $details->product->product_name  }}
+                                                                </td>
+                                                                <td style="text-align:right;">
+                                                                    {{  $details->qty  }}
+                                                                </td>
+                                                                <td style="text-align:right;">
+                                                                    Rp. {{number_format(($details->qty * $details->base_price_save),0,',','.')}}
+                                                                </td>
+                                                                <td style="text-align:right;">
+                                                                    Rp. {{number_format($details->selling_price_save,0,',','.')}}
+                                                                </td>
+                                                                <td>
+                                                                    <center>
+                                                                        <button type='button' class='btn btn-link btn-simple-danger' onclick='removedata({{ $details->id_product }})' title='Hapus'>
+                                                                            <i class='fa fa-trash' style='color:red;'>
+                                                                            </i>
+                                                                        </button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            @endforeach
+                                                        @else
+                                                            @foreach($details_order as $details)
+                                                            <tr>
+                                                                <td style="text-align:left;">
+                                                                    {{  $details->product->product_name  }}
+                                                                </td>
+                                                                <td style="text-align:right;">
+                                                                    {{  $details->qty  }}
+                                                                </td>
+                                                                <td style="text-align:right;">
+                                                                    Rp. {{number_format(($details->qty * $details->base_price_save),0,',','.')}}
+                                                                </td>
+                                                                <td style="text-align:right;">
+                                                                    Rp. {{number_format($details->selling_price_save,0,',','.')}}
+                                                                </td>
+                                                            </tr>
+                                                            @endforeach
+                                                        @endif
                                                     @endisset
                                                     </tbody>
                                                     <tbody >
@@ -220,13 +247,14 @@
                                                 <hr>
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <div class="col-md-2"></div>
-                                                        <label class="col-md-2"> <i><b>Created By</b></i> </label>
-                                                        <div class="col-md-2">
+                                                        <label class="col-md-12">
+                                                            <i><b>Created By</b></i>
+                                                        </label>
+                                                        <div class="col-md-12">
                                                             <label for=""><i><b>{{$orders->createdby->name}}</b></i></label>
                                                         </div>
-                                                        <div class="col-md-4">
-                                                            <label for=""><i><b>{{$orders->created_at}}</b></i></label>
+                                                        <div class="col-md-12">
+                                                            <label for=""><i><b>{{date('l, j F Y  h:i A', strtotime($orders->created_at))}}</b></i></label>
                                                         </div>
                                                     </div>
                                                 </div>

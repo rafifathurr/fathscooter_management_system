@@ -37,7 +37,12 @@ class OrderControllers extends Controller
     }
 
     public function getMonth(Request $req){
-        $months = Order::select(DB::raw('MONTH(date) as bulan, MONTHNAME(date) as nama_bulan'))->whereYear('date', $req->tahun)->orderBy(DB::raw('MONTH(date)'))->where('is_deleted',null)->groupBy(DB::raw("MONTHNAME(date)"))->groupBy(DB::raw("MONTH(date)"))->get();
+        $months = Order::select(DB::raw('MONTH(date_order) as bulan, MONTHNAME(date_order) as nama_bulan'))
+                    ->whereYear('date_order', $req->tahun)->orderBy(DB::raw('MONTH(date_order)'))
+                    ->where('deleted_at',null)
+                    ->groupBy(DB::raw("MONTHNAME(date_order)"))
+                    ->groupBy(DB::raw("MONTH(date_order)"))
+                    ->get();
         return json_encode($months);
     }
 
@@ -77,7 +82,6 @@ class OrderControllers extends Controller
     // Store Function to Database
     public function store(Request $req)
     {
-
         date_default_timezone_set("Asia/Jakarta");
         $datenow = date('Y-m-d H:i:s');
 
@@ -103,24 +107,24 @@ class OrderControllers extends Controller
             $total_arr = count($req->product_id);
 
             for($i = 0; $i<$total_arr; $i++){
-                $sell = $req->sell_price_arr[$i];
-                $sell = explode("Rp.", $sell);
-                $sell = array_pop($sell);
-                $sell = explode(".", $sell);
-                $total_sell = implode("", $sell);
+                // $sell = $req->sell_price_arr[$i];
+                // $sell = explode("Rp.", $sell);
+                // $sell = array_pop($sell);
+                // $sell = explode(".", $sell);
+                // $total_sell = implode("", $sell);
 
-                $base = $req->base_price_arr[$i];
-                $base = explode("Rp.", $base);
-                $base = array_pop($base);
-                $base = explode(".", $base);
-                $total_base = implode("", $base);
+                // $base = $req->base_price_arr[$i];
+                // $base = explode("Rp.", $base);
+                // $base = array_pop($base);
+                // $base = explode(".", $base);
+                // $total_base = implode("", $base);
 
                 $details = DetailOrder::create([
                     'id_order' => $orders->id,
                     'id_product' => $req->product_id[$i],
                     'qty' => $req->qty[$i],
-                    'base_price_save' => $total_base,
-                    'selling_price_save' => $total_sell,
+                    'base_price_save' => $req->base_price_data,
+                    'selling_price_save' => $req->sell_price_data,
                     'created_at' => $datenow
                 ]);
 
@@ -202,6 +206,9 @@ class OrderControllers extends Controller
         $data['url'] = 'update';
         $data['orders'] = Order::where('id', $id)
                             ->first();
+        $data['details_order'] = DetailOrder::with('product')
+                                ->where('id_order', $id)
+                                ->get();
         $data['products'] = Product::orderBy('product_name', 'asc')
                             ->get();
         $data['sources'] = Source::orderBy('id', 'asc')
@@ -240,6 +247,7 @@ class OrderControllers extends Controller
     // Delete Data Function
     public function delete(Request $req)
     {
+        date_default_timezone_set("Asia/Bangkok");
         $datenow = date('Y-m-d H:i:s');
         $exec_1 = Order::where('id', $req->id )->update([
             'deleted_at'=>$datenow,
@@ -262,6 +270,7 @@ class OrderControllers extends Controller
     // Index View and Scope Data
     public function export(Request $req)
     {
+        date_default_timezone_set("Asia/Bangkok");
         if($req->bulan==0){
             $orders = Order::with('details.product', 'source')
                         ->whereYear('date_order', $req->tahun)
@@ -286,7 +295,7 @@ class OrderControllers extends Controller
         }else{
             $orders = Order::with('details.product', 'source')
                         ->whereYear('date_order', $req->tahun)
-                        ->whereMonth('date', $req->bulan)
+                        ->whereMonth('date_order', $req->bulan)
                         ->orderBy('date_order', 'ASC')
                         ->get();
 
@@ -295,7 +304,7 @@ class OrderControllers extends Controller
                         SUM(platform_fee) as total_platform_fee,
                         SUM(profit) as total_profit")
                     ->whereYear('date_order', $req->tahun)
-                    ->whereMonth('date', $req->bulan)
+                    ->whereMonth('date_order', $req->bulan)
                     ->first();
 
             $data =  [
@@ -306,7 +315,7 @@ class OrderControllers extends Controller
                 'month' => $req->bulan
             ];
 
-            return Excel::download(new ReportOrderExport($data), 'Reports_Order_'.date("F", mktime(0, 0, 0, $req->month, 10)).'_'.$req->tahun.'.xlsx');
+            return Excel::download(new ReportOrderExport($data), 'Reports_Order_'.date("F", mktime(0, 0, 0, $req->bulan, 1)).'_'.$req->tahun.'.xlsx');
         }
 
     }

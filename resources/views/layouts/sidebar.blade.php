@@ -15,7 +15,7 @@
             </span>
         </button>
         <button class="topbar-toggler more"><i class="icon-options-vertical"></i></button>
-        
+
     </div>
     <!-- End Logo Header -->
     <!-- Navbar Header -->
@@ -111,7 +111,7 @@
                     </a>
                 </li>
                 <li class="nav-item {{ $title === 'Analysis' || $title === 'Add Analysis' || $title === 'Edit Analysis' || $title === 'Detail Analysis'? 'active' : '' }}">
-                    <a href="{{route('admin.order.index')}}" aria-expanded="false">
+                    <a href="{{route('admin.analysis.index')}}" aria-expanded="false">
                         <i class="fas fa-chart-line"></i>
                         <p>Analysis</p>
                     </a>
