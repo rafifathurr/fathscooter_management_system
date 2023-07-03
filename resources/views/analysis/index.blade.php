@@ -48,19 +48,19 @@
                                                     aria-label="Name: activate to sort column descending">
                                                     <center>No</center>
                                                 </th>
-                                                <th width="30%" class="sorting" tabindex="0" aria-controls="add-row"
+                                                <th width="20%" class="sorting" tabindex="0" aria-controls="add-row"
                                                     rowspan="1" colspan="1"
                                                     aria-label="Position: activate to sort column ascending"
                                                     style="font-weight:900;">
                                                     <center>Year</center>
                                                 </th>
-                                                <th width="30%" class="sorting" tabindex="0" aria-controls="add-row"
+                                                <th width="20%" class="sorting" tabindex="0" aria-controls="add-row"
                                                     rowspan="1" colspan="1"
                                                     aria-label="Position: activate to sort column ascending"
                                                     style="font-weight:900;">
                                                     <center>Month</center>
                                                 </th>
-                                                <th width="10%" class="sorting" tabindex="0"
+                                                <th width="20%" class="sorting" tabindex="0"
                                                     aria-controls="add-row" rowspan="1" colspan="1"
                                                     aria-label="Action: activate to sort column ascending"
                                                     style="font-weight:900;">

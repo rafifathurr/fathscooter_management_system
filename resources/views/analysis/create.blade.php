@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 @include('layouts.head')
+<style>
+    .numeric{
+        text-align: right;
+        width: 100px !important;
+        height: 25px !important;
+    }
+</style>
 <body>
     <div class="wrapper">
         @include('layouts.sidebar')
@@ -25,7 +32,7 @@
                                     <table id="dt-detail" class="table table-striped table-bordered table-hover" width="100%" style="text-align: center;">
                                         <thead style="background-color: #fbfbfb;">
                                             <tr>
-                                                <th style="vertical-align: middle;" width="10%">
+                                                <th style="vertical-align: middle;" width="5%">
                                                     <center>No</center>
                                                 </th>
                                                 <th style="vertical-align: middle;" width="25%">
@@ -34,11 +41,14 @@
                                                 <th style="vertical-align: middle;" width="15%">
                                                     <center>Total Demand</center>
                                                 </th>
-                                                <th style="vertical-align: middle;" width="20%">
+                                                <th style="vertical-align: middle;" width="15%">
                                                     <center>Base Price Average</center>
                                                 </th>
-                                                <th style="vertical-align: middle;" width="20%">
+                                                <th style="vertical-align: middle;" width="15%">
                                                     <center>Holding Cost</center>
+                                                </th>
+                                                <th style="vertical-align: middle;" width="15%">
+                                                    <center>EOQ</center>
                                                 </th>
                                                 @if ($title == 'Add Analysis' || $title == 'Edit Analysis')
                                                 <th style="vertical-align: middle;" width="10%">
@@ -48,51 +58,71 @@
                                             </tr>
                                         </thead>
                                         <tbody id="table_body">
-                                        @isset($orders)
-                                            @if($title == 'Edit Order')
-                                                @foreach($details_order as $details)
-                                                <tr id='{{ $details->id_product }}'>
-                                                    <td style="text-align:left;">
-                                                        {{  $details->product->product_name  }}
-                                                    </td>
-                                                    <td style="text-align:right;">
-                                                        {{  $details->qty  }}
-                                                    </td>
-                                                    <td style="text-align:right;">
-                                                        Rp. {{number_format($details->base_price_save,0,',','.')}}
-                                                    </td>
-                                                    <td style="text-align:right;">
-                                                        Rp. {{number_format($details->selling_price_save,0,',','.')}}
-                                                    </td>
-                                                    <td>
-                                                        <center>
-                                                            <button type='button' class='btn btn-link btn-simple-danger' onclick='removedata({{ $details->id_product }})' title='Hapus'>
-                                                                <i class='fa fa-trash' style='color:red;'>
-                                                                </i>
-                                                            </button>
-                                                        </center>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            @else
-                                                @foreach($details_order as $details)
-                                                <tr>
-                                                    <td style="text-align:left;">
-                                                        {{  $details->product->product_name  }}
-                                                    </td>
-                                                    <td style="text-align:right;">
-                                                        {{  $details->qty  }}
-                                                    </td>
-                                                    <td style="text-align:right;">
-                                                        Rp. {{number_format($details->base_price_save,0,',','.')}}
-                                                    </td>
-                                                    <td style="text-align:right;">
-                                                        Rp. {{number_format($details->selling_price_save,0,',','.')}}
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            @endif
-                                        @endisset
+                                        @if($title == 'Edit Analysis' || $title == 'Add Analysis')
+                                            @foreach($details as $key=>$detail)
+                                            <tr id='{{ $detail->id_product }}'>
+                                                <td style="text-align:left;">
+                                                    {{  $key+1 }}
+                                                </td>
+                                                <td style="text-align:left;">
+                                                    <input type="hidden" name="id_product" value="{{$detail->id_product}}">
+                                                    {{  $detail->product_name }}
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <input type="number" class='form-control numeric' name="demandpermonth" id="demandpermonth" value="{{$detail->demandpermonth}}" readonly>
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <input type="number" class='form-control numeric' name="setupcost" id="setupcost" value="{{$detail->setupcost}}" readonly>
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <input type="number" class='form-control numeric' name="holdingcost" id="holdingcost">
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <input type="number" class='form-control numeric' name="eoq" id="eoq" readonly>
+                                                </td>
+                                                <td>
+                                                    <center>
+                                                        <button type='button' class='btn btn-link btn-simple-danger' title='Hapus'>
+                                                            <i class='fa fa-trash' style='color:red;'>
+                                                            </i>
+                                                        </button>
+                                                    </center>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        @else
+                                            @foreach($details as $key=>$detail)
+                                            <tr id='{{ $detail->id_product }}'>
+                                                <td style="text-align:left;">
+                                                    {{  $key+1 }}
+                                                </td>
+                                                <td style="text-align:left;">
+                                                    <input type="hidden" name="id_product" value="{{$detail->id_product}}">
+                                                    {{  $detail->product_name }}
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <input type="number" name="demandpermonth" id="demandpermonth" value="{{$detail->demandpermonth}}" readonly>
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <input type="number" name="setupcost" id="setupcost" value="{{$detail->setupcost}}" readonly>
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <input type="number" name="holdingcost" id="holdingcost">
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <input type="number" name="eoq" id="eoq" readonly>
+                                                </td>
+                                                <td>
+                                                    <center>
+                                                        <button type='button' class='btn btn-link btn-simple-danger'  title='Hapus'>
+                                                            <i class='fa fa-trash' style='color:red;'>
+                                                            </i>
+                                                        </button>
+                                                    </center>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        @endif
                                         </tbody>
                                     </table>
                                     <br>

@@ -44,6 +44,7 @@ class AnalysisControllers extends Controller
         $data['title'] = "Add Analysis";
         $data['url'] = 'store';
         $data['details'] = DetailOrder::selectRaw('
+                                    product.id as id_product,
                                     product.product_name,
                                     AVG(details_order.base_price_save) as setupcost,
                                     SUM(details_order.qty) as demandpermonth
@@ -52,6 +53,7 @@ class AnalysisControllers extends Controller
                                 ->join('product', 'product.id', '=', 'details_order.id_product')
                                 ->whereMonth('orders.date_order', $month)
                                 ->whereYear('orders.date_order', $year)
+                                ->groupBy('product.id')
                                 ->groupBy('product.product_name')
                                 ->get();
         $data['disabled_'] = '';
