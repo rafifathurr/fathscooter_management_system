@@ -26,6 +26,7 @@
                     <div class="content container-fluid">
                         <div class="box box-primary">
                             <div class="box-body">
+                                <h4><b>EOQ Analysis</b></h4>
                                 <form id="form_add" action="{{ route('admin.order.' . $url) }}" method="POST" enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     <br>
@@ -72,7 +73,7 @@
                                                     <input type="number" class='form-control numeric' name="demandpermonth" id="demandpermonth" value="{{$detail->demandpermonth}}" readonly>
                                                 </td>
                                                 <td style="text-align:right;">
-                                                    <input type="number" class='form-control numeric' name="setupcost" id="setupcost" value="{{$detail->setupcost}}" readonly>
+                                                    <input type="text" class='form-control numeric' name="setupcost" id="setupcost" value="{{number_format((float)$detail->setupcost, 0, '.', '')}}" readonly>
                                                 </td>
                                                 <td style="text-align:right;">
                                                     <input type="number" class='form-control numeric' name="holdingcost" id="holdingcost">
