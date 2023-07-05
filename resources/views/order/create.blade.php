@@ -233,11 +233,21 @@
                                                     </tbody>
                                                     <tbody >
                                                         <tr>
-                                                            <td colspan="2"><b>TOTAL</b></td>
-                                                            <td><input type="text" class="form-control numeric" @if (isset($orders)) value="{{ $orders->total_base_price }}" @endisset style='width:100px !important; height:25px !important; text-align:center;' name="base_price" id="total_base_price" readonly></td>
-                                                            <td><input type="text" class="form-control numeric" @if (isset($orders)) value="{{ $orders->total_sell_price }}" @endisset style='width:100px !important; height:25px !important; text-align:center;' name="sell_price" id="total_sell_price" readonly></td>
+                                                            <td colspan="2">
+                                                                <b>TOTAL</b>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control numeric" @if (isset($orders)) value="{{ $orders->total_base_price }}" @endisset style='width:100px !important; height:25px !important; text-align:center;' name="base_price" id="total_base_price" readonly>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control numeric" @if (isset($orders)) value="{{ $orders->total_sell_price }}" @endisset style='width:100px !important; height:25px !important; text-align:center;' name="sell_price" id="total_sell_price" readonly>
+                                                            </td>
                                                             @if ($title == 'Add Order' || $title == 'Edit Order')
-                                                            <td><button type='button' class='btn btn-link' onclick="removedata()"><i style="color:black; font-weight:bold;" class="icon-refresh"></i></button></td>
+                                                            <td>
+                                                                <button type='button' class='btn btn-link' onclick="removedata()">
+                                                                    <i style="color:black; font-weight:bold;" class="icon-refresh"></i>
+                                                                </button>
+                                                            </td>
                                                             @endif
                                                         </tr>
                                                     </tbody>
@@ -251,10 +261,14 @@
                                                             <i><b>Created By</b></i>
                                                         </label>
                                                         <div class="col-md-12">
-                                                            <label for=""><i><b>{{$orders->createdby->name}}</b></i></label>
+                                                            <label for="">
+                                                                <i><b>{{$orders->createdby->name}}</b></i>
+                                                            </label>
                                                         </div>
                                                         <div class="col-md-12">
-                                                            <label for=""><i><b>{{date('l, j F Y  h:i A', strtotime($orders->created_at))}}</b></i></label>
+                                                            <label for="">
+                                                                <i><b>{{date('l, j F Y  h:i A', strtotime($orders->created_at))}}</b></i>
+                                                            </label>
                                                         </div>
                                                     </div>
                                                 </div>

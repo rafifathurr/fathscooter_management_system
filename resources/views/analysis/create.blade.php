@@ -66,26 +66,27 @@
                                                     {{  $key+1 }}
                                                 </td>
                                                 <td style="text-align:left;">
-                                                    <input type="hidden" name="id_product" value="{{$detail->id_product}}">
+                                                    <input type="hidden" name="id_product[]" value="{{$detail->id_product}}">
                                                     {{  $detail->product_name }}
                                                 </td>
                                                 <td style="text-align:right;">
-                                                    <input type="number" class='form-control numeric' name="demandpermonth" id="demandpermonth" value="{{$detail->demandpermonth}}" readonly>
+                                                    <input type="hidden" id="demandpermonth_data" value="{{$detail->demandpermonth}}" readonly>
+                                                    <input type="number" class='form-control numeric' name="demandpermonth[]" id="demandpermonth" value="{{$detail->demandpermonth}}" readonly>
                                                 </td>
                                                 <td style="text-align:right;">
-                                                    <input type="text" class='form-control numeric' name="setupcost" id="setupcost" value="{{number_format((float)$detail->setupcost, 0, '.', '')}}" readonly>
+                                                    <input type="hidden" id="setupcost_data" value="{{$detail->setupcost}}">
+                                                    <input type="text" class='form-control numeric' name="setupcost[]" id="setupcost" value="{{number_format((float)$detail->setupcost, 0, '.', '')}}" readonly>
                                                 </td>
                                                 <td style="text-align:right;">
-                                                    <input type="number" class='form-control numeric' name="holdingcost" id="holdingcost">
+                                                    <input type="text" class='form-control numeric' name="holdingcost[]" id="holdingcost">
                                                 </td>
                                                 <td style="text-align:right;">
-                                                    <input type="number" class='form-control numeric' name="eoq" id="eoq" readonly>
+                                                    <input type="number" class='form-control numeric' name="eoq[]" id="eoq" readonly>
                                                 </td>
                                                 <td>
                                                     <center>
-                                                        <button type='button' class='btn btn-link btn-simple-danger' title='Hapus'>
-                                                            <i class='fa fa-trash' style='color:red;'>
-                                                            </i>
+                                                        <button type='button' class='btn btn-link btn-simple-danger' onclick="reset()" title='Reset'>
+                                                            <i style="color:black; font-weight:bold;" class="icon-refresh"></i>
                                                         </button>
                                                     </center>
                                                 </td>
@@ -102,24 +103,16 @@
                                                     {{  $detail->product_name }}
                                                 </td>
                                                 <td style="text-align:right;">
-                                                    <input type="number" name="demandpermonth" id="demandpermonth" value="{{$detail->demandpermonth}}" readonly>
+                                                    <input type="number" class='form-control numeric' name="demandpermonth" id="demandpermonth" value="{{$detail->demandpermonth}}" readonly>
                                                 </td>
                                                 <td style="text-align:right;">
-                                                    <input type="number" name="setupcost" id="setupcost" value="{{$detail->setupcost}}" readonly>
+                                                    <input type="text" class='form-control numeric' name="setupcost" id="setupcost" value="{{$detail->setupcost}}" readonly>
                                                 </td>
                                                 <td style="text-align:right;">
-                                                    <input type="number" name="holdingcost" id="holdingcost">
+                                                    <input type="text" class='form-control numeric' name="holdingcost" id="holdingcost">
                                                 </td>
                                                 <td style="text-align:right;">
-                                                    <input type="number" name="eoq" id="eoq" readonly>
-                                                </td>
-                                                <td>
-                                                    <center>
-                                                        <button type='button' class='btn btn-link btn-simple-danger'  title='Hapus'>
-                                                            <i class='fa fa-trash' style='color:red;'>
-                                                            </i>
-                                                        </button>
-                                                    </center>
+                                                    <input type="number" class='form-control numeric' name="eoq" id="eoq" readonly>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -170,7 +163,15 @@
             @include('layouts.footer')
             {{-- FUNCTIONS --}}
             <script>
+                function reset(){
+                    $("#holdingcost").val(0);
+                    $("#eoq").val(10);
+                }
+            </script>
+            <script>
+                $(document).ready(function() {
 
+                })
             </script>
         </div>
     </div>
