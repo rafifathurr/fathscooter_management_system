@@ -71,18 +71,18 @@
                                                     <input type="hidden" name="id_product[]" value="{{$detail->id_product}}">
                                                     {{  $detail->product_name }}
                                                 </td>
-                                                <td style="text-align:right;">
+                                                <td style="text-align:center;">
                                                     <input type="hidden" id="demandpermonth_data" value="{{$detail->demandpermonth}}" readonly required>
                                                     <input type="number" class='form-control numeric' name="demandpermonth[]" value="{{$detail->demandpermonth}}" id="demandpermonth_{{ $detail->id_product }}" readonly required>
                                                 </td>
-                                                <td style="text-align:right;">
+                                                <td style="text-align:center;">
                                                     <input type="hidden" id="setupcost_data" value="{{$detail->setupcost}}">
                                                     <input type="text" class='form-control numeric' name="setupcost[]" id="setupcost_{{ $detail->id_product }}" value="{{number_format((float)$detail->setupcost, 0, '.', '')}}" readonly required>
                                                 </td>
-                                                <td style="text-align:right;">
+                                                <td style="text-align:center;">
                                                     <input type="text" class='form-control numeric' min=0 name="holdingcost[]" id="holdingcost_{{ $detail->id_product }}" oninput="calculate_eoq({{$detail->id_product}})" required>
                                                 </td>
-                                                <td style="text-align:right;">
+                                                <td style="text-align:center;">
                                                     <input type="number" class='form-control numeric' name="eoq[]" id="eoq_{{ $detail->id_product }}" readonly required>
                                                 </td>
                                                 <td>
@@ -104,17 +104,23 @@
                                                         <input type="hidden" name="id_product" value="{{$detail->id_product}}">
                                                         {{  $detail->product->product_name }}
                                                     </td>
-                                                    <td style="text-align:right;">
-                                                        <input type="number" class='form-control numeric' name="demandpermonth" id="demandpermonth" value="" readonly>
+                                                    <td>
+                                                        <center>
+                                                            {{$detail->demand}}
+                                                        </center>
                                                     </td>
                                                     <td style="text-align:right;">
-                                                        <input type="text" class='form-control numeric' name="setupcost" id="setupcost" value="" readonly>
+                                                        Rp. {{number_format($detail->setupcost,0,',','.')}}
                                                     </td>
                                                     <td style="text-align:right;">
-                                                        <input type="text" class='form-control numeric' name="holdingcost" id="holdingcost">
+                                                        Rp. {{number_format($detail->holdingcost,0,',','.')}}
                                                     </td>
                                                     <td style="text-align:right;">
-                                                        <input type="number" class='form-control numeric' value="{{$detail->eoq}}" name="eoq" id="eoq" readonly>
+                                                        <center>
+                                                            <b>
+                                                                {{ $detail->eoq_value }}
+                                                            </b>
+                                                        </center>
                                                     </td>
                                                 </tr>
                                             @endforeach

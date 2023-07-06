@@ -144,7 +144,7 @@ class ProductControllers extends Controller
         $exec = Product::where('id', $req->id )->update([
             'deleted_at'=>$datenow,
             'updated_at'=>$datenow,
-            'updated_by'=>Auth::user()->username
+            'updated_by'=>Auth::user()->id
         ]);
 
         if ($exec) {

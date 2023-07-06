@@ -252,7 +252,7 @@ class OrderControllers extends Controller
         $exec_1 = Order::where('id', $req->id )->update([
             'deleted_at'=>$datenow,
             'updated_at'=>$datenow,
-            'updated_by'=>Auth::user()->username
+            'updated_by'=>Auth::user()->id
         ]);
 
         $exec_2 = DetailOrder::where('id_order', $req->id )->update([

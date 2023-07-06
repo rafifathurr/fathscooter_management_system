@@ -19,7 +19,7 @@
                 <div class="page-inner mt--5">
                     <!-- Button -->
                     <div class="d-flex">
-                        <a class="btn btn-primary btn-round ml-auto mb-3" href="{{ route('admin.analysis.create') }}">
+                        <a class="btn btn-primary btn-round ml-auto mb-3" href="{{ route('admin.analysis.create') }}" @if($disabled) style="pointer-events: none;" @endif>
                             <i class="fa fa-plus"></i>
                             Add Analysis
                         </a>
@@ -93,12 +93,12 @@
                                                                 class="btn btn-link btn-simple-primary btn-lg"
                                                                 data-original-title="Edit" control-id="ControlID-16">
                                                                 <i class="fa fa-edit" style="color:grey;"></i>
-                                                            </a>
-                                                            <button type="submit" onclick="destroy({{$prod->id}})" data-toggle="tooltip" title="Delete"
+                                                            </a> --}}
+                                                            <button type="submit" onclick="destroy({{$anls->id}})" data-toggle="tooltip" title="Delete"
                                                                 class="btn btn-link btn-simple-danger"
                                                                 data-original-title="Delete" control-id="ControlID-17">
                                                                 <i class="fa fa-trash" style="color:red;"></i>
-                                                            </button> --}}
+                                                            </button>
                                                         </div>
                                                     </center>
                                                 </td>
@@ -137,23 +137,13 @@
           // dangerMode: true,
       }).then((willDelete) => {
           if (willDelete) {
-          @if(Auth::guard('admin')->check())
-            $.post("{{route('admin.product.delete')}}",
+            $.post("{{route('admin.analysis.delete')}}",
             {
                 id:id,
                 _token:token
             },function(data){
                 location.reload();
             })
-          @else
-           $.post("{{route('user.product.delete')}}",
-           {
-                id:id,
-                _token:token
-            },function(data){
-                location.reload();
-            })
-          @endif
           } else {
             return false;
           }
