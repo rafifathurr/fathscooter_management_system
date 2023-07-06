@@ -47,9 +47,9 @@ Route::namespace('App\Http\Controllers')->group(function (){
 
         // ROUTE TO ORDER CONTROLLERS
         Route::namespace('analysis')->prefix('analysis')->name('analysis.')->group(function(){
-            Route::get('/', 'AnalysisControllers@index')->name('index');
+            Route::get('/', 'AnalysisControllers@index')->name('index') ;
             Route::get('create', 'AnalysisControllers@create')->name('create');
-            Route::get('store', 'AnalysisControllers@store')->name('store');
+            Route::post('store', 'AnalysisControllers@store')->name('store');
             Route::get('detail/{id}', 'AnalysisControllers@detail')->name('detail');
             Route::post('delete', 'AnalysisControllers@delete')->name('delete');
         });

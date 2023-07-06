@@ -27,7 +27,9 @@
                         <div class="box box-primary">
                             <div class="box-body">
                                 <h4><b>EOQ Analysis</b></h4>
-                                <form id="form_add" action="{{ route('admin.order.' . $url) }}" method="POST" enctype="multipart/form-data">
+                                <form id="form_add" action="{{ route('admin.analysis.' . $url) }}" method="POST" enctype="multipart/form-data">
+                                    <input type="hidden" name="month" @isset($month) value="{{ $month }}" @endisset>
+                                    <input type="hidden" name="year" @isset($year) value="{{ $year }}" @endisset>
                                     {{ csrf_field() }}
                                     <br>
                                     <table id="dt-detail" class="table table-striped table-bordered table-hover" width="100%" style="text-align: center;">
@@ -70,22 +72,22 @@
                                                     {{  $detail->product_name }}
                                                 </td>
                                                 <td style="text-align:right;">
-                                                    <input type="hidden" id="demandpermonth_data" value="{{$detail->demandpermonth}}" readonly>
-                                                    <input type="number" class='form-control numeric' name="demandpermonth[]" id="demandpermonth" value="{{$detail->demandpermonth}}" readonly>
+                                                    <input type="hidden" id="demandpermonth_data" value="{{$detail->demandpermonth}}" readonly required>
+                                                    <input type="number" class='form-control numeric' name="demandpermonth[]" value="{{$detail->demandpermonth}}" id="demandpermonth_{{ $detail->id_product }}" readonly required>
                                                 </td>
                                                 <td style="text-align:right;">
                                                     <input type="hidden" id="setupcost_data" value="{{$detail->setupcost}}">
-                                                    <input type="text" class='form-control numeric' name="setupcost[]" id="setupcost" value="{{number_format((float)$detail->setupcost, 0, '.', '')}}" readonly>
+                                                    <input type="text" class='form-control numeric' name="setupcost[]" id="setupcost_{{ $detail->id_product }}" value="{{number_format((float)$detail->setupcost, 0, '.', '')}}" readonly required>
                                                 </td>
                                                 <td style="text-align:right;">
-                                                    <input type="text" class='form-control numeric' name="holdingcost[]" id="holdingcost">
+                                                    <input type="text" class='form-control numeric' min=0 name="holdingcost[]" id="holdingcost_{{ $detail->id_product }}" oninput="calculate_eoq({{$detail->id_product}})" required>
                                                 </td>
                                                 <td style="text-align:right;">
-                                                    <input type="number" class='form-control numeric' name="eoq[]" id="eoq" readonly>
+                                                    <input type="number" class='form-control numeric' name="eoq[]" id="eoq_{{ $detail->id_product }}" readonly required>
                                                 </td>
                                                 <td>
                                                     <center>
-                                                        <button type='button' class='btn btn-link btn-simple-danger' onclick="reset()" title='Reset'>
+                                                        <button type='button' class='btn btn-link btn-simple-danger' onclick="reset_data({{ $detail->id_product }})" title='Reset'>
                                                             <i style="color:black; font-weight:bold;" class="icon-refresh"></i>
                                                         </button>
                                                     </center>
@@ -94,27 +96,27 @@
                                             @endforeach
                                         @else
                                             @foreach($details as $key=>$detail)
-                                            <tr id='{{ $detail->id_product }}'>
-                                                <td style="text-align:left;">
-                                                    {{  $key+1 }}
-                                                </td>
-                                                <td style="text-align:left;">
-                                                    <input type="hidden" name="id_product" value="{{$detail->id_product}}">
-                                                    {{  $detail->product_name }}
-                                                </td>
-                                                <td style="text-align:right;">
-                                                    <input type="number" class='form-control numeric' name="demandpermonth" id="demandpermonth" value="{{$detail->demandpermonth}}" readonly>
-                                                </td>
-                                                <td style="text-align:right;">
-                                                    <input type="text" class='form-control numeric' name="setupcost" id="setupcost" value="{{$detail->setupcost}}" readonly>
-                                                </td>
-                                                <td style="text-align:right;">
-                                                    <input type="text" class='form-control numeric' name="holdingcost" id="holdingcost">
-                                                </td>
-                                                <td style="text-align:right;">
-                                                    <input type="number" class='form-control numeric' name="eoq" id="eoq" readonly>
-                                                </td>
-                                            </tr>
+                                                <tr id='{{ $detail->id_product }}'>
+                                                    <td style="text-align:left;">
+                                                        {{  $key+1 }}
+                                                    </td>
+                                                    <td style="text-align:left;">
+                                                        <input type="hidden" name="id_product" value="{{$detail->id_product}}">
+                                                        {{  $detail->product->product_name }}
+                                                    </td>
+                                                    <td style="text-align:right;">
+                                                        <input type="number" class='form-control numeric' name="demandpermonth" id="demandpermonth" value="" readonly>
+                                                    </td>
+                                                    <td style="text-align:right;">
+                                                        <input type="text" class='form-control numeric' name="setupcost" id="setupcost" value="" readonly>
+                                                    </td>
+                                                    <td style="text-align:right;">
+                                                        <input type="text" class='form-control numeric' name="holdingcost" id="holdingcost">
+                                                    </td>
+                                                    <td style="text-align:right;">
+                                                        <input type="number" class='form-control numeric' value="{{$detail->eoq}}" name="eoq" id="eoq" readonly>
+                                                    </td>
+                                                </tr>
                                             @endforeach
                                         @endif
                                         </tbody>
@@ -163,9 +165,26 @@
             @include('layouts.footer')
             {{-- FUNCTIONS --}}
             <script>
-                function reset(){
-                    $("#holdingcost").val(0);
-                    $("#eoq").val(10);
+
+                function reset_data(id){
+                    $("#holdingcost_"+id).val('');
+                    $("#eoq_"+id).val('');
+                }
+
+                function calculate_eoq(id){
+                    let setupCost = $("#setupcost_"+id).val();
+                        setupCost = setupCost.split("Rp.").pop();
+                        setupCost = parseInt(setupCost.split(".").join(''));
+
+                    let holdingCost = $("#holdingcost_"+id).val();
+                        holdingCost = holdingCost.split("Rp.").pop();
+                        holdingCost = parseInt(holdingCost.split(".").join(''));
+
+                    let demand = $("#demandpermonth_"+id).val();
+
+                    let eoq = Math.sqrt((2 * demand * setupCost) / holdingCost);
+                    $("#eoq_"+id).val(eoq.toFixed(2));
+
                 }
             </script>
             <script>

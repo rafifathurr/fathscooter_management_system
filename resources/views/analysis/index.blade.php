@@ -76,21 +76,20 @@
                                                     <center>{{$num=$num+1}}</center>
                                                 </td>
                                                 <td>
-                                                    {{$anls->year}}
+                                                    <center>{{$anls->year}}</center>
                                                 </td>
                                                 <td>
-                                                    {{$anls->month}}
+                                                    <center>{{ $monthName = date('F', mktime(0, 0, 0, $anls->month, 1)) }}</center>
                                                 </td>
-                                                {{-- <td>
+                                                <td>
                                                     <center>
                                                         <div class="form-button-action">
-                                                        @if(Auth::guard('admin')->check())
-                                                            <a href="{{route('admin.product.detail', $prod->id) }}" data-toggle="tooltip" title="Detail"
+                                                            <a href="{{route('admin.analysis.detail', $anls->id) }}" data-toggle="tooltip" title="Detail"
                                                                 class="btn btn-link btn-simple-primary btn-lg"
                                                                 data-original-title="Detail" control-id="ControlID-16">
                                                                 <i class="fa fa-eye"></i>
                                                             </a>
-                                                            <a href="{{route('admin.product.edit', $prod->id) }}" data-toggle="tooltip" title="Edit"
+                                                            {{-- <a href="{{route('admin.product.edit', $prod->id) }}" data-toggle="tooltip" title="Edit"
                                                                 class="btn btn-link btn-simple-primary btn-lg"
                                                                 data-original-title="Edit" control-id="ControlID-16">
                                                                 <i class="fa fa-edit" style="color:grey;"></i>
@@ -99,22 +98,10 @@
                                                                 class="btn btn-link btn-simple-danger"
                                                                 data-original-title="Delete" control-id="ControlID-17">
                                                                 <i class="fa fa-trash" style="color:red;"></i>
-                                                            </button>
-                                                        @else
-                                                            <a href="{{route('user.product.detail', $prod->id) }}" data-toggle="tooltip" title="Detail"
-                                                                class="btn btn-link btn-simple-primary btn-lg"
-                                                                data-original-title="Detail" control-id="ControlID-16">
-                                                                <i class="fa fa-eye"></i>
-                                                            </a>
-                                                            <a href="{{route('user.product.edit', $prod->id) }}" data-toggle="tooltip" title="Edit"
-                                                                class="btn btn-link btn-simple-primary btn-lg"
-                                                                data-original-title="Edit" control-id="ControlID-16">
-                                                                <i class="fa fa-edit" style="color:grey;"></i>
-                                                            </a>
-                                                        @endif
+                                                            </button> --}}
                                                         </div>
                                                     </center>
-                                                </td> --}}
+                                                </td>
                                             </tr>
                                         @endforeach
                                         </tbody>

@@ -29,7 +29,7 @@
 <script src="{{ asset('js/demo.js') }}"></script>
 <script src="{{url('js/plugin/inputmask/jquery.inputmask.bundle.js')}}"></script>
 
-<script type="text/javascript"> 
+<script type="text/javascript">
 
     $('.numeric').inputmask({
         alias:"numeric",

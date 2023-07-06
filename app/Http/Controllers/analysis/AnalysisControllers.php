@@ -28,9 +28,22 @@ class AnalysisControllers extends Controller
     public function index()
     {
 
+        $year = date('Y');
+        $month = date('m', strtotime('-1 month'));
+        $check = Analysis::where('month', $month)
+                ->where('year', $year)
+                ->first();
+
+        if($check){
+            $disabled = 'disabled';
+        }else{
+            $disabled = '';
+        }
+
         return view('analysis.index', [
             "title" => "Analysis",
-            "analysis" => Analysis::orderBy('month', 'DESC')->where('deleted_at',null)->get()
+            "analysis" => Analysis::orderBy('month', 'DESC')->where('deleted_at',null)->get(),
+            'disabled' => $disabled
         ]);
     }
 
@@ -43,6 +56,8 @@ class AnalysisControllers extends Controller
 
         $data['title'] = "Add Analysis";
         $data['url'] = 'store';
+        $data['month'] = $month;
+        $data['year'] = $year;
         $data['details'] = DetailOrder::selectRaw('
                                     product.id as id_product,
                                     product.product_name,
@@ -67,91 +82,41 @@ class AnalysisControllers extends Controller
         date_default_timezone_set("Asia/Jakarta");
         $datenow = date('Y-m-d H:i:s');
 
-        $total_arr = count($req->product_id);
-
-        $orders = Order::create([
-            'invoice' => $req->invoice,
-            'date_order' => $req->tgl,
-            'source_id' => $req->source_pay,
-            'type_buy' => $req->type_buy,
-            'entry_price' => $req->entry_price,
-            'total_base_price' => $req->base_price,
-            'total_sell_price' => $req->sell_price,
-            'platform_fee' => $req->cal_tax,
-            'profit' => $req->cal_profit,
-            'source_id' => $req->source_pay,
+        $analysis = Analysis::create([
+            'month' => $req->month,
+            'year' => $req->year,
             'created_at' => $datenow,
             'created_by' => Auth::user()->id
         ]);
 
-        if($orders){
-
-            $total_arr = count($req->product_id);
+        if($analysis){
+            $total_arr = count($req->id_product);
 
             for($i = 0; $i<$total_arr; $i++){
-                $sell = $req->sell_price_arr[$i];
-                $sell = explode("Rp.", $sell);
-                $sell = array_pop($sell);
-                $sell = explode(".", $sell);
-                $total_sell = implode("", $sell);
+                // $sell = $req->sell_price_arr[$i];
+                // $sell = explode("Rp.", $sell);
+                // $sell = array_pop($sell);
+                // $sell = explode(".", $sell);
+                // $total_sell = implode("", $sell);
 
-                $base = $req->base_price_arr[$i];
-                $base = explode("Rp.", $base);
-                $base = array_pop($base);
-                $base = explode(".", $base);
-                $total_base = implode("", $base);
+                // $base = $req->base_price_arr[$i];
+                // $base = explode("Rp.", $base);
+                // $base = array_pop($base);
+                // $base = explode(".", $base);
+                // $total_base = implode("", $base);
 
-                $details = DetailOrder::create([
-                    'id_order' => $orders->id,
-                    'id_product' => $req->product_id[$i],
-                    'qty' => $req->qty[$i],
-                    'base_price_save' => $total_base,
-                    'selling_price_save' => $total_sell,
+                $details = DetailAnalysis::create([
+                    'id_analysis' => $analysis->id,
+                    'id_product' => $req->id_product[$i],
+                    'eoq_value' => $req->eoq[$i],
                     'created_at' => $datenow
                 ]);
 
-                if($details){
-
-                    $get_prods = Product::where('id', $req->product_id[$i])
-                                ->first();
-
-                    $new_update_stock = $get_prods->stock - $req->qty[$i];
-
-                    if($new_update_stock == 0){
-
-                       $update_stock = Product::where('id', $req->product_id[$i])
-                                        ->update([
-                                            'stock' => $new_update_stock,
-                                            'status' => 'Inactive',
-                                            'updated_at' => $datenow,
-                                            'updated_by' => Auth::user()->id
-                                        ]);
-
-                    }else{
-
-                        $update_stock = Product::where('id', $req->product_id[$i])
-                                        ->update([
-                                            'stock' => $new_update_stock,
-                                            'updated_at' => $datenow,
-                                            'updated_by' => Auth::user()->id
-                                        ]);
-
-                    }
-
-                }
-
             }
 
-            if($update_stock){
+            if($details){
 
-                if(Auth::guard('admin')->check()){
-
-                    return redirect()->route('admin.order.index')->with(['success' => 'Data successfully stored!']);
-                }else{
-
-                    return redirect()->route('user.order.index')->with(['success' => 'Data successfully stored!']);
-
-                }
+                return redirect()->route('admin.analysis.index')->with(['success' => 'Data successfully stored!']);
 
             }
 
@@ -162,22 +127,12 @@ class AnalysisControllers extends Controller
     // Detail Data View by id
     public function detail($id)
     {
-        $data['title'] = "Detail Order";
+        $data['title'] = "Detail Analysis";
         $data['disabled_'] = 'disabled';
         $data['url'] = 'create';
-        $data['orders'] = Order::where('id', $id)
-                            ->first();
-        $data['details_order'] = DetailOrder::with('product')
-                                ->where('id_order', $id)
-                                ->get();
-        $data['products'] = Product::orderBy('product_name', 'asc')
+        $data['details'] = DetailAnalysis::where('id', $id)
                             ->get();
-        $data['sources'] = Source::orderBy('id', 'asc')
-                            ->get();
-        $data['types'] = Type::orderBy('id', 'asc')
-                        ->where('deleted_at', null)
-                        ->get();
-        return view('order.create', $data);
+        return view('analysis.create', $data);
     }
 
     // Edit Data View by id

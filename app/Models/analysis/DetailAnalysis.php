@@ -19,4 +19,9 @@ class DetailAnalysis extends Model
       {
         return $this->belongsTo('App\Models\analysis\Analysis', 'id_analysis', 'id');
       }
+
+       public function product()
+      {
+        return $this->belongsTo('App\Models\product\Product', 'id_product', 'id');
+      }
   }
