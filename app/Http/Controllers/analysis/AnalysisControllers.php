@@ -72,6 +72,32 @@ class AnalysisControllers extends Controller
                                 ->groupBy('product.id')
                                 ->groupBy('product.product_name')
                                 ->get();
+
+       $data_prods = DetailOrder::selectRaw('
+                                product.id as id_product,
+                                product.product_name
+                            ')
+                            ->join('orders', 'orders.id', '=', 'details_order.id_order')
+                            ->join('product', 'product.id', '=', 'details_order.id_product')
+                            ->whereMonth('orders.date_order', $month)
+                            ->whereYear('orders.date_order', $year)
+                            ->groupBy('product.id')
+                            ->groupBy('product.product_name')
+                            ->get();
+
+        foreach($data_prods as $prods){
+
+            $data['avg_stock'][] = DetailOrder::selectRaw('
+                            AVG(details_order.qty) as avg_qty
+                        ')
+                        ->join('orders', 'orders.id', '=', 'details_order.id_order')
+                        ->where('details_order.id_product', $prods->id_product)
+                        ->whereMonth('orders.date_order', $month)
+                        ->whereYear('orders.date_order', $year)
+                        ->groupBy(DB::raw('MONTH(orders.date_order)'))
+                        ->first();
+
+        }
         $data['disabled_'] = '';
         return view('analysis.create', $data);
     }
