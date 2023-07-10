@@ -51,6 +51,8 @@ Route::namespace('App\Http\Controllers')->group(function (){
             Route::get('create', 'AnalysisControllers@create')->name('create');
             Route::post('store', 'AnalysisControllers@store')->name('store');
             Route::get('detail/{id}', 'AnalysisControllers@detail')->name('detail');
+            Route::get('edit/{id}', 'AnalysisControllers@edit')->name('edit');
+            Route::post('update', 'AnalysisControllers@update')->name('update');
             Route::post('delete', 'AnalysisControllers@delete')->name('delete');
         });
 

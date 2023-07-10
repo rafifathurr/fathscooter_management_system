@@ -128,6 +128,8 @@ class AnalysisControllers extends Controller
                     'setupcost' => $req->setupcost[$i],
                     'holdingcost' => $req->holdingcost[$i],
                     'eoq_value' => $req->eoq[$i],
+                    'avg_sales' => $req->avg_qty[$i],
+                    'safety_stock' => $req->safety_stock[$i],
                     'created_at' => $datenow
                 ]);
 
@@ -136,6 +138,83 @@ class AnalysisControllers extends Controller
             if($details){
 
                 return redirect()->route('admin.analysis.index')->with(['success' => 'Data successfully stored!']);
+
+            }
+
+        }
+
+    }
+
+    // Edit Data View by id
+    public function edit($id)
+    {
+        date_default_timezone_set("Asia/Jakarta");
+        $year = date('Y');
+        $month = date('m', strtotime('-1 month'));
+
+        $data['month'] = $month;
+        $data['year'] = $year;
+        $data['title'] = "Edit Analysis";
+        $data['disabled_'] = 'disabled';
+        $data['url'] = 'update';
+        $data['analysis'] = Analysis::where('id', $id)
+                                ->first();
+
+        $data['details'] = DetailAnalysis::with('product')
+                            ->where('id_analysis', $id)
+                            ->get();
+
+        $data['avg_stock'] = DetailAnalysis::with('product')
+                            ->selectRaw('
+                                avg_sales as avg_qty
+                            ')
+                            ->where('id_analysis', $id)
+                            ->get();
+        
+        return view('analysis.create', $data);
+    }
+
+    // Store Function to Database
+    public function update(Request $req)
+    {
+
+        date_default_timezone_set("Asia/Jakarta");
+        $datenow = date('Y-m-d H:i:s');
+
+        
+
+        $analysis = Analysis::where('id', $req->id_analysis)
+                    ->update([
+                        'month' => $req->month,
+                        'year' => $req->year,
+                        'updated_at' => $datenow,
+                        'updated_by' => Auth::user()->id
+                    ]);
+
+        $check = DetailAnalysis::where('id_analysis', $req->id_analysis)->get();
+
+        if($analysis){
+            $total_arr = count($req->id_product);
+
+            for($i = 0; $i<$total_arr; $i++){
+                $details = DetailAnalysis::where('id_analysis', $req->id_analysis)
+                ->where('id', $check[$i]->id)
+                ->update([
+                    'id_product' => $req->id_product[$i],
+                    'demand' => $req->demandpermonth[$i],
+                    'setupcost' => $req->setupcost[$i],
+                    'holdingcost' => $req->holdingcost[$i],
+                    'eoq_value' => $req->eoq[$i],
+                    'avg_sales' => $req->avg_qty[$i],
+                    'safety_stock' => $req->safety_stock[$i],
+                    'updated_at' => $datenow
+                ]);
+
+            }
+
+            if($details){
+
+                return redirect()->route('admin.analysis.index')->with(['success' => 'Data successfully updated!']);
 
             }
 

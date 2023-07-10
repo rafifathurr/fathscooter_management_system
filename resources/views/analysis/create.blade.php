@@ -28,6 +28,7 @@
                             <div class="box box-primary">
                                 <div class="box-body">
                                     <h4><b>EOQ Analysis</b></h4>
+                                    <input type="hidden" name="id_analysis" @isset($analysis) value="{{ $analysis->id }}" @endisset>
                                     <input type="hidden" name="month" @isset($month) value="{{ $month }}" @endisset>
                                     <input type="hidden" name="year" @isset($year) value="{{ $year }}" @endisset>
                                     {{ csrf_field() }}
@@ -69,21 +70,25 @@
                                                 </td>
                                                 <td style="text-align:left;">
                                                     <input type="hidden" name="id_product[]" value="{{$detail->id_product}}">
-                                                    {{  $detail->product_name }}
+                                                    @isset($detail->product_name)
+                                                        {{  $detail->product_name }}
+                                                    @else
+                                                        {{ $detail->product->product_name }}
+                                                    @endisset
                                                 </td>
                                                 <td style="text-align:center;">
-                                                    <input type="hidden" id="demandpermonth_data" value="{{$detail->demandpermonth}}" readonly required>
-                                                    <input type="number" class='form-control numeric' name="demandpermonth[]" value="{{$detail->demandpermonth}}" id="demandpermonth_{{ $detail->id_product }}" readonly required>
+                                                    <input type="hidden" id="demandpermonth_data" @isset($detail->demandpermonth) value="{{$detail->demandpermonth}}" @else value="{{$detail->demand}}" @endisset readonly required>
+                                                    <input type="number" class='form-control numeric' name="demandpermonth[]" @isset($detail->demandpermonth) value="{{$detail->demandpermonth}}" @else value="{{$detail->demand}}" @endisset id="demandpermonth_{{ $detail->id_product }}" readonly required>
                                                 </td>
                                                 <td style="text-align:center;">
                                                     <input type="hidden" id="setupcost_data" value="{{$detail->setupcost}}">
                                                     <input type="text" class='form-control numeric' name="setupcost[]" id="setupcost_{{ $detail->id_product }}" value="{{number_format((float)$detail->setupcost, 0, '.', '')}}" readonly required>
                                                 </td>
                                                 <td style="text-align:center;">
-                                                    <input type="text" class='form-control numeric' min=0 name="holdingcost[]" id="holdingcost_{{ $detail->id_product }}" oninput="calculate_eoq({{$detail->id_product}})" required>
+                                                    <input type="text" class='form-control numeric' min=0 @isset($detail->holdingcost) value="{{$detail->holdingcost}}" @endisset name="holdingcost[]" id="holdingcost_{{ $detail->id_product }}" oninput="calculate_eoq({{$detail->id_product}})" required>
                                                 </td>
                                                 <td style="text-align:center;">
-                                                    <input type="number" class='form-control numeric' name="eoq[]" id="eoq_{{ $detail->id_product }}" readonly required>
+                                                    <input type="number" class='form-control numeric' name="eoq[]" @isset($detail->eoq_value) value="{{$detail->eoq_value}}" @endisset id="eoq_{{ $detail->id_product }}" readonly required>
                                                 </td>
                                                 <td>
                                                     <center>
@@ -97,7 +102,7 @@
                                         @else
                                             @foreach($details as $key=>$detail)
                                                 <tr id='{{ $detail->id_product }}'>
-                                                    <td style="text-align:left;">
+                                                    <td style="text-align:center;">
                                                         {{  $key+1 }}
                                                     </td>
                                                     <td style="text-align:left;">
@@ -139,8 +144,6 @@
                             <div class="box box-primary">
                                 <div class="box-body">
                                     <h4><b>Safety Stocks Analysis</b></h4>
-                                    <input type="hidden" name="month" @isset($month) value="{{ $month }}" @endisset>
-                                    <input type="hidden" name="year" @isset($year) value="{{ $year }}" @endisset>
                                     {{ csrf_field() }}
                                     <br>
                                     <table id="dt-detail" class="table table-striped table-bordered table-hover" width="100%" style="text-align: center;">
@@ -153,55 +156,34 @@
                                                     <center>Products</center>
                                                 </th>
                                                 <th style="vertical-align: middle;" width="15%">
-                                                    <center>Total Demand</center>
+                                                    <center>Average Daily Sales</center>
                                                 </th>
                                                 <th style="vertical-align: middle;" width="15%">
-                                                    <center>Base Price Average</center>
+                                                    <center>Safety Stock</center>
                                                 </th>
-                                                <th style="vertical-align: middle;" width="15%">
-                                                    <center>Holding Cost</center>
-                                                </th>
-                                                <th style="vertical-align: middle;" width="15%">
-                                                    <center>EOQ</center>
-                                                </th>
-                                                @if ($title == 'Add Analysis' || $title == 'Edit Analysis')
-                                                <th style="vertical-align: middle;" width="10%">
-                                                    <center>Action</center>
-                                                </th>
-                                                @endif
                                             </tr>
                                         </thead>
                                         <tbody id="table_body">
                                         @if($title == 'Edit Analysis' || $title == 'Add Analysis')
                                             @foreach($details as $key=>$detail)
                                             <tr id='{{ $detail->id_product }}'>
-                                                <td style="text-align:left;">
+                                                <td style="text-align:center;">
                                                     {{  $key+1 }}
                                                 </td>
                                                 <td style="text-align:left;">
-                                                    <input type="hidden" name="id_product[]" value="{{$detail->id_product}}">
-                                                    {{  $detail->product_name }}
+                                                    <input type="hidden" value="{{$detail->id_product}}">
+                                                    @isset($detail->product_name)
+                                                        {{  $detail->product_name }}
+                                                    @else
+                                                        {{ $detail->product->product_name }}
+                                                    @endisset
                                                 </td>
                                                 <td style="text-align:center;">
-                                                    <input type="hidden" id="demandpermonth_data" value="{{$detail->demandpermonth}}" readonly required>
-                                                    <input type="number" class='form-control numeric' name="demandpermonth[]" value="{{$detail->demandpermonth}}" id="demandpermonth_{{ $detail->id_product }}" readonly required>
+                                                    <input type="hidden" id="avg_qty" value="{{round($avg_stock[$key]->avg_qty,0)}}" readonly required>
+                                                    <input type="number" class='form-control numeric' name="avg_qty[]" value="{{round($avg_stock[$key]->avg_qty,0)}}" id="avg_qty{{ $detail->id_product }}" readonly required>
                                                 </td>
                                                 <td style="text-align:center;">
-                                                    <input type="hidden" id="setupcost_data" value="{{$detail->setupcost}}">
-                                                    <input type="text" class='form-control numeric' name="setupcost[]" id="setupcost_{{ $detail->id_product }}" value="{{number_format((float)$detail->setupcost, 0, '.', '')}}" readonly required>
-                                                </td>
-                                                <td style="text-align:center;">
-                                                    <input type="text" class='form-control numeric' min=0 name="holdingcost[]" id="holdingcost_{{ $detail->id_product }}" oninput="calculate_eoq({{$detail->id_product}})" required>
-                                                </td>
-                                                <td style="text-align:center;">
-                                                    <input type="number" class='form-control numeric' name="eoq[]" id="eoq_{{ $detail->id_product }}" readonly required>
-                                                </td>
-                                                <td>
-                                                    <center>
-                                                        <button type='button' class='btn btn-link btn-simple-danger' onclick="reset_data({{ $detail->id_product }})" title='Reset'>
-                                                            <i style="color:black; font-weight:bold;" class="icon-refresh"></i>
-                                                        </button>
-                                                    </center>
+                                                    <input type="number" class='form-control numeric' name="safety_stock[]" value="{{cal_days_in_month(CAL_GREGORIAN, $month , $year)*round($avg_stock[$key]->avg_qty,0)}}" id="safety_stock{{ $detail->id_product }}" readonly required>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -217,19 +199,13 @@
                                                     </td>
                                                     <td>
                                                         <center>
-                                                            {{$detail->demand}}
+                                                            {{$detail->avg_sales}}
                                                         </center>
-                                                    </td>
-                                                    <td style="text-align:right;">
-                                                        Rp. {{number_format($detail->setupcost,0,',','.')}}
-                                                    </td>
-                                                    <td style="text-align:right;">
-                                                        Rp. {{number_format($detail->holdingcost,0,',','.')}}
                                                     </td>
                                                     <td style="text-align:right;">
                                                         <center>
                                                             <b>
-                                                                {{ $detail->eoq_value }}
+                                                                {{ $detail->safety_stock }}
                                                             </b>
                                                         </center>
                                                     </td>
