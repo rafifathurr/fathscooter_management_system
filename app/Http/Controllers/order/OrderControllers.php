@@ -123,8 +123,8 @@ class OrderControllers extends Controller
                     'id_order' => $orders->id,
                     'id_product' => $req->product_id[$i],
                     'qty' => $req->qty[$i],
-                    'base_price_save' => $req->base_price_data,
-                    'selling_price_save' => $req->sell_price_data,
+                    'base_price_save' => $req->base_price_data[$i],
+                    'selling_price_save' => $req->sell_price_data[$i],
                     'created_at' => $datenow
                 ]);
 

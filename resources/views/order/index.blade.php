@@ -226,11 +226,11 @@
                                                                 data-original-title="Detail" control-id="ControlID-16">
                                                                 <i class="fa fa-eye"></i>
                                                             </a>
-                                                            {{-- <a href="{{route('user.order.edit', $order->id) }}" data-toggle="tooltip" title="Edit"
+                                                            <a href="{{route('user.order.edit', $order->id) }}" data-toggle="tooltip" title="Edit"
                                                                 class="btn btn-link btn-simple-primary btn-lg"
                                                                 data-original-title="Edit" control-id="ControlID-16">
                                                                 <i class="fa fa-edit" style="color:grey;"></i>
-                                                            </a> --}}
+                                                            </a>
                                                             <button type="submit" onclick="destroy({{$order->id}})" data-toggle="tooltip" title="Delete"
                                                                 class="btn btn-link btn-simple-danger"
                                                                 data-original-title="Delete" control-id="ControlID-17">

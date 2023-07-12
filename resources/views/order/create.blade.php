@@ -129,7 +129,7 @@
                                                             <label class="col-md-12">Qty <span style="color: red;">*</span></label>
                                                             <div class="col-md-12">
                                                                 <input type="hidden" min="0" name="stock" id="stock" class="form-control"
-                                                                    srequired="" {{$disabled_}}>
+                                                                    required="" {{$disabled_}}>
                                                                 <input type="number" min="0" name="qty" id="qty" oninput="price_change()" class="form-control"
                                                                     required="" {{$disabled_}}>
                                                             </div>
@@ -190,16 +190,23 @@
                                                             @foreach($details_order as $details)
                                                             <tr id='{{ $details->id_product }}'>
                                                                 <td style="text-align:left;">
+                                                                    <input type='hidden' name='product_id[]' id='product_id_{{ $details->id_product }}' value='{{ $details->id_product }}' readonly>
                                                                     {{  $details->product->product_name  }}
                                                                 </td>
-                                                                <td style="text-align:right;">
-                                                                    {{  $details->qty  }}
+                                                                <td>
+                                                                    <center>
+                                                                        <input type='number' style='width:100px !important; height:25px !important; text-align:center;' min=0 class='form-control' name='qty[]' id='qty_{{  $details->id_product  }}' value='{{  $details->qty  }}' oninput ='price_update({{  $details->id_product  }})'>
+                                                                    </center>
                                                                 </td>
-                                                                <td style="text-align:right;">
-                                                                    Rp. {{number_format(($details->qty * $details->base_price_save),0,',','.')}}
+                                                                <td>
+                                                                    <center>
+                                                                        <input type='text' style='width:100px !important; height:25px !important; text-align:center;' class='form-control numeric' name='base_price_arr[]' id='base_price_{{  $details->id_product  }}' value='{{ ($details->qty * $details->base_price_save) }}' readonly>
+                                                                    </center>
                                                                 </td>
-                                                                <td style="text-align:right;">
-                                                                    Rp. {{number_format($details->selling_price_save,0,',','.')}}
+                                                                <td>
+                                                                    <center>
+                                                                        <input type='text' style='width:100px !important; height:25px !important; text-align:center;' class='form-control numeric' name='sell_price_arr[]' id='sell_price_{{  $details->id_product  }}' value='{{ $details->selling_price_save }}' readonly>
+                                                                    </center>
                                                                 </td>
                                                                 <td>
                                                                     <center>
@@ -630,9 +637,11 @@
                             $('#sell_price_').val(sell_price);
                             $('#sell_price').val(sell_price);
 
+                            @if($title == 'Add Order')
                             let input = document.getElementById("qty");
                             input.setAttribute("min",1);
                             input.setAttribute("max",max_qty);
+                            @endif
                         }
                     });
                 }
