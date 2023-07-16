@@ -3,7 +3,7 @@
     <title>FathScooter Management - {{($title)}}</title>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+
     <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
     <link rel="icon" href="{{ asset('img/fath_2.png') }}" type="image/x-icon" />
     <!-- Fonts and icons -->
@@ -12,7 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.60/inputmask/jquery.inputmask.js"></script>
     <script>
         WebFont.load({
-            google: {   
+            google: {
                 "families": ["Lato:300,400,700,900"]
             },
             custom: {
@@ -35,6 +35,10 @@
             background-color:white;
             border-radius:5px;
             padding:5px;
+        }
+
+        .btn-primary{
+            color: white !important;
         }
     </style>
     <!-- CSS Files -->

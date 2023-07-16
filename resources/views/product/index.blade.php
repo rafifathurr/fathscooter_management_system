@@ -129,7 +129,11 @@
                                                     @endif
                                                 </td>
                                                 <td>
+                                                    @if($prod->stock <= 2)
+                                                   <center style="color:red !important;">{{$prod->stock}}</center>
+                                                   @else
                                                    <center>{{$prod->stock}}</center>
+                                                   @endif
                                                 </td>
                                                 <td>
                                                     <center>
@@ -207,7 +211,7 @@
           if (willDelete) {
           @if(Auth::guard('admin')->check())
             $.post("{{route('admin.product.delete')}}",
-            { 
+            {
                 id:id,
                 _token:token
             },function(data){
@@ -215,7 +219,7 @@
             })
           @else
            $.post("{{route('user.product.delete')}}",
-           { 
+           {
                 id:id,
                 _token:token
             },function(data){

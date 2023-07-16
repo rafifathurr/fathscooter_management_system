@@ -270,7 +270,7 @@ class OrderControllers extends Controller
     // Index View and Scope Data
     public function export(Request $req)
     {
-        date_default_timezone_set("Asia/Bangkok");
+
         if($req->bulan==0){
             $orders = Order::with('details.product', 'source')
                         ->whereYear('date_order', $req->tahun)
@@ -291,13 +291,32 @@ class OrderControllers extends Controller
                 'year' => $req->tahun
             ];
 
+            // return view('order.export', $data);
             return Excel::download(new ReportOrderExport($data), 'Reports_Order_'.$req->tahun.'.xlsx');
+
         }else{
+
             $orders = Order::with('details.product', 'source')
                         ->whereYear('date_order', $req->tahun)
                         ->whereMonth('date_order', $req->bulan)
                         ->orderBy('date_order', 'ASC')
                         ->get();
+
+            // foreach($orders as $order){
+
+            //     $details[$order->id] = DetailOrder::selectRaw('
+            //                                 orders.id as id_order,
+            //                                 product.product_name
+            //                             ')
+            //                             ->join('orders', 'orders.id', '=', 'details_order.id_order')
+            //                             ->join('product', 'product.id', '=', 'details_order.id_product')
+            //                             ->where('orders.id', $order->id)
+            //                             ->groupBy('orders.id')
+            //                             ->groupBy('product.product_name')
+            //                             ->get();
+
+            // }
+
 
             $sum = Order::selectRaw("
                         SUM(entry_price) as total_income,
@@ -310,12 +329,16 @@ class OrderControllers extends Controller
             $data =  [
                 'success' => 'success',
                 'orders' => $orders,
+                // 'details' => $details,
                 'sum' => $sum,
                 'year' => $req->tahun,
                 'month' => $req->bulan
             ];
 
+            // return view('order.export', $data);
+
             return Excel::download(new ReportOrderExport($data), 'Reports_Order_'.date("F", mktime(0, 0, 0, $req->bulan, 1)).'_'.$req->tahun.'.xlsx');
+
         }
 
     }

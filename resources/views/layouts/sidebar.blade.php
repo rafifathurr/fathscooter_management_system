@@ -27,6 +27,73 @@
         </div>
         <div class="container-fluid">
             <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+                <?php
+
+                    $getnotif = DB::table('product')
+                                ->where('stock', '<=', 2)
+                                ->where('deleted_at',null)
+                                ->orderBy('updated_at', 'desc');
+
+                    $notif_all = $getnotif->limit(5)->get();
+                ?>
+                @if(Auth::guard('admin')->check())
+                <li class="nav-item dropdown hidden-caret">
+                    <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-bell"></i>
+                        <span class="notification">
+                            <b>
+                                {{ $getnotif->count() }}
+                            </b>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown" style="min-width: 22rem !important;">
+                        <li>
+                            <div class="dropdown-title">Notifications</div>
+                        </li>
+                        @if( $getnotif->count() != 0)
+                        <li>
+                            <div class="notif-scroll scrollbar-outer">
+                                <div class="notif-center">
+
+                                        @foreach($notif_all as $notif)
+                                        <a href="{{ route('admin.product.index') }}">
+                                            <div class="notif-icon notif-danger">
+                                                <i class="fa fa-exclamation-triangle"></i>
+                                            </div>
+                                            <div class="notif-content">
+                                                <span class="block">
+                                                    <b>
+                                                        {{ $notif->product_name }}
+                                                    </b>
+                                                </span>
+                                                <span class="block">
+                                                    Stock is Running Out!
+                                                </span>
+                                            </div>
+                                        </a>
+                                        @endforeach
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <a class="see-all" href="{{route('admin.notif.index')}}">See All Notifications<i class="fa fa-angle-right"></i> </a>
+                        </li>
+                        @else
+                        <li>
+                            <div class="notif-scroll scrollbar-outer">
+                                <div class="notif-center">
+                                    <span class="see-all" style="margin-left:auto !important; margin-right:auto !important; justify-content:center !important">
+                                        <center>
+                                            No Notifications Available
+                                        </center>
+                                    </span>
+                                </div>
+                            </div>
+                        </li>
+                        @endif
+                    </ul>
+                </li>
+                @endif
                 <li class="nav-item dropdown hidden-caret">
                     <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
                         <div class="avatar-sm">

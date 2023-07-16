@@ -11,11 +11,37 @@
  Target Server Version : 80030 (8.0.30)
  File Encoding         : 65001
 
- Date: 19/06/2023 06:19:35
+ Date: 15/07/2023 23:14:47
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for analysis
+-- ----------------------------
+DROP TABLE IF EXISTS `analysis`;
+CREATE TABLE `analysis`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `month` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `year` int NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_by` int NULL DEFAULT NULL,
+  `updated_by` int NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of analysis
+-- ----------------------------
+INSERT INTO `analysis` VALUES (1, '06', 2023, '2023-07-08 22:14:08', '2023-07-09 04:44:12', '2023-07-09 04:44:12', 1, 1);
+INSERT INTO `analysis` VALUES (2, '06', 2023, '2023-07-11 05:51:33', '2023-07-15 09:05:03', '2023-07-15 09:05:03', 1, 1);
+INSERT INTO `analysis` VALUES (3, '06', 2023, '2023-07-15 17:46:22', '2023-07-15 10:58:12', '2023-07-15 10:58:12', 1, 1);
+INSERT INTO `analysis` VALUES (4, '06', 2023, '2023-07-15 18:03:21', '2023-07-15 11:04:40', '2023-07-15 11:04:40', 1, 1);
+INSERT INTO `analysis` VALUES (5, '06', 2023, '2023-07-15 18:05:20', '2023-07-15 11:16:18', '2023-07-15 11:16:18', 1, 1);
+INSERT INTO `analysis` VALUES (6, '06', 2023, '2023-07-15 18:57:45', NULL, NULL, 1, NULL);
 
 -- ----------------------------
 -- Table structure for category_prod
@@ -41,6 +67,45 @@ INSERT INTO `category_prod` VALUES (5, 'Accessories', 'Acc', '2022-11-18 13:49:5
 INSERT INTO `category_prod` VALUES (11, 'Brake System', NULL, '2023-04-29 22:53:36', NULL, NULL);
 
 -- ----------------------------
+-- Table structure for detail_analysis
+-- ----------------------------
+DROP TABLE IF EXISTS `detail_analysis`;
+CREATE TABLE `detail_analysis`  (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_analysis` int NULL DEFAULT NULL,
+  `id_product` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `demand` int NULL DEFAULT NULL,
+  `setupcost` int NULL DEFAULT NULL,
+  `holdingcost` int NULL DEFAULT NULL,
+  `eoq_value` double NULL DEFAULT NULL,
+  `avg_sales` int NULL DEFAULT NULL,
+  `max_sales` int NULL DEFAULT NULL,
+  `avg_lead_time` int NULL DEFAULT NULL,
+  `max_lead_time` int NULL DEFAULT NULL,
+  `safety_stock` double NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of detail_analysis
+-- ----------------------------
+INSERT INTO `detail_analysis` VALUES (1, 1, '9', 3, 110000, 5000, 11.49, NULL, NULL, NULL, NULL, NULL, '2023-07-08 22:14:08', '2023-07-09 04:44:12', '2023-07-09 04:44:12');
+INSERT INTO `detail_analysis` VALUES (2, 1, '8', 5, 145500, 5000, 17.06, NULL, NULL, NULL, NULL, NULL, '2023-07-08 22:14:08', '2023-07-09 04:44:12', '2023-07-09 04:44:12');
+INSERT INTO `detail_analysis` VALUES (3, 2, '9', 3, 110000, 20000, 5.74, 2, NULL, NULL, NULL, 60, '2023-07-11 05:51:33', '2023-07-15 09:05:03', '2023-07-15 09:05:03');
+INSERT INTO `detail_analysis` VALUES (4, 2, '8', 5, 145500, 10000, 12.06, 1, NULL, NULL, NULL, 30, '2023-07-11 05:51:33', '2023-07-15 09:05:03', '2023-07-15 09:05:03');
+INSERT INTO `detail_analysis` VALUES (5, 3, '9', 3, 110000, 10000, 8.12, 2, 2, 1, 1, 0, '2023-07-15 17:46:22', '2023-07-15 10:58:12', '2023-07-15 10:58:12');
+INSERT INTO `detail_analysis` VALUES (6, 3, '8', 5, 145500, 10000, 12.06, 1, 2, 1, 1, 1, '2023-07-15 17:46:22', '2023-07-15 10:58:12', '2023-07-15 10:58:12');
+INSERT INTO `detail_analysis` VALUES (7, 4, '9', 3, 110000, NULL, NULL, 2, 2, 1, 1, 0, '2023-07-15 18:03:21', '2023-07-15 11:04:40', '2023-07-15 11:04:40');
+INSERT INTO `detail_analysis` VALUES (8, 4, '8', 5, 145500, NULL, NULL, 1, 2, 1, 1, 1, '2023-07-15 18:03:21', '2023-07-15 11:04:40', '2023-07-15 11:04:40');
+INSERT INTO `detail_analysis` VALUES (9, 5, '9', 3, 110000, 5000, 11.49, 2, 2, 1, 2, 2, '2023-07-15 18:05:20', '2023-07-15 11:16:18', '2023-07-15 11:16:18');
+INSERT INTO `detail_analysis` VALUES (10, 5, '8', 5, 145500, 5000, 17.06, 1, 2, 1, 3, 5, '2023-07-15 18:05:20', '2023-07-15 11:16:18', '2023-07-15 11:16:18');
+INSERT INTO `detail_analysis` VALUES (11, 6, '9', 7, 110000, 5000, 17.55, 2, 3, 1, 1, 1, '2023-07-15 18:57:45', NULL, NULL);
+INSERT INTO `detail_analysis` VALUES (12, 6, '8', 6, 145500, 5000, 18.69, 1, 2, 1, 1, 1, '2023-07-15 18:57:45', NULL, NULL);
+
+-- ----------------------------
 -- Table structure for details_order
 -- ----------------------------
 DROP TABLE IF EXISTS `details_order`;
@@ -55,17 +120,24 @@ CREATE TABLE `details_order`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of details_order
 -- ----------------------------
 INSERT INTO `details_order` VALUES (1, 1, 9, 1, 110000, 150000, '2023-06-18 20:28:31', NULL, NULL);
-INSERT INTO `details_order` VALUES (2, 1, 8, 2, 291000, 330000, '2023-06-18 20:28:31', NULL, NULL);
+INSERT INTO `details_order` VALUES (2, 1, 8, 2, 145500, 330000, '2023-06-18 20:28:31', NULL, NULL);
 INSERT INTO `details_order` VALUES (3, 2, 8, 1, 145500, 165000, '2023-06-18 20:36:56', NULL, NULL);
 INSERT INTO `details_order` VALUES (4, 3, 8, 1, 145500, 165000, '2023-06-18 21:30:34', NULL, NULL);
 INSERT INTO `details_order` VALUES (5, 4, 8, 1, 145500, 165000, '2023-06-19 06:16:56', NULL, NULL);
-INSERT INTO `details_order` VALUES (6, 4, 9, 2, 220000, 300000, '2023-06-19 06:16:56', NULL, NULL);
+INSERT INTO `details_order` VALUES (6, 4, 9, 2, 110000, 300000, '2023-06-19 06:16:56', NULL, NULL);
+INSERT INTO `details_order` VALUES (7, 6, 10, 1, 2500000, 3000000, '2023-07-12 07:08:39', NULL, NULL);
+INSERT INTO `details_order` VALUES (8, 7, 9, 2, 110000, 150000, '2023-07-12 07:10:34', NULL, NULL);
+INSERT INTO `details_order` VALUES (9, 7, 8, 1, 145500, 165000, '2023-07-12 07:10:34', NULL, NULL);
+INSERT INTO `details_order` VALUES (10, 8, 9, 3, 110000, 150000, '2023-07-15 18:28:19', NULL, NULL);
+INSERT INTO `details_order` VALUES (11, 9, 9, 1, 110000, 150000, '2023-07-15 18:29:42', NULL, NULL);
+INSERT INTO `details_order` VALUES (12, 10, 9, 3, 110000, 150000, '2023-07-15 18:30:24', NULL, NULL);
+INSERT INTO `details_order` VALUES (13, 10, 8, 1, 145500, 165000, '2023-07-15 18:30:24', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for failed_jobs
@@ -127,7 +199,7 @@ CREATE TABLE `orders`  (
   `created_by` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `updated_by` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of orders
@@ -136,6 +208,11 @@ INSERT INTO `orders` VALUES (1, '1234DDE', '2023-06-18', 10, 1, 470000, 401000, 
 INSERT INTO `orders` VALUES (2, 'INV/18/06/2023/TOKOPEDIA', '2023-06-18', 9, 1, 160000, 145500, 165000, 5000, 14500, '2023-06-18 20:36:56', NULL, NULL, '1', NULL);
 INSERT INTO `orders` VALUES (3, '2324', '2023-06-18', 9, 1, 150000, 145500, 165000, 15000, 4500, '2023-06-18 21:30:34', NULL, NULL, '2', NULL);
 INSERT INTO `orders` VALUES (4, '12DSD', '2023-06-19', 9, 1, 450000, 365500, 465000, 15000, 84500, '2023-06-19 06:16:56', NULL, NULL, '1', NULL);
+INSERT INTO `orders` VALUES (6, '234234', '2023-07-12', 11, 1, 2900000, 2500000, 3000000, 100000, 400000, '2023-07-12 07:08:39', NULL, NULL, '1', NULL);
+INSERT INTO `orders` VALUES (7, '424dff', '2023-07-12', 9, 1, 400000, 365500, 465000, 65000, 34500, '2023-07-12 07:10:34', NULL, NULL, '1', NULL);
+INSERT INTO `orders` VALUES (8, '4143DFF', '2023-07-15', 9, 1, 500000, 330000, 450000, 0, 170000, '2023-07-15 18:28:19', NULL, NULL, '1', NULL);
+INSERT INTO `orders` VALUES (9, '1221DFFEE', '2023-06-20', 10, 1, 150000, 110000, 150000, 0, 40000, '2023-07-15 18:29:42', NULL, NULL, '1', NULL);
+INSERT INTO `orders` VALUES (10, '212AD', '2023-06-22', 9, 1, 643000, 475500, 615000, 0, 167500, '2023-07-15 18:30:24', NULL, NULL, '1', NULL);
 
 -- ----------------------------
 -- Table structure for orders_old
@@ -225,13 +302,15 @@ CREATE TABLE `product`  (
   `created_by` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `updated_by` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of product
 -- ----------------------------
-INSERT INTO `product` VALUES (8, 'Kabel Rem Vespa Primavera / Sprint Iget', 11, 1, '1C002832', 145500, 165000, '2', 'Active', NULL, NULL, '2023-04-29 22:50:22', '2023-06-19 06:16:56', NULL, '1', '1');
-INSERT INTO `product` VALUES (9, 'Kabel Rem Vespa Sprint / Primavera 3v', 11, 1, '1E34324', 110000, 150000, '3', 'Active', NULL, NULL, '2023-06-17 12:40:53', '2023-06-19 06:16:56', NULL, '1', '1');
+INSERT INTO `product` VALUES (8, 'Kabel Rem Vespa Primavera / Sprint Iget', 11, 1, '1C002832', 145500, 165000, '9', 'Active', NULL, NULL, '2023-04-29 22:50:22', '2023-07-15 18:30:24', NULL, '1', '1');
+INSERT INTO `product` VALUES (9, 'Kabel Rem Vespa Sprint / Primavera 3v', 11, 1, '1E34324', 110000, 150000, '1', 'Active', NULL, NULL, '2023-06-17 12:40:53', '2023-07-15 22:42:14', NULL, '1', '1');
+INSERT INTO `product` VALUES (10, 'Blok Seher Vespa 150 3v Iget', 1, 1, 'ADD4433', 2500000, 3000000, '1', 'Active', NULL, NULL, '2023-07-12 00:16:36', '2023-07-15 22:42:05', NULL, '1', '1');
+INSERT INTO `product` VALUES (11, 'ewrwer', 3, 1, 'ewrwer', NULL, NULL, '34', 'Active', NULL, NULL, '2023-07-15 18:17:31', '2023-07-15 11:17:36', '2023-07-15 11:17:36', '1', '1');
 
 -- ----------------------------
 -- Table structure for source_payment

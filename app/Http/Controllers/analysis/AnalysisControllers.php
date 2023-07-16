@@ -87,15 +87,16 @@ class AnalysisControllers extends Controller
 
         foreach($data_prods as $prods){
 
-            $data['avg_stock'][] = DetailOrder::selectRaw('
-                            AVG(details_order.qty) as avg_qty
-                        ')
-                        ->join('orders', 'orders.id', '=', 'details_order.id_order')
-                        ->where('details_order.id_product', $prods->id_product)
-                        ->whereMonth('orders.date_order', $month)
-                        ->whereYear('orders.date_order', $year)
-                        ->groupBy(DB::raw('MONTH(orders.date_order)'))
-                        ->first();
+            $data['details_2'][] = DetailOrder::selectRaw('
+                                    AVG(details_order.qty) as avg_sales,
+                                    MAX(details_order.qty) as max_sales
+                                ')
+                                ->join('orders', 'orders.id', '=', 'details_order.id_order')
+                                ->where('details_order.id_product', $prods->id_product)
+                                ->whereMonth('orders.date_order', $month)
+                                ->whereYear('orders.date_order', $year)
+                                ->groupBy(DB::raw('MONTH(orders.date_order)'))
+                                ->first();
 
         }
         $data['disabled_'] = '';
@@ -128,7 +129,10 @@ class AnalysisControllers extends Controller
                     'setupcost' => $req->setupcost[$i],
                     'holdingcost' => $req->holdingcost[$i],
                     'eoq_value' => $req->eoq[$i],
-                    'avg_sales' => $req->avg_qty[$i],
+                    'avg_sales' => $req->avg_sales[$i],
+                    'max_sales' => $req->max_sales[$i],
+                    'avg_lead_time' => $req->avg_lead_time[$i],
+                    'max_lead_time' => $req->max_lead_time[$i],
                     'safety_stock' => $req->safety_stock[$i],
                     'created_at' => $datenow
                 ]);
@@ -164,13 +168,10 @@ class AnalysisControllers extends Controller
                             ->where('id_analysis', $id)
                             ->get();
 
-        $data['avg_stock'] = DetailAnalysis::with('product')
-                            ->selectRaw('
-                                avg_sales as avg_qty
-                            ')
+        $data['details_2'] = DetailAnalysis::with('product')
                             ->where('id_analysis', $id)
                             ->get();
-        
+
         return view('analysis.create', $data);
     }
 
@@ -181,7 +182,7 @@ class AnalysisControllers extends Controller
         date_default_timezone_set("Asia/Jakarta");
         $datenow = date('Y-m-d H:i:s');
 
-        
+
 
         $analysis = Analysis::where('id', $req->id_analysis)
                     ->update([
@@ -205,7 +206,10 @@ class AnalysisControllers extends Controller
                     'setupcost' => $req->setupcost[$i],
                     'holdingcost' => $req->holdingcost[$i],
                     'eoq_value' => $req->eoq[$i],
-                    'avg_sales' => $req->avg_qty[$i],
+                    'avg_sales' => $req->avg_sales[$i],
+                    'max_sales' => $req->max_sales[$i],
+                    'avg_lead_time' => $req->avg_lead_time[$i],
+                    'max_lead_time' => $req->max_lead_time[$i],
                     'safety_stock' => $req->safety_stock[$i],
                     'updated_at' => $datenow
                 ]);

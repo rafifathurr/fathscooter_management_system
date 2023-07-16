@@ -92,7 +92,7 @@
                                                 </td>
                                                 <td>
                                                     <center>
-                                                        <button type='button' class='btn btn-link btn-simple-danger' onclick="reset_data({{ $detail->id_product }})" title='Reset'>
+                                                        <button type='button' class='btn btn-link btn-simple-danger' onclick="reset_data({{ $detail->id_product }}, 1)" title='Reset'>
                                                             <i style="color:black; font-weight:bold;" class="icon-refresh"></i>
                                                         </button>
                                                     </center>
@@ -152,15 +152,29 @@
                                                 <th style="vertical-align: middle;" width="5%">
                                                     <center>No</center>
                                                 </th>
-                                                <th style="vertical-align: middle;" width="25%">
+                                                <th style="vertical-align: middle;" width="23%">
                                                     <center>Products</center>
                                                 </th>
-                                                <th style="vertical-align: middle;" width="15%">
-                                                    <center>Average Daily Sales</center>
+                                                <th style="vertical-align: middle;" width="12%">
+                                                    <center>Max Daily Sales</center>
                                                 </th>
-                                                <th style="vertical-align: middle;" width="15%">
+                                                <th style="vertical-align: middle;" width="12%">
+                                                    <center>Avg Daily Sales</center>
+                                                </th>
+                                                <th style="vertical-align: middle;" width="14%">
+                                                    <center>Max Lead Time</center>
+                                                </th>
+                                                <th style="vertical-align: middle;" width="12%">
+                                                    <center>Avg Lead Time</center>
+                                                </th>
+                                                <th style="vertical-align: middle;" width="12%">
                                                     <center>Safety Stock</center>
                                                 </th>
+                                                @if ($title == 'Add Analysis' || $title == 'Edit Analysis')
+                                                <th style="vertical-align: middle;" width="10%">
+                                                    <center>Action</center>
+                                                </th>
+                                                @endif
                                             </tr>
                                         </thead>
                                         <tbody id="table_body">
@@ -179,11 +193,31 @@
                                                     @endisset
                                                 </td>
                                                 <td style="text-align:center;">
-                                                    <input type="hidden" id="avg_qty" value="{{round($avg_stock[$key]->avg_qty,0)}}" readonly required>
-                                                    <input type="number" class='form-control numeric' name="avg_qty[]" value="{{round($avg_stock[$key]->avg_qty,0)}}" id="avg_qty{{ $detail->id_product }}" readonly required>
+                                                    <input type="hidden" id="max_sales_data" value="{{round($details_2[$key]->max_sales,0)}}" readonly required>
+                                                    <input type="number" class='form-control numeric' name="max_sales[]" value="{{round($details_2[$key]->max_sales,0)}}" id="max_sales_{{ $detail->id_product }}" readonly required>
                                                 </td>
                                                 <td style="text-align:center;">
-                                                    <input type="number" class='form-control numeric' name="safety_stock[]" value="{{cal_days_in_month(CAL_GREGORIAN, $month , $year)*round($avg_stock[$key]->avg_qty,0)}}" id="safety_stock{{ $detail->id_product }}" readonly required>
+                                                    <input type="hidden" id="avg_sales_data" value="{{round($details_2[$key]->avg_sales,0)}}" readonly required>
+                                                    <input type="number" class='form-control numeric' name="avg_sales[]" value="{{round($details_2[$key]->avg_sales,0)}}" id="avg_sales_{{ $detail->id_product }}" readonly required>
+                                                </td>
+                                                <td style="text-align:center;">
+                                                    <input type="number" class='form-control numeric' min='1' name="max_lead_time[]" @isset($details_2[$key]->max_lead_time) value="{{$details_2[$key]->max_lead_time}}" @endisset id="max_lead_time_{{ $detail->id_product }}" required>
+                                                </td>
+                                                <td style="text-align:center;">
+                                                    <input type="number" class='form-control numeric' min='1' name="avg_lead_time[]" @isset($details_2[$key]->avg_lead_time) value="{{$details_2[$key]->avg_lead_time}}" @endisset id="avg_lead_time_{{ $detail->id_product }}" required>
+                                                </td>
+                                                <td style="text-align:center;">
+                                                    <input type="number" class='form-control numeric' name="safety_stock[]" @isset($details_2[$key]->safety_stock) value="{{$details_2[$key]->safety_stock}}" @endisset id="safety_stock_{{ $detail->id_product }}" required readonly>
+                                                </td>
+                                                <td>
+                                                    <center>
+                                                        <button type='button' class='btn btn-link btn-simple-danger' onclick="calculate_safety_stock({{ $detail->id_product }}, 2)" title='Reset'>
+                                                            <i style="color:black; font-weight:bold;" class="fa fa-check"></i>
+                                                        </button>
+                                                        <button type='button' class='btn btn-link btn-simple-danger' onclick="reset_data({{ $detail->id_product }}, 2)" title='Reset'>
+                                                            <i style="color:black; font-weight:bold;" class="icon-refresh"></i>
+                                                        </button>
+                                                    </center>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -199,7 +233,22 @@
                                                     </td>
                                                     <td>
                                                         <center>
+                                                            {{$detail->max_sales}}
+                                                        </center>
+                                                    </td>
+                                                    <td>
+                                                        <center>
                                                             {{$detail->avg_sales}}
+                                                        </center>
+                                                    </td>
+                                                    <td>
+                                                        <center>
+                                                            {{$detail->max_lead_time}}
+                                                        </center>
+                                                    </td>
+                                                    <td>
+                                                        <center>
+                                                            {{$detail->avg_lead_time}}
                                                         </center>
                                                     </td>
                                                     <td style="text-align:right;">
@@ -258,12 +307,20 @@
             {{-- FUNCTIONS --}}
             <script>
 
-                function reset_data(id){
-                    $("#holdingcost_"+id).val('');
-                    $("#eoq_"+id).val('');
+                function reset_data(id, stat){
+                    if(stat == 1){
+                        $("#holdingcost_"+id).val('');
+                        $("#eoq_"+id).val('');
+                    }else{
+                        $("#max_lead_time_"+id).val('');
+                        $("#avg_lead_time_"+id).val('');
+                        $("#safety_stock_"+id).val('');
+                    }
+
                 }
 
                 function calculate_eoq(id){
+
                     let setupCost = $("#setupcost_"+id).val();
                         setupCost = setupCost.split("Rp.").pop();
                         setupCost = parseInt(setupCost.split(".").join(''));
@@ -278,6 +335,20 @@
                     $("#eoq_"+id).val(eoq.toFixed(2));
 
                 }
+
+                function calculate_safety_stock(id){
+
+                    let max_daily_sales = $("#max_sales_"+id).val();
+                    let avg_daily_sales = $("#avg_sales_"+id).val();
+                    let max_lead_time = $("#max_lead_time_"+id).val();
+                    let avg_lead_time = $("#avg_lead_time_"+id).val();
+
+                    let safety_stock = (max_daily_sales*max_lead_time) - (avg_daily_sales*avg_lead_time);
+                    $("#safety_stock_"+id).val(safety_stock);
+
+                }
+
+
             </script>
             <script>
                 $(document).ready(function() {

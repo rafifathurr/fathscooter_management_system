@@ -6464,12 +6464,12 @@ label.error {
 
 .navbar .navbar-nav .notification {
     position: absolute;
-    background-color: #31ce36;
+    background-color: #ec4420;
     text-align: center;
     border-radius: 10px;
-    min-width: 17px;
-    height: 17px;
-    font-size: 10px;
+    min-width: 18px;
+    height: 18px;
+    font-size: 11px;
     color: #fff;
     font-weight: 300;
     line-height: 17px;

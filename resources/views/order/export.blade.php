@@ -7,7 +7,7 @@
         <table width="100%">
             <thead>
                 <tr>
-                    <th colspan="10" style="text-align:center;">
+                    <th colspan="6" style="text-align:center;">
                     @if(isset($month))
                         <h3>Report Order Of {{date("F", mktime(0, 0, 0, $month, 10))}} {{$year}}</h3>
                     @else

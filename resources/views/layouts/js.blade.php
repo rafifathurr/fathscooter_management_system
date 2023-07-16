@@ -40,15 +40,9 @@
         decimalProtect:true,
         groupSeparator:".",
         placeholder: '0',
-        radixPoint:",",
-        radixFocus:true,
-        autoGroup:true,
-        autoUnmask:false,
-        clearMaskOnLostFocus: false,
-        onBeforeMask: function (value, opts) {
-            return value;
-        },
-        removeMaskOnSubmit:true
+        radixPoint:","
     });
-                        
+
+    $('.numeric').prop('required', true);
+
 </script>

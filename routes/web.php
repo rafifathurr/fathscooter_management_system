@@ -40,6 +40,12 @@ Route::namespace('App\Http\Controllers')->group(function (){
 
     // ADMIN
     Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function () {
+
+        // ROUTE TO DASHBOARD CONTROLLERS
+        Route::namespace('notifications')->name('notif.')->group(function () {
+            Route::get('/notifications/all', 'NotificationsController@index')->name('index');
+        });
+
         // ROUTE TO DASHBOARD CONTROLLERS
         Route::namespace('dashboard')->name('dashboard.')->group(function () {
             Route::get('/dashboard-admin', 'DashboardControllers@index')->name('index');

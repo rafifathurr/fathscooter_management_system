@@ -67,7 +67,7 @@
                                         <div class="col-md-3">
                                             <label class="col-md-12">Date Order <span style="color: red;">*</span></label>
                                             <div class="col-md-12">
-                                                <input type="date" name="tgl" id="tgl" class="form-control tgl_date"
+                                                <input type="date" max="{{date('Y-m-d')}}" name="tgl" id="tgl" class="form-control tgl_date"
                                                     autocomplete="off" data-date="" data-date-format="DD/MM/YYYY"
                                                     @isset($orders) value="{{ $orders->date_order}}" @endisset
                                                     required {{$disabled_}}>
@@ -186,56 +186,22 @@
                                                     </thead>
                                                     <tbody id="table_body">
                                                     @isset($orders)
-                                                        @if($title == 'Edit Order')
-                                                            @foreach($details_order as $details)
-                                                            <tr id='{{ $details->id_product }}'>
-                                                                <td style="text-align:left;">
-                                                                    <input type='hidden' name='product_id[]' id='product_id_{{ $details->id_product }}' value='{{ $details->id_product }}' readonly>
-                                                                    {{  $details->product->product_name  }}
-                                                                </td>
-                                                                <td>
-                                                                    <center>
-                                                                        <input type='number' style='width:100px !important; height:25px !important; text-align:center;' min=0 class='form-control' name='qty[]' id='qty_{{  $details->id_product  }}' value='{{  $details->qty  }}' oninput ='price_update({{  $details->id_product  }})'>
-                                                                    </center>
-                                                                </td>
-                                                                <td>
-                                                                    <center>
-                                                                        <input type='text' style='width:100px !important; height:25px !important; text-align:center;' class='form-control numeric' name='base_price_arr[]' id='base_price_{{  $details->id_product  }}' value='{{ ($details->qty * $details->base_price_save) }}' readonly>
-                                                                    </center>
-                                                                </td>
-                                                                <td>
-                                                                    <center>
-                                                                        <input type='text' style='width:100px !important; height:25px !important; text-align:center;' class='form-control numeric' name='sell_price_arr[]' id='sell_price_{{  $details->id_product  }}' value='{{ $details->selling_price_save }}' readonly>
-                                                                    </center>
-                                                                </td>
-                                                                <td>
-                                                                    <center>
-                                                                        <button type='button' class='btn btn-link btn-simple-danger' onclick='removedata({{ $details->id_product }})' title='Hapus'>
-                                                                            <i class='fa fa-trash' style='color:red;'>
-                                                                            </i>
-                                                                        </button>
-                                                                    </center>
-                                                                </td>
-                                                            </tr>
-                                                            @endforeach
-                                                        @else
-                                                            @foreach($details_order as $details)
-                                                            <tr>
-                                                                <td style="text-align:left;">
-                                                                    {{  $details->product->product_name  }}
-                                                                </td>
-                                                                <td style="text-align:right;">
-                                                                    {{  $details->qty  }}
-                                                                </td>
-                                                                <td style="text-align:right;">
-                                                                    Rp. {{number_format(($details->qty * $details->base_price_save),0,',','.')}}
-                                                                </td>
-                                                                <td style="text-align:right;">
-                                                                    Rp. {{number_format($details->selling_price_save,0,',','.')}}
-                                                                </td>
-                                                            </tr>
-                                                            @endforeach
-                                                        @endif
+                                                        @foreach($details_order as $details)
+                                                        <tr>
+                                                            <td style="text-align:left;">
+                                                                {{  $details->product->product_name  }}
+                                                            </td>
+                                                            <td style="text-align:right;">
+                                                                {{  $details->qty  }}
+                                                            </td>
+                                                            <td style="text-align:right;">
+                                                                Rp. {{number_format(($details->qty * $details->base_price_save),0,',','.')}}
+                                                            </td>
+                                                            <td style="text-align:right;">
+                                                                Rp. {{number_format($details->selling_price_save,0,',','.')}}
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
                                                     @endisset
                                                     </tbody>
                                                     <tbody >
@@ -378,7 +344,7 @@
                                         <div class="col-md-6">
                                             <label class="col-md-12">Date Order <span style="color: red;">*</span></label>
                                             <div class="col-md-12">
-                                                <input type="date" name="tgl" id="tgl" class="form-control tgl_date"
+                                                <input type="date" max="{{date('Y-m-d')}}" name="tgl" id="tgl" class="form-control tgl_date"
                                                     autocomplete="off" data-date="" data-date-format="DD/MM/YYYY"
                                                     @isset($orders) value="{{ $orders->date_order}}" @endisset
                                                     required {{$disabled_}}>

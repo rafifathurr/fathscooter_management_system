@@ -20,13 +20,13 @@
                             <div class="col-md-8">
                                 <h2 class="pb-2 fw-bold">Dashboard Statistics</h2>
                             </div>
-                            <div class="col-md-4">
+                            {{-- <div class="col-md-4">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <input type="date" name="" id="" class="form-control">
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
