@@ -236,33 +236,33 @@
                                                     </td>
                                                     <td>
                                                         <center>
-                                                            {{$detail->max_sales}}
+                                                            {{$details_2[$key]->max_sales}}
                                                         </center>
                                                     </td>
                                                     <td>
                                                         <center>
-                                                            {{$detail->avg_sales}}
+                                                            {{$details_2[$key]->avg_sales}}
                                                         </center>
                                                     </td>
                                                     <td>
                                                         <center>
-                                                            {{$detail->max_lead_time}}
+                                                            {{$details_2[$key]->max_lead_time}}
                                                         </center>
                                                     </td>
                                                     <td>
                                                         <center>
-                                                            {{$detail->avg_lead_time}}
+                                                            {{$details_2[$key]->avg_lead_time}}
                                                         </center>
                                                     </td>
                                                     <td style="text-align:right;">
                                                         <center>
-                                                            {{ $detail->safety_stock }}
+                                                            {{ $details_2[$key]->safety_stock }}
                                                         </center>
                                                     </td>
                                                     <td style="text-align:right;">
                                                         <center>
                                                             <b>
-                                                                {{ $detail->rop }}
+                                                                {{ $details_2[$key]->rop }}
                                                             </b>
                                                         </center>
                                                     </td>

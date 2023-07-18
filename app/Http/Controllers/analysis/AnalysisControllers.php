@@ -167,10 +167,12 @@ class AnalysisControllers extends Controller
 
         $data['details'] = DetailAnalysis::with('product')
                             ->where('id_analysis', $id)
+                            ->orderBy('eoq_value','desc')
                             ->get();
 
         $data['details_2'] = DetailAnalysis::with('product')
                             ->where('id_analysis', $id)
+                            ->orderBy('rop','desc')
                             ->get();
 
         return view('analysis.create', $data);
@@ -236,6 +238,11 @@ class AnalysisControllers extends Controller
         $data['url'] = 'create';
         $data['details'] = DetailAnalysis::with('product')
                             ->where('id_analysis', $id)
+                            ->orderBy('eoq_value','desc')
+                            ->get();
+        $data['details_2'] = DetailAnalysis::with('product')
+                            ->where('id_analysis', $id)
+                            ->orderBy('rop','desc')
                             ->get();
         return view('analysis.create', $data);
     }
