@@ -198,7 +198,7 @@
                                                                 Rp. {{number_format(($details->qty * $details->base_price_save),0,',','.')}}
                                                             </td>
                                                             <td style="text-align:right;">
-                                                                Rp. {{number_format($details->selling_price_save,0,',','.')}}
+                                                                Rp. {{number_format($details->qty * $details->selling_price_save,0,',','.')}}
                                                             </td>
                                                         </tr>
                                                         @endforeach
@@ -451,7 +451,7 @@
                                                                 {{  $details->qty  }}
                                                             </td>
                                                             <td style="text-align:right;">
-                                                                Rp. {{number_format($details->selling_price_save,0,',','.')}}
+                                                                Rp. {{number_format($details->qty * $details->selling_price_save,0,',','.')}}
                                                             </td>
                                                         </tr>
                                                         @endforeach
