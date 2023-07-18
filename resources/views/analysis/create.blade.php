@@ -27,7 +27,7 @@
                         <div class="content container-fluid">
                             <div class="box box-primary">
                                 <div class="box-body">
-                                    <h4><b>EOQ Analysis</b></h4>
+                                    <h4><b>Economic Order Quantity Analysis</b></h4>
                                     <input type="hidden" name="id_analysis" @isset($analysis) value="{{ $analysis->id }}" @endisset>
                                     <input type="hidden" name="month" @isset($month) value="{{ $month }}" @endisset>
                                     <input type="hidden" name="year" @isset($year) value="{{ $year }}" @endisset>
@@ -143,35 +143,38 @@
                         <div class="content container-fluid">
                             <div class="box box-primary">
                                 <div class="box-body">
-                                    <h4><b>Safety Stocks Analysis</b></h4>
+                                    <h4><b>Reorder Point Analysis</b></h4>
                                     {{ csrf_field() }}
                                     <br>
-                                    <table id="dt-detail" class="table table-striped table-bordered table-hover" width="100%" style="text-align: center;">
+                                    <table id="dt-detail" class="table table-striped table-bordered table-hover" width="100%" style="text-align: center;overflow-x: auto;">
                                         <thead style="background-color: #fbfbfb;">
                                             <tr>
                                                 <th style="vertical-align: middle;" width="5%">
                                                     <center>No</center>
                                                 </th>
-                                                <th style="vertical-align: middle;" width="23%">
+                                                <th style="vertical-align: middle;" width="30%">
                                                     <center>Products</center>
                                                 </th>
-                                                <th style="vertical-align: middle;" width="12%">
+                                                <th style="vertical-align: middle;" width="9%">
                                                     <center>Max Daily Sales</center>
                                                 </th>
-                                                <th style="vertical-align: middle;" width="12%">
+                                                <th style="vertical-align: middle;" width="9%">
                                                     <center>Avg Daily Sales</center>
                                                 </th>
-                                                <th style="vertical-align: middle;" width="14%">
+                                                <th style="vertical-align: middle;" width="9%">
                                                     <center>Max Lead Time</center>
                                                 </th>
-                                                <th style="vertical-align: middle;" width="12%">
+                                                <th style="vertical-align: middle;" width="9%">
                                                     <center>Avg Lead Time</center>
                                                 </th>
-                                                <th style="vertical-align: middle;" width="12%">
+                                                <th style="vertical-align: middle;" width="9%">
                                                     <center>Safety Stock</center>
                                                 </th>
+                                                <th style="vertical-align: middle;" width="9%">
+                                                    <center>Reorder Point</center>
+                                                </th>
                                                 @if ($title == 'Add Analysis' || $title == 'Edit Analysis')
-                                                <th style="vertical-align: middle;" width="10%">
+                                                <th style="vertical-align: middle;" width="11%">
                                                     <center>Action</center>
                                                 </th>
                                                 @endif
@@ -184,7 +187,7 @@
                                                 <td style="text-align:center;">
                                                     {{  $key+1 }}
                                                 </td>
-                                                <td style="text-align:left;">
+                                                <td style="text-align:left;padding:10px !important;">
                                                     <input type="hidden" value="{{$detail->id_product}}">
                                                     @isset($detail->product_name)
                                                         {{  $detail->product_name }}
@@ -201,19 +204,19 @@
                                                     <input type="number" class='form-control numeric' name="avg_sales[]" value="{{round($details_2[$key]->avg_sales,0)}}" id="avg_sales_{{ $detail->id_product }}" readonly required>
                                                 </td>
                                                 <td style="text-align:center;">
-                                                    <input type="number" class='form-control numeric' min='1' name="max_lead_time[]" @isset($details_2[$key]->max_lead_time) value="{{$details_2[$key]->max_lead_time}}" @endisset id="max_lead_time_{{ $detail->id_product }}" required>
+                                                    <input type="number" class='form-control numeric' min='0' name="max_lead_time[]" oninput="calculate_safety_stock({{ $detail->id_product }}, 2)" @isset($details_2[$key]->max_lead_time) value="{{$details_2[$key]->max_lead_time}}" @endisset id="max_lead_time_{{ $detail->id_product }}" required>
                                                 </td>
                                                 <td style="text-align:center;">
-                                                    <input type="number" class='form-control numeric' min='1' name="avg_lead_time[]" @isset($details_2[$key]->avg_lead_time) value="{{$details_2[$key]->avg_lead_time}}" @endisset id="avg_lead_time_{{ $detail->id_product }}" required>
+                                                    <input type="number" class='form-control numeric' min='0' name="avg_lead_time[]" oninput="calculate_safety_stock({{ $detail->id_product }}, 2)" @isset($details_2[$key]->avg_lead_time) value="{{$details_2[$key]->avg_lead_time}}" @endisset id="avg_lead_time_{{ $detail->id_product }}" required>
                                                 </td>
                                                 <td style="text-align:center;">
                                                     <input type="number" class='form-control numeric' name="safety_stock[]" @isset($details_2[$key]->safety_stock) value="{{$details_2[$key]->safety_stock}}" @endisset id="safety_stock_{{ $detail->id_product }}" required readonly>
                                                 </td>
+                                                <td style="text-align:center;">
+                                                    <input type="number" class='form-control numeric' name="rop[]" @isset($details_2[$key]->rop) value="{{$details_2[$key]->rop}}" @endisset id="rop_{{ $detail->id_product }}" required readonly>
+                                                </td>
                                                 <td>
                                                     <center>
-                                                        <button type='button' class='btn btn-link btn-simple-danger' onclick="calculate_safety_stock({{ $detail->id_product }}, 2)" title='Reset'>
-                                                            <i style="color:black; font-weight:bold;" class="fa fa-check"></i>
-                                                        </button>
                                                         <button type='button' class='btn btn-link btn-simple-danger' onclick="reset_data({{ $detail->id_product }}, 2)" title='Reset'>
                                                             <i style="color:black; font-weight:bold;" class="icon-refresh"></i>
                                                         </button>
@@ -253,8 +256,13 @@
                                                     </td>
                                                     <td style="text-align:right;">
                                                         <center>
+                                                            {{ $detail->safety_stock }}
+                                                        </center>
+                                                    </td>
+                                                    <td style="text-align:right;">
+                                                        <center>
                                                             <b>
-                                                                {{ $detail->safety_stock }}
+                                                                {{ $detail->rop }}
                                                             </b>
                                                         </center>
                                                     </td>
@@ -342,8 +350,18 @@
                     let avg_daily_sales = $("#avg_sales_"+id).val();
                     let max_lead_time = $("#max_lead_time_"+id).val();
                     let avg_lead_time = $("#avg_lead_time_"+id).val();
+                    let demand = $("#demandpermonth_"+id).val();
+                    let rop = 0;
 
                     let safety_stock = (max_daily_sales*max_lead_time) - (avg_daily_sales*avg_lead_time);
+
+                    if(safety_stock < 0){
+                        safety_stock = 0;
+                    }else{
+                        rop = (avg_lead_time * demand) + safety_stock;
+                    }
+
+                    $("#rop_"+id).val(rop);
                     $("#safety_stock_"+id).val(safety_stock);
 
                 }

@@ -134,6 +134,7 @@ class AnalysisControllers extends Controller
                     'avg_lead_time' => $req->avg_lead_time[$i],
                     'max_lead_time' => $req->max_lead_time[$i],
                     'safety_stock' => $req->safety_stock[$i],
+                    'rop' => $req->rop[$i],
                     'created_at' => $datenow
                 ]);
 
@@ -211,6 +212,7 @@ class AnalysisControllers extends Controller
                     'avg_lead_time' => $req->avg_lead_time[$i],
                     'max_lead_time' => $req->max_lead_time[$i],
                     'safety_stock' => $req->safety_stock[$i],
+                    'rop' => $req->rop[$i],
                     'updated_at' => $datenow
                 ]);
 
