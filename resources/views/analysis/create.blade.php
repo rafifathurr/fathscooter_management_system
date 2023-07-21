@@ -33,7 +33,7 @@
                                     <input type="hidden" name="year" @isset($year) value="{{ $year }}" @endisset>
                                     {{ csrf_field() }}
                                     <br>
-                                    <table id="add-row" class="table table-striped table-bordered table-hover" width="100%" style="text-align: center;">
+                                    <table @if($title == 'Detail Analysis') id="add-row" @endif class="table table-striped table-bordered table-hover" width="100%" style="text-align: center;">
                                         <thead style="background-color: #fbfbfb;">
                                             <tr>
                                                 <th style="vertical-align: middle;" width="5%">
@@ -146,7 +146,7 @@
                                     <h4><b>Reorder Point Analysis</b></h4>
                                     {{ csrf_field() }}
                                     <br>
-                                    <table id="add-row-2" class="table table-striped table-bordered table-hover" width="100%" style="text-align: center;overflow-x: auto;">
+                                    <table @if($title == 'Detail Analysis') id="add-row-2" @endif class="table table-striped table-bordered table-hover" width="100%" style="text-align: center;overflow-x: auto;">
                                         <thead style="background-color: #fbfbfb;">
                                             <tr>
                                                 <th style="vertical-align: middle;" width="5%">
@@ -210,6 +210,7 @@
                                                     <input type="number" class='form-control numeric' min='0' name="avg_lead_time[]" oninput="calculate_safety_stock({{ $detail->id_product }}, 2)" @isset($details_2[$key]->avg_lead_time) value="{{$details_2[$key]->avg_lead_time}}" @endisset id="avg_lead_time_{{ $detail->id_product }}" required>
                                                 </td>
                                                 <td style="text-align:center;">
+                                                    <input type="hidden" class='form-control' name="demandpermonthdatas[]" @isset($detail->demandpermonth) value="{{$detail->demandpermonth}}" @else value="{{$detail->demand}}" @endisset id="demandpermonthdata_{{ $detail->id_product }}">
                                                     <input type="number" class='form-control numeric' name="safety_stock[]" @isset($details_2[$key]->safety_stock) value="{{$details_2[$key]->safety_stock}}" @endisset id="safety_stock_{{ $detail->id_product }}" required readonly>
                                                 </td>
                                                 <td style="text-align:center;">
@@ -352,7 +353,7 @@
                     let avg_daily_sales = $("#avg_sales_"+id).val();
                     let max_lead_time = $("#max_lead_time_"+id).val();
                     let avg_lead_time = $("#avg_lead_time_"+id).val();
-                    let demand = $("#demandpermonth_"+id).val();
+                    let demand = $("#demandpermonthdata_"+id).val();
                     let rop = 0;
 
                     let safety_stock = (max_daily_sales*max_lead_time) - (avg_daily_sales*avg_lead_time);
