@@ -312,6 +312,7 @@
                 </form>
             </div>
             @include('layouts.footer')
+            <script src="{{ asset('js/app/table.js') }}"></script>
             {{-- FUNCTIONS --}}
             <script>
 
