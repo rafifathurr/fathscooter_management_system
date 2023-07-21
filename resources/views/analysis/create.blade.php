@@ -29,7 +29,7 @@
                                 <div class="box-body">
                                     <h4><b>Economic Order Quantity Analysis</b></h4>
                                     <input type="hidden" name="id_analysis" @isset($analysis) value="{{ $analysis->id }}" @endisset>
-                                    <input type="hidden" name="month" @isset($month) value="{{ $month }}" @endisset>
+                                    {{-- <input type="hidden" name="month" @isset($month) value="{{ $month }}" @endisset> --}}
                                     <input type="hidden" name="year" @isset($year) value="{{ $year }}" @endisset>
                                     {{ csrf_field() }}
                                     <br>
@@ -232,7 +232,7 @@
                                                     </td>
                                                     <td style="text-align:left;">
                                                         <input type="hidden" name="id_product" value="{{$detail->id_product}}">
-                                                        {{  $detail->product->product_name }}
+                                                        {{  $details_2[$key]->product->product_name }}
                                                     </td>
                                                     <td>
                                                         <center>
@@ -367,11 +367,6 @@
                 }
 
 
-            </script>
-            <script>
-                $(document).ready(function() {
-
-                })
             </script>
         </div>
     </div>

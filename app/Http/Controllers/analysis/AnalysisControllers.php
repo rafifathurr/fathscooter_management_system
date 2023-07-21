@@ -28,10 +28,8 @@ class AnalysisControllers extends Controller
     public function index()
     {
         date_default_timezone_set("Asia/Jakarta");
-        $year = date('Y');
-        $month = date('m', strtotime('-1 month'));
-        $check = Analysis::where('month', $month)
-                ->where('year', $year)
+        $year = date('Y', strtotime('-1 years'));
+        $check = Analysis::where('year', $year)
                 ->whereNull('deleted_at')
                 ->first();
 
@@ -52,12 +50,10 @@ class AnalysisControllers extends Controller
     public function create()
     {
         date_default_timezone_set("Asia/Jakarta");
-        $year = date('Y');
-        $month = date('m', strtotime('-1 month'));
+        $year = date('Y', strtotime('-1 years'));
 
         $data['title'] = "Add Analysis";
         $data['url'] = 'store';
-        $data['month'] = $month;
         $data['year'] = $year;
         $data['details'] = DetailOrder::selectRaw('
                                     product.id as id_product,
@@ -67,7 +63,6 @@ class AnalysisControllers extends Controller
                                 ')
                                 ->join('orders', 'orders.id', '=', 'details_order.id_order')
                                 ->join('product', 'product.id', '=', 'details_order.id_product')
-                                ->whereMonth('orders.date_order', $month)
                                 ->whereYear('orders.date_order', $year)
                                 ->groupBy('product.id')
                                 ->groupBy('product.product_name')
@@ -79,7 +74,6 @@ class AnalysisControllers extends Controller
                             ')
                             ->join('orders', 'orders.id', '=', 'details_order.id_order')
                             ->join('product', 'product.id', '=', 'details_order.id_product')
-                            ->whereMonth('orders.date_order', $month)
                             ->whereYear('orders.date_order', $year)
                             ->groupBy('product.id')
                             ->groupBy('product.product_name')
@@ -93,7 +87,6 @@ class AnalysisControllers extends Controller
                                 ')
                                 ->join('orders', 'orders.id', '=', 'details_order.id_order')
                                 ->where('details_order.id_product', $prods->id_product)
-                                ->whereMonth('orders.date_order', $month)
                                 ->whereYear('orders.date_order', $year)
                                 ->groupBy(DB::raw('MONTH(orders.date_order)'))
                                 ->first();
@@ -111,7 +104,7 @@ class AnalysisControllers extends Controller
         $datenow = date('Y-m-d H:i:s');
 
         $analysis = Analysis::create([
-            'month' => $req->month,
+            // 'month' => $req->month,
             'year' => $req->year,
             'created_at' => $datenow,
             'created_by' => Auth::user()->id
@@ -154,10 +147,10 @@ class AnalysisControllers extends Controller
     public function edit($id)
     {
         date_default_timezone_set("Asia/Jakarta");
-        $year = date('Y');
-        $month = date('m', strtotime('-1 month'));
+        $year = date('Y', strtotime('-1 years'));
+        // $month = date('m', strtotime('-1 month'));
 
-        $data['month'] = $month;
+        // $data['month'] = $month;
         $data['year'] = $year;
         $data['title'] = "Edit Analysis";
         $data['disabled_'] = 'disabled';
@@ -189,7 +182,7 @@ class AnalysisControllers extends Controller
 
         $analysis = Analysis::where('id', $req->id_analysis)
                     ->update([
-                        'month' => $req->month,
+                        // 'month' => $req->month,
                         'year' => $req->year,
                         'updated_at' => $datenow,
                         'updated_by' => Auth::user()->id
