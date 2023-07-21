@@ -240,6 +240,28 @@ class AnalysisControllers extends Controller
         return view('analysis.create', $data);
     }
 
+    // Summary Data View by id
+    public function summary($id)
+    {
+        $analysis = Analysis::where('id', $id)
+                    ->first();
+                    
+        $data['title'] = "Summary Analysis";
+        $data['year'] = $analysis->year;
+        $data['disabled_'] = 'disabled';
+        $data['details'] = DetailAnalysis::with('product')
+                            ->where('id_analysis', $id)
+                            ->orderBy('eoq_value','desc')
+                            ->limit(5)
+                            ->get();
+        $data['details_2'] = DetailAnalysis::with('product')
+                            ->where('id_analysis', $id)
+                            ->orderBy('rop','desc')
+                            ->limit(5)
+                            ->get();
+        return view('analysis.summary', $data);
+    }
+
     // Delete Data Function
     public function delete(Request $req)
     {

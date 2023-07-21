@@ -41,7 +41,7 @@ Route::namespace('App\Http\Controllers')->group(function (){
     // ADMIN
     Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function () {
 
-        // ROUTE TO DASHBOARD CONTROLLERS
+        // ROUTE TO NOTIFICATIONS CONTROLLERS
         Route::namespace('notifications')->name('notif.')->group(function () {
             Route::get('/notifications/all', 'NotificationsController@index')->name('index');
         });
@@ -51,11 +51,12 @@ Route::namespace('App\Http\Controllers')->group(function (){
             Route::get('/dashboard-admin', 'DashboardControllers@index')->name('index');
         });
 
-        // ROUTE TO ORDER CONTROLLERS
+        // ROUTE TO ANALYSIS CONTROLLERS
         Route::namespace('analysis')->prefix('analysis')->name('analysis.')->group(function(){
             Route::get('/', 'AnalysisControllers@index')->name('index') ;
             Route::get('create', 'AnalysisControllers@create')->name('create');
             Route::post('store', 'AnalysisControllers@store')->name('store');
+            Route::get('summary/{id}', 'AnalysisControllers@summary')->name('summary');
             Route::get('detail/{id}', 'AnalysisControllers@detail')->name('detail');
             Route::get('edit/{id}', 'AnalysisControllers@edit')->name('edit');
             Route::post('update', 'AnalysisControllers@update')->name('update');

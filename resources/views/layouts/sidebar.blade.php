@@ -177,7 +177,7 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li class="nav-item {{ $title === 'Analysis' || $title === 'Add Analysis' || $title === 'Edit Analysis' || $title === 'Detail Analysis'? 'active' : '' }}">
+                <li class="nav-item {{ $title === 'Analysis' || $title === 'Add Analysis' || $title === 'Edit Analysis' || $title === 'Detail Analysis' || $title === 'Summary Analysis'? 'active' : '' }}">
                     <a href="{{route('admin.analysis.index')}}" aria-expanded="false">
                         <i class="fas fa-chart-line"></i>
                         <p>Analysis</p>

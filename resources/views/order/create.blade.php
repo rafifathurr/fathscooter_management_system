@@ -532,9 +532,16 @@
                 @endif
             </div>
             @include('layouts.footer')
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+
             {{-- FUNCTIONS --}}
             <script>
                 getProds();
+
+                $('#prods').select2();
+                $('.select2-container--default').css('width', '100%');
+                $('.select2-selection--single ').css('border', 'none');
 
                 function getProds(){
 
@@ -551,7 +558,7 @@
                             '_token' : token
                         },
                         success: function(data) {
-                            $('#prods').append("<option value='' style='display:none;'>Choose Product</option>");
+                            $('#prods').append("<option value='' style='display:none;' disabled>Choose Product</option>");
                             data.forEach(function(item){
                                 $('#prods').append($('<option>', {
                                     value: item.id,

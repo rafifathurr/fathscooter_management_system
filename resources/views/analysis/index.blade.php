@@ -84,6 +84,11 @@
                                                 <td>
                                                     <center>
                                                         <div class="form-button-action">
+                                                            <a href="{{route('admin.analysis.summary', $anls->id) }}" data-toggle="tooltip" title="Summary"
+                                                                class="btn btn-link btn-simple-primary btn-lg"
+                                                                data-original-title="Summary" control-id="ControlID-16">
+                                                                <i class="fa fa-list-alt"></i>
+                                                            </a>
                                                             <a href="{{route('admin.analysis.detail', $anls->id) }}" data-toggle="tooltip" title="Detail"
                                                                 class="btn btn-link btn-simple-primary btn-lg"
                                                                 data-original-title="Detail" control-id="ControlID-16">
