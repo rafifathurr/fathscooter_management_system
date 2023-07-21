@@ -313,6 +313,7 @@
             </div>
             @include('layouts.footer')
             <script src="{{ asset('js/app/table.js') }}"></script>
+            <script src="{{ asset('js/app/table_2.js') }}"></script>
             {{-- FUNCTIONS --}}
             <script>
 
