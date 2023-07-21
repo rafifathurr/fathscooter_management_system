@@ -33,7 +33,7 @@
                                     <input type="hidden" name="year" @isset($year) value="{{ $year }}" @endisset>
                                     {{ csrf_field() }}
                                     <br>
-                                    <table id="dt-detail" class="table table-striped table-bordered table-hover" width="100%" style="text-align: center;">
+                                    <table id="add-row" class="table table-striped table-bordered table-hover" width="100%" style="text-align: center;">
                                         <thead style="background-color: #fbfbfb;">
                                             <tr>
                                                 <th style="vertical-align: middle;" width="5%">
@@ -146,7 +146,7 @@
                                     <h4><b>Reorder Point Analysis</b></h4>
                                     {{ csrf_field() }}
                                     <br>
-                                    <table id="dt-detail" class="table table-striped table-bordered table-hover" width="100%" style="text-align: center;overflow-x: auto;">
+                                    <table id="add-row" class="table table-striped table-bordered table-hover" width="100%" style="text-align: center;overflow-x: auto;">
                                         <thead style="background-color: #fbfbfb;">
                                             <tr>
                                                 <th style="vertical-align: middle;" width="5%">
