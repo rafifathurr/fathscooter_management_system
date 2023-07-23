@@ -88,7 +88,7 @@
                                                     <center>{{$num=$num+1}}</center>
                                                 </td>
                                                 <td class="sorting_1">
-                                                    <center>{{$user->name}}</center>
+                                                    {{$user->name}}     
                                                 </td>
                                                 <td class="sorting_1">
                                                     <center>{{$user->username}}</center>
