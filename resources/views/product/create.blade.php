@@ -201,7 +201,7 @@
                                             <div class="col-md-12">
                                                 @if ($title == 'Add Products' || $title == 'Edit Products')
                                                     <input type="file" id="uploads" name="uploads" class="form-control"
-                                                        accept=".doc, .docx, .pdf, .png, .jpg, .jpeg">
+                                                        accept=".png, .jpg, .jpeg">
                                                     <br>
                                                     @if(isset($products))
                                                         @if($products->upload != null)
@@ -213,12 +213,12 @@
                                                             ?>
                                                             <a href="{{url('/').'/Uploads/Product/'.$products->id.'/uploads/'.$products->upload}}" target="_blank"><i class="fa fa-download" aria-hidden="true"></i> &nbsp;<?php echo $changename; ?> </a>
                                                             <br>
-                                                            <span style="font-size: 13px;color: red">*) .doc .docx .pdf .png .jpg .jpeg</span>
+                                                            <span style="font-size: 13px;color: red">*) .png .jpg .jpeg</span>
                                                         @else
-                                                            <span style="font-size: 13px;color: red">*) .doc .docx .pdf .png .jpg .jpeg</span>
+                                                            <span style="font-size: 13px;color: red">*) .png .jpg .jpeg</span>
                                                         @endif
                                                     @else
-                                                        <span style="font-size: 13px;color: red">*) .doc .docx .pdf .png .jpg .jpeg</span>
+                                                        <span style="font-size: 13px;color: red">*) .png .jpg .jpeg</span>
                                                     @endif
                                                 @else
                                                     @if(isset($products))
@@ -231,7 +231,7 @@
                                                             ?>
                                                             <a href="{{url('/').'/Uploads/Product/'.$products->id.'/uploads/'.$products->upload}}" target="_blank"><i class="fa fa-download" aria-hidden="true"></i> &nbsp;<?php echo $changename; ?> </a><br>
                                                         @else
-                                                            <span style="font-size: 13px;color: red">*) .doc .docx .pdf .png .jpg .jpeg</span>
+                                                            <span style="font-size: 13px;color: red">*) .png .jpg .jpeg</span>
                                                         @endif
                                                     @endif
                                                 @endif
