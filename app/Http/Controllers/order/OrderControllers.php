@@ -68,7 +68,10 @@ class OrderControllers extends Controller
     // get Detail Product View Data
     public function getProds(Request $req)
     {
-        $data = Product::where('deleted_at', null)->get();
+        $data = Product::orderBy('product_name', 'asc')
+                ->where('status', 'Active')
+                ->where('deleted_at', null)
+                ->get();
         return response()->json($data);
     }
 
