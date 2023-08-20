@@ -890,7 +890,7 @@
                         })
 
                         resetprice();
-                        removedata();
+                        // removedata();
 
                     }else{
 

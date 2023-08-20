@@ -25,13 +25,13 @@
         <div class="container-fluid">
             <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
                 <?php
-                
+
                 $getnotif = DB::table('product')
                     ->where('stock', '<=', 2)
                     ->where('deleted_at', null)
                     ->orderBy('updated_at', 'desc');
-                
-                $notif_all = $getnotif->limit(5)->get();
+
+                $notif_all = $getnotif->limit(3)->get();
                 ?>
                 @if (Auth::guard('admin')->check())
                     <li class="nav-item dropdown hidden-caret">
@@ -45,7 +45,7 @@
                             </span>
                         </a>
                         <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown"
-                            style="min-width: 22rem !important;">
+                            style="min-width: 23rem !important;">
                             <li>
                                 <div class="dropdown-title">Notifications</div>
                             </li>
