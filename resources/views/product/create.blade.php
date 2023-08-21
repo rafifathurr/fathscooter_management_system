@@ -201,7 +201,7 @@
                                             <div class="col-md-12">
                                                 @if ($title == 'Add Products' || $title == 'Edit Products')
                                                     <input type="file" id="uploads" name="uploads" class="form-control"
-                                                        accept=".png, .jpg, .jpeg">
+                                                        accept="image/png, image/jpg, image/jpeg">
                                                     <br>
                                                     @if(isset($products))
                                                         @if($products->upload != null)
@@ -211,7 +211,7 @@
                                                             $explode = explode("_",$products->upload);
                                                             $changename = str_replace( $explode[0]."_","",$products->upload);
                                                             ?>
-                                                            <a href="{{url('/').'/Uploads/Product/'.$products->id.'/uploads/'.$products->upload}}" target="_blank"><i class="fa fa-download" aria-hidden="true"></i> &nbsp;<?php echo $changename; ?> </a>
+                                                            <a href="{{url('/').'/Uploads/Product/'.$products->upload}}" target="_blank"><i class="fa fa-download" aria-hidden="true"></i> &nbsp;<?php echo $changename; ?> </a>
                                                             <br>
                                                             <span style="font-size: 13px;color: red">*) .png .jpg .jpeg</span>
                                                         @else
@@ -229,7 +229,7 @@
                                                             $explode = explode("_",$products->upload);
                                                             $changename = str_replace( $explode[0]."_","",$products->upload);
                                                             ?>
-                                                            <a href="{{url('/').'/Uploads/Product/'.$products->id.'/uploads/'.$products->upload}}" target="_blank"><i class="fa fa-download" aria-hidden="true"></i> &nbsp;<?php echo $changename; ?> </a><br>
+                                                            <a href="{{url('/').'/Uploads/Product/'.$products->upload}}" target="_blank"><i class="fa fa-download" aria-hidden="true"></i> &nbsp;<?php echo $changename; ?> </a><br>
                                                         @else
                                                             <span style="font-size: 13px;color: red">*) .png .jpg .jpeg</span>
                                                         @endif
