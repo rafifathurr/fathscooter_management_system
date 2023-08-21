@@ -52,7 +52,7 @@
 <script src="{{ asset('js/demo.js') }}"></script>
 <script src="{{url('js/plugin/inputmask/jquery.inputmask.bundle.js')}}"></script>
 
-<script type="text/javascript"> 
+<script type="text/javascript">
 
     function AlertData(){
         swal({
@@ -63,7 +63,7 @@
             timer: 2000
         });
     }
-    
+
     $('.numeric').inputmask({
         alias:"numeric",
         prefix: "Rp.",
@@ -72,7 +72,6 @@
         digitsOptional:false,
         decimalProtect:true,
         groupSeparator:".",
-        placeholder: '0',
         radixPoint:",",
         radixFocus:true,
         autoGroup:true,
@@ -83,5 +82,5 @@
         },
         removeMaskOnSubmit:true
     });
-                        
+
 </script>

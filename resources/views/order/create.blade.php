@@ -540,6 +540,7 @@
                 getProds();
 
                 $('#prods').select2();
+                $('.select2-search__field').css('width', '100%');
                 $('.select2-container--default').css('width', '100%');
                 $('.select2-selection--single ').css('border', 'none');
 
@@ -558,12 +559,14 @@
                             '_token' : token
                         },
                         success: function(data) {
-                            $('#prods').append("<option value='' style='display:none;' disabled>Choose Product</option>");
-                            data.forEach(function(item){
+                            data.forEach(function(item,index){
                                 $('#prods').append($('<option>', {
                                     value: item.id,
                                     text: item.product_name
                                 }));
+                                if(index == 0){
+                                    $('#prods').val(item.id).trigger('change');
+                                }
                             });
                         }
                     });
@@ -857,6 +860,9 @@
 
                 function summaryprice(){
 
+                    $('#cal_tax').val(0);
+                    $('#cal_profit').val(0);
+
                     let total_entry = 0;
                     let total_base = 0;
                     let total_sell = 0;
@@ -882,15 +888,20 @@
 
                     if(total_profit < 0){
 
-                        swal({
-                            title: "",
-                            text: "Harap Sesuaikan Data Dengan Benar!",
-                            icon: "error"
-                            // dangerMode: true,
-                        })
+                        // total_profit = total_profit*(-1);
 
-                        resetprice();
+                        // swal({
+                        //     title: "",
+                        //     text: "Harap Sesuaikan Data Dengan Benar!",
+                        //     icon: "error"
+                        //     // dangerMode: true,
+                        // })
+
+                        // resetprice();
                         // removedata();
+
+                        $('#cal_tax').val(platform_fee);
+                        $('#cal_profit').val(total_profit);
 
                     }else{
 

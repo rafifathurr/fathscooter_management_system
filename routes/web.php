@@ -17,7 +17,15 @@ use Illuminate\Support\Facades\Route;
 // ALL CONTROLLERS
 
 Route::get('/', function () {
-    return view('auth.login');
+    if(Auth::guard('admin')->check()){
+    	return redirect()->route('admin.dashboard.index');
+    } else {
+        if(Auth::guard('user')->check()){
+            return redirect()->route('user.order.index');
+        } else {
+            return redirect()->route('login.index');
+        }
+    }
 });
 
 // AUTH
@@ -54,7 +62,7 @@ Route::namespace('App\Http\Controllers')->group(function (){
         // ROUTE TO ANALYSIS CONTROLLERS
         Route::namespace('analysis')->prefix('analysis')->name('analysis.')->group(function(){
             Route::get('/', 'AnalysisControllers@index')->name('index') ;
-            Route::get('create', 'AnalysisControllers@create')->name('create');
+            Route::post('create', 'AnalysisControllers@create')->name('create');
             Route::post('store', 'AnalysisControllers@store')->name('store');
             Route::get('summary/{id}', 'AnalysisControllers@summary')->name('summary');
             Route::get('detail/{id}', 'AnalysisControllers@detail')->name('detail');
@@ -147,11 +155,6 @@ Route::namespace('App\Http\Controllers')->group(function (){
 
     // USER
     Route::middleware('auth:user')->prefix('user')->name('user.')->group(function () {
-
-         // ROUTE TO DASHBOARD CONTROLLERS
-        //  Route::namespace('dashboard')->name('dashboard.')->group(function () {
-        //     Route::get('/dashboard-user', 'DashboardControllers@index')->name('index');
-        // });
 
         // ROUTE TO ORDER CONTROLLERS
         Route::namespace('order')->prefix('order')->name('order.')->group(function () {

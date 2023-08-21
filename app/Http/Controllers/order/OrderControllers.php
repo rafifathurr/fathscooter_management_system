@@ -29,8 +29,8 @@ class OrderControllers extends Controller
     {
         return view('order.index', [
             "title" => "List Order",
-            "years" => Order::select(DB::raw('YEAR(date_order) as tahun'))->orderBy(DB::raw('YEAR(date_order)'))->where('deleted_at',null)->groupBy(DB::raw("YEAR(date_order)"))->get(),
-            "months" => Order::select(DB::raw('MONTH(date_order) as bulan'))->orderBy(DB::raw('MONTH(date_order)'))->where('deleted_at',null)->groupBy(DB::raw("MONTH(date_order)"))->get(),
+            "years" => Order::select(DB::raw('YEAR(date_order) as tahun'))->orderBy(DB::raw('YEAR(date_order)'), 'desc')->where('deleted_at',null)->groupBy(DB::raw("YEAR(date_order)"))->get(),
+            "months" => Order::select(DB::raw('MONTH(date_order) as bulan'))->orderBy(DB::raw('MONTH(date_order)'), 'asc')->where('deleted_at',null)->groupBy(DB::raw("MONTH(date_order)"))->get(),
             "types" => Type::orderBy('id', 'ASC')->where('deleted_at',null)->get(),
             "orders" => Order::orderBy('date_order', 'DESC')->where('deleted_at',null)->get()
         ]);
@@ -38,8 +38,9 @@ class OrderControllers extends Controller
 
     public function getMonth(Request $req){
         $months = Order::select(DB::raw('MONTH(date_order) as bulan, MONTHNAME(date_order) as nama_bulan'))
-                    ->whereYear('date_order', $req->tahun)->orderBy(DB::raw('MONTH(date_order)'))
+                    ->whereYear('date_order', $req->tahun)
                     ->where('deleted_at',null)
+                    ->orderBy(DB::raw('MONTH(date_order)'), 'asc')
                     ->groupBy(DB::raw("MONTHNAME(date_order)"))
                     ->groupBy(DB::raw("MONTH(date_order)"))
                     ->get();

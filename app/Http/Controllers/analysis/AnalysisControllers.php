@@ -6,10 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\analysis\Analysis;
 use App\Models\analysis\DetailAnalysis;
 use App\Models\order\DetailOrder;
-use App\Models\type_buy\Type;
-use App\Models\product\Product;
-use App\Exports\ReportOrderExport;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Models\order\Order;
 
 use Illuminate\Http\Request;
 use Auth;
@@ -28,29 +25,19 @@ class AnalysisControllers extends Controller
     public function index()
     {
         date_default_timezone_set("Asia/Jakarta");
-        $year = date('Y', strtotime('-1 years'));
-        $check = Analysis::where('year', $year)
-                ->whereNull('deleted_at')
-                ->first();
-
-        if($check){
-            $disabled = true;
-        }else{
-            $disabled = false;
-        }
 
         return view('analysis.index', [
             "title" => "Analysis",
             "analysis" => Analysis::orderBy('month', 'DESC')->where('deleted_at',null)->get(),
-            'disabled' => $disabled
+            "years" => Order::select(DB::raw('YEAR(date_order) as tahun'))->orderBy(DB::raw('YEAR(date_order)'), 'desc')->where('deleted_at',null)->groupBy(DB::raw("YEAR(date_order)"))->get(),
         ]);
     }
 
     // Create View Data
-    public function create()
+    public function create(Request $req)
     {
         date_default_timezone_set("Asia/Jakarta");
-        $year = date('Y', strtotime('-1 years'));
+        $year = $req->tahun;
 
         $data['title'] = "Add Analysis";
         $data['url'] = 'store';
@@ -245,7 +232,7 @@ class AnalysisControllers extends Controller
     {
         $analysis = Analysis::where('id', $id)
                     ->first();
-                    
+
         $data['title'] = "Summary Analysis";
         $data['year'] = $analysis->year;
         $data['disabled_'] = 'disabled';
