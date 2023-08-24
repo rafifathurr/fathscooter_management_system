@@ -39,7 +39,7 @@ class AnalysisControllers extends Controller
         date_default_timezone_set("Asia/Jakarta");
         $year = $req->tahun;
 
-        $data['title'] = "Add Analysis";
+        $data['title'] = "Add Analysis $year";
         $data['url'] = 'store';
         $data['year'] = $year;
         $data['details'] = DetailOrder::selectRaw('
