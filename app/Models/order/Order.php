@@ -25,6 +25,11 @@ class Order extends Model
         return $this->belongsTo('App\Models\source_payment\Source', 'source_id', 'id');
       }
 
+      public function type()
+      {
+        return $this->belongsTo('App\Models\type_buy\Type', 'type_buy', 'id');
+      }
+
       public function createdby()
       {
         return $this->belongsTo('App\Models\users\User', 'created_by', 'id');

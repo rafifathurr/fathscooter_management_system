@@ -118,7 +118,7 @@
                                     <div class="row py-3">
                                         <div class="col-md-12 d-flex flex-column justify-content-around">
                                             <div>
-                                                <h6 class="fw-bold text-uppercase text-success op-8">Total Income</h6>
+                                                <h5 class="fw-bold text-uppercase text-success op-8">Total Income</h5>
                                                 <div style="display:flex">
                                                     <h4 class="fw-bold">Rp. {{number_format($totalincome, 0 , ',' , '.')}},-</h4>
                                                     @if($totalincomelast < $totalincome)
@@ -129,7 +129,7 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <h6 class="fw-bold text-uppercase text-success op-8" style="color:#1269db !important;">Total Profit</h6>
+                                                <h5 class="fw-bold text-uppercase text-success op-8" style="color:#1269db !important;">Total Profit</h5>
                                                 <div style="display:flex">
                                                     <h4 class="fw-bold">Rp. {{number_format($totalprofit,0,',','.')}},-</h4>
                                                     @if($totalprofitlast < $totalprofit)
@@ -140,7 +140,7 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <h6 class="fw-bold text-uppercase text-danger op-8">Total Tax</h6>
+                                                <h5 class="fw-bold text-uppercase text-danger op-8">Total Tax</h5>
                                                 <div style="display:flex">
                                                     <h4 class="fw-bold">Rp. {{number_format($totaltax,0,',','.')}},-</h4>
                                                     @if($totaltaxlast < $totaltax)
@@ -155,24 +155,6 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- <div class="col-md-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="card-title">Potential Orders</div>
-                                    <div class="card-body">
-                                        <h3 style="text-align:right;">0</h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="card-title">Potential Profit</div>
-                                    <div class="card-body">
-                                        <h3 style="text-align:right;">Rp. 0,-</h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
                     </div>
                     <div class="row">
                         <div class="col-md-6">

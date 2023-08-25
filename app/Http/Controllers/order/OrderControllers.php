@@ -111,17 +111,6 @@ class OrderControllers extends Controller
             $total_arr = count($req->product_id);
 
             for($i = 0; $i<$total_arr; $i++){
-                // $sell = $req->sell_price_arr[$i];
-                // $sell = explode("Rp.", $sell);
-                // $sell = array_pop($sell);
-                // $sell = explode(".", $sell);
-                // $total_sell = implode("", $sell);
-
-                // $base = $req->base_price_arr[$i];
-                // $base = explode("Rp.", $base);
-                // $base = array_pop($base);
-                // $base = explode(".", $base);
-                // $total_base = implode("", $base);
 
                 $details = DetailOrder::create([
                     'id_order' => $orders->id,
@@ -276,7 +265,7 @@ class OrderControllers extends Controller
     {
 
         if($req->bulan==0){
-            $orders = Order::with('details.product', 'source')
+            $check = Order::with('source', 'type')
                         ->whereYear('date_order', $req->tahun)
                         ->orderBy('date_order', 'ASC')
                         ->get();
@@ -288,6 +277,47 @@ class OrderControllers extends Controller
                     ->whereYear('date_order', $req->tahun)
                     ->first();
 
+            $json = array();
+            foreach($check as $order){
+
+                $time = $order->date_order;
+                $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                $pisah = explode(" ", $time);
+                $pisahfix = explode("-", $pisah[0]);
+                $blnf = $pisahfix[1] - 1;
+
+                $json[$order->id] = array(
+                    'invoice' => $order->invoice,
+                    'date_order' => $pisahfix[2] . " " . $bulan[$blnf] . " " . $pisahfix[0] . " " ,
+                    'source' => $order->source->source,
+                    'type_buy' => $order->type->type_buy,
+                    'income' => $order->entry_price,
+                    'platform_fee' => $order->platform_fee,
+                    'profit' => $order->profit,
+                    'product' => array()
+                );
+
+                $product_order = DetailOrder::join('product', 'product.id', '=', 'details_order.id_product')
+                                ->selectRaw('
+                                    product.product_name,
+                                    details_order.qty
+                                ')
+                                ->where('id_order', $order->id)
+                                ->get();
+
+                $detail = array();
+                foreach($product_order as $product){
+                    $detail = array(
+                        'product_name' => $product->product_name,
+                        'qty' => $product->qty
+                    );
+                    $json[$order->id]['product'][] = $detail;
+                }
+
+            }
+
+            $orders = $json;
+
             $data =  [
                 'success' => 'success',
                 'sum' => $sum,
@@ -295,32 +325,15 @@ class OrderControllers extends Controller
                 'year' => $req->tahun
             ];
 
-            // return view('order.export', $data);
-            return Excel::download(new ReportOrderExport($data), 'Reports_Order_'.$req->tahun.'.xlsx');
+            return Excel::download(new ReportOrderExport($data), 'Reports_Fathscooter_Order_'.$req->tahun.'.xlsx');
 
         }else{
 
-            $orders = Order::with('details.product', 'source')
-                        ->whereYear('date_order', $req->tahun)
-                        ->whereMonth('date_order', $req->bulan)
-                        ->orderBy('date_order', 'ASC')
-                        ->get();
-
-            // foreach($orders as $order){
-
-            //     $details[$order->id] = DetailOrder::selectRaw('
-            //                                 orders.id as id_order,
-            //                                 product.product_name
-            //                             ')
-            //                             ->join('orders', 'orders.id', '=', 'details_order.id_order')
-            //                             ->join('product', 'product.id', '=', 'details_order.id_product')
-            //                             ->where('orders.id', $order->id)
-            //                             ->groupBy('orders.id')
-            //                             ->groupBy('product.product_name')
-            //                             ->get();
-
-            // }
-
+            $check = Order::with('source', 'type')
+                    ->whereYear('date_order', $req->tahun)
+                    ->whereMonth('date_order', $req->bulan)
+                    ->orderBy('date_order', 'ASC')
+                    ->get();
 
             $sum = Order::selectRaw("
                         SUM(entry_price) as total_income,
@@ -330,18 +343,56 @@ class OrderControllers extends Controller
                     ->whereMonth('date_order', $req->bulan)
                     ->first();
 
+            $json = array();
+            foreach($check as $order){
+
+                $time = $order->date_order;
+                $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                $pisah = explode(" ", $time);
+                $pisahfix = explode("-", $pisah[0]);
+                $blnf = $pisahfix[1] - 1;
+
+                $json[$order->id] = array(
+                    'invoice' => $order->invoice,
+                    'date_order' => $pisahfix[2] . " " . $bulan[$blnf] . " " . $pisahfix[0] . " " ,
+                    'source' => $order->source->source,
+                    'type_buy' => $order->type->type_buy,
+                    'income' => $order->entry_price,
+                    'platform_fee' => $order->platform_fee,
+                    'profit' => $order->profit,
+                    'product' => array()
+                );
+
+                $product_order = DetailOrder::join('product', 'product.id', '=', 'details_order.id_product')
+                                ->selectRaw('
+                                    product.product_name,
+                                    details_order.qty
+                                ')
+                                ->where('id_order', $order->id)
+                                ->get();
+
+                $detail = array();
+                foreach($product_order as $product){
+                    $detail = array(
+                        'product_name' => $product->product_name,
+                        'qty' => $product->qty
+                    );
+                    $json[$order->id]['product'][] = $detail;
+                }
+
+            }
+
+            $orders = $json;
+
             $data =  [
                 'success' => 'success',
                 'orders' => $orders,
-                // 'details' => $details,
                 'sum' => $sum,
                 'year' => $req->tahun,
                 'month' => $req->bulan
             ];
 
-            // return view('order.export', $data);
-
-            return Excel::download(new ReportOrderExport($data), 'Reports_Order_'.date("F", mktime(0, 0, 0, $req->bulan, 1)).'_'.$req->tahun.'.xlsx');
+            return Excel::download(new ReportOrderExport($data), 'Reports_Fathscooter_Order_'.date("F", mktime(0, 0, 0, $req->bulan, 1)).'_'.$req->tahun.'.xlsx');
 
         }
 

@@ -1,6 +1,6 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>FathScooter Management - {{($title)}}</title>
+    <title>FathScooter Management</title>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
