@@ -888,17 +888,11 @@
 
                     if(total_profit < 0){
 
-                        // total_profit = total_profit*(-1);
-
-                        // swal({
-                        //     title: "",
-                        //     text: "Harap Sesuaikan Data Dengan Benar!",
-                        //     icon: "error"
-                        //     // dangerMode: true,
-                        // })
-
-                        // resetprice();
-                        // removedata();
+                        swal({
+                            title: "",
+                            text: "Harap Sesuaikan Data Dengan Benar!",
+                            icon: "error"
+                        })
 
                         $('#cal_tax').val(platform_fee);
                         $('#cal_profit').val(total_profit);
