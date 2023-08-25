@@ -58,19 +58,7 @@ Route::namespace('App\Http\Controllers')->group(function (){
         Route::namespace('dashboard')->name('dashboard.')->group(function () {
             Route::get('/dashboard-admin', 'DashboardControllers@index')->name('index');
         });
-
-        // ROUTE TO ANALYSIS CONTROLLERS
-        Route::namespace('analysis')->prefix('analysis')->name('analysis.')->group(function(){
-            Route::get('/', 'AnalysisControllers@index')->name('index') ;
-            Route::post('create', 'AnalysisControllers@create')->name('create');
-            Route::post('store', 'AnalysisControllers@store')->name('store');
-            Route::get('summary/{id}', 'AnalysisControllers@summary')->name('summary');
-            Route::get('detail/{id}', 'AnalysisControllers@detail')->name('detail');
-            Route::get('edit/{id}', 'AnalysisControllers@edit')->name('edit');
-            Route::post('update', 'AnalysisControllers@update')->name('update');
-            Route::post('delete', 'AnalysisControllers@delete')->name('delete');
-        });
-
+        
         // ROUTE TO ORDER CONTROLLERS
         Route::namespace('order')->prefix('order')->name('order.')->group(function () {
             Route::get('/', 'OrderControllers@index')->name('index');
