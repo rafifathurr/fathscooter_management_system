@@ -9,9 +9,9 @@ class Analysis extends Model
 {
     protected $primaryKey = 'id';
 
-      protected $table = "analysis";
+    protected $table = "analysis";
 
-      protected $guarded = [];
+    protected $guarded = [];
 
-      public $timestamps = false;
-  }
+    public $timestamps = false;
+}

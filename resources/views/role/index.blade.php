@@ -3,6 +3,7 @@
 @include('layouts.head')
 <style>
 </style>
+
 <body>
     <div class="wrapper">
         @include('layouts.sidebar')
@@ -12,7 +13,7 @@
                     <div class="page-inner py-5">
                         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                             <div>
-                                <h2 class="pb-2 fw-bold">{{($title)}}</h2>
+                                <h2 class="pb-2 fw-bold">{{ $title }}</h2>
                             </div>
                         </div>
                     </div>
@@ -49,8 +50,8 @@
                                                 <th class="sorting_asc" tabindex="0" aria-controls="add-row" width:0%>
                                                     <center>No</center>
                                                 </th>
-                                                <th width="50%" class="sorting" tabindex="0" aria-controls="add-row"
-                                                    rowspan="1" colspan="1"
+                                                <th width="50%" class="sorting" tabindex="0"
+                                                    aria-controls="add-row" rowspan="1" colspan="1"
                                                     aria-label="Position: activate to sort column ascending"
                                                     style="font-weight:900;">
                                                     <center>Role</center>
@@ -64,38 +65,40 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <?php $num = 0; ?>
-                                        @foreach($roles as $role)
-                                            <tr role="row" class="odd">
-                                                <td>
-                                                    <center>{{$num=$num+1}}</center>
-                                                </td>
-                                                <td class="sorting_1">
-                                                    <center>{{$role->role}}</center>
-                                                </td>
-                                                <td>
-                                                    <center>
-                                                        <div class="form-button-action">
-                                                            <a href="{{route('admin.role.detail', $role->id) }}" data-toggle="tooltip" title="Detail"
-                                                                class="btn btn-link btn-simple-primary btn-lg"
-                                                                data-original-title="Detail" control-id="ControlID-16">
-                                                                <i class="fa fa-eye"></i>
-                                                            </a>
-                                                            <!-- <a href="{{route('admin.role.edit', $role->id) }}" data-toggle="tooltip" title="Edit"
+                                            <?php $num = 0; ?>
+                                            @foreach ($roles as $role)
+                                                <tr role="row" class="odd">
+                                                    <td>
+                                                        <center>{{ $num = $num + 1 }}</center>
+                                                    </td>
+                                                    <td class="sorting_1">
+                                                        <center>{{ $role->role }}</center>
+                                                    </td>
+                                                    <td>
+                                                        <center>
+                                                            <div class="form-button-action">
+                                                                <a href="{{ route('admin.role.detail', $role->id) }}"
+                                                                    data-toggle="tooltip" title="Detail"
+                                                                    class="btn btn-link btn-simple-primary btn-lg"
+                                                                    data-original-title="Detail"
+                                                                    control-id="ControlID-16">
+                                                                    <i class="fa fa-eye"></i>
+                                                                </a>
+                                                                <!-- <a href="{{ route('admin.role.edit', $role->id) }}" data-toggle="tooltip" title="Edit"
                                                                 class="btn btn-link btn-simple-primary btn-lg"
                                                                 data-original-title="Edit" control-id="ControlID-16">
                                                                 <i class="fa fa-edit" style="color:grey;"></i>
                                                             </a>
-                                                            <button type="submit" onclick="destroy({{$role->id}})" data-toggle="tooltip" title="Delete"
+                                                            <button type="submit" onclick="destroy({{ $role->id }})" data-toggle="tooltip" title="Delete"
                                                                 class="btn btn-link btn-simple-danger"
                                                                 data-original-title="Delete" control-id="ControlID-17">
                                                                 <i class="fa fa-trash" style="color:red;"></i>
                                                             </button> -->
-                                                        </div>
-                                                    </center>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                                            </div>
+                                                        </center>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -120,24 +123,27 @@
 
 <script>
     function destroy(id) {
-    var token = $('meta[name="csrf-token"]').attr('content');
+        var token = $('meta[name="csrf-token"]').attr('content');
 
-    swal({
-          title: "",
-          text: "Are you sure want to delete this record?",
-          icon: "warning",
-          buttons: ['Cancel', 'OK'],
-          // dangerMode: true,
-      }).then((willDelete) => {
-          if (willDelete) {
-            $.post("{{route('admin.role.delete')}}",{ id:id,_token:token},function(data){
-                location.reload();
-            })
-          } else {
-            return false;
-          }
-      });
-  }
+        swal({
+            title: "",
+            text: "Are you sure want to delete this record?",
+            icon: "warning",
+            buttons: ['Cancel', 'OK'],
+            // dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.post("{{ route('admin.role.delete') }}", {
+                    id: id,
+                    _token: token
+                }, function(data) {
+                    location.reload();
+                })
+            } else {
+                return false;
+            }
+        });
+    }
 </script>
 
 @include('layouts.swal')

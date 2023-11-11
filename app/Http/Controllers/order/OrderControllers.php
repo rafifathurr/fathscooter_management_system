@@ -29,21 +29,22 @@ class OrderControllers extends Controller
     {
         return view('order.index', [
             "title" => "List Order",
-            "years" => Order::select(DB::raw('YEAR(date_order) as tahun'))->orderBy(DB::raw('YEAR(date_order)'), 'desc')->where('deleted_at',null)->groupBy(DB::raw("YEAR(date_order)"))->get(),
-            "months" => Order::select(DB::raw('MONTH(date_order) as bulan'))->orderBy(DB::raw('MONTH(date_order)'), 'asc')->where('deleted_at',null)->groupBy(DB::raw("MONTH(date_order)"))->get(),
-            "types" => Type::orderBy('id', 'ASC')->where('deleted_at',null)->get(),
-            "orders" => Order::orderBy('date_order', 'DESC')->where('deleted_at',null)->get()
+            "years" => Order::select(DB::raw('YEAR(date_order) as tahun'))->orderBy(DB::raw('YEAR(date_order)'), 'desc')->where('deleted_at', null)->groupBy(DB::raw("YEAR(date_order)"))->get(),
+            "months" => Order::select(DB::raw('MONTH(date_order) as bulan'))->orderBy(DB::raw('MONTH(date_order)'), 'asc')->where('deleted_at', null)->groupBy(DB::raw("MONTH(date_order)"))->get(),
+            "types" => Type::orderBy('id', 'ASC')->where('deleted_at', null)->get(),
+            "orders" => Order::orderBy('date_order', 'DESC')->where('deleted_at', null)->get()
         ]);
     }
 
-    public function getMonth(Request $req){
+    public function getMonth(Request $req)
+    {
         $months = Order::select(DB::raw('MONTH(date_order) as bulan, MONTHNAME(date_order) as nama_bulan'))
-                    ->whereYear('date_order', $req->tahun)
-                    ->where('deleted_at',null)
-                    ->orderBy(DB::raw('MONTH(date_order)'), 'asc')
-                    ->groupBy(DB::raw("MONTHNAME(date_order)"))
-                    ->groupBy(DB::raw("MONTH(date_order)"))
-                    ->get();
+            ->whereYear('date_order', $req->tahun)
+            ->where('deleted_at', null)
+            ->orderBy(DB::raw('MONTH(date_order)'), 'asc')
+            ->groupBy(DB::raw("MONTHNAME(date_order)"))
+            ->groupBy(DB::raw("MONTH(date_order)"))
+            ->get();
         return json_encode($months);
     }
 
@@ -54,15 +55,15 @@ class OrderControllers extends Controller
         $data['url'] = 'store';
         $data['disabled_'] = '';
         $data['types'] = Type::orderBy('id', 'asc')
-                        ->where('deleted_at', null)
-                        ->get();
+            ->where('deleted_at', null)
+            ->get();
         $data['products'] = Product::orderBy('product_name', 'asc')
-                            ->where('status', 'Active')
-                            ->where('deleted_at', null)
-                            ->get();
+            ->where('status', 'Active')
+            ->where('deleted_at', null)
+            ->get();
         $data['sources'] = Source::orderBy('id', 'asc')
-                            ->where('deleted_at', null)
-                            ->get();
+            ->where('deleted_at', null)
+            ->get();
         return view('order.create', $data);
     }
 
@@ -70,9 +71,9 @@ class OrderControllers extends Controller
     public function getProds(Request $req)
     {
         $data = Product::orderBy('product_name', 'asc')
-                ->where('status', 'Active')
-                ->where('deleted_at', null)
-                ->get();
+            ->where('status', 'Active')
+            ->where('deleted_at', null)
+            ->get();
         return response()->json($data);
     }
 
@@ -86,7 +87,6 @@ class OrderControllers extends Controller
     // Store Function to Database
     public function store(Request $req)
     {
-        date_default_timezone_set("Asia/Jakarta");
         $datenow = date('Y-m-d H:i:s');
 
         $total_arr = count($req->product_id);
@@ -106,11 +106,11 @@ class OrderControllers extends Controller
             'created_by' => Auth::user()->id
         ]);
 
-        if($orders){
+        if ($orders) {
 
             $total_arr = count($req->product_id);
 
-            for($i = 0; $i<$total_arr; $i++){
+            for ($i = 0; $i < $total_arr; $i++) {
                 // $sell = $req->sell_price_arr[$i];
                 // $sell = explode("Rp.", $sell);
                 // $sell = array_pop($sell);
@@ -132,53 +132,45 @@ class OrderControllers extends Controller
                     'created_at' => $datenow
                 ]);
 
-                if($details){
+                if ($details) {
 
                     $get_prods = Product::where('id', $req->product_id[$i])
-                                ->first();
+                        ->first();
 
                     $new_update_stock = $get_prods->stock - $req->qty[$i];
 
-                    if($new_update_stock == 0){
-
-                       $update_stock = Product::where('id', $req->product_id[$i])
-                                        ->update([
-                                            'stock' => $new_update_stock,
-                                            'status' => 'Inactive',
-                                            'updated_at' => $datenow,
-                                            'updated_by' => Auth::user()->id
-                                        ]);
-
-                    }else{
+                    if ($new_update_stock == 0) {
 
                         $update_stock = Product::where('id', $req->product_id[$i])
-                                        ->update([
-                                            'stock' => $new_update_stock,
-                                            'updated_at' => $datenow,
-                                            'updated_by' => Auth::user()->id
-                                        ]);
+                            ->update([
+                                'stock' => $new_update_stock,
+                                'status' => 'Inactive',
+                                'updated_at' => $datenow,
+                                'updated_by' => Auth::user()->id
+                            ]);
+                    } else {
 
+                        $update_stock = Product::where('id', $req->product_id[$i])
+                            ->update([
+                                'stock' => $new_update_stock,
+                                'updated_at' => $datenow,
+                                'updated_by' => Auth::user()->id
+                            ]);
                     }
-
                 }
-
             }
 
-            if($update_stock){
+            if ($update_stock) {
 
-                if(Auth::guard('admin')->check()){
+                if (Auth::guard('admin')->check()) {
 
                     return redirect()->route('admin.order.index')->with(['success' => 'Data successfully stored!']);
-                }else{
+                } else {
 
                     return redirect()->route('user.order.index')->with(['success' => 'Data successfully stored!']);
-
                 }
-
             }
-
         }
-
     }
 
     // Detail Data View by id
@@ -188,17 +180,17 @@ class OrderControllers extends Controller
         $data['disabled_'] = 'disabled';
         $data['url'] = 'create';
         $data['orders'] = Order::where('id', $id)
-                            ->first();
+            ->first();
         $data['details_order'] = DetailOrder::with('product')
-                                ->where('id_order', $id)
-                                ->get();
+            ->where('id_order', $id)
+            ->get();
         $data['products'] = Product::orderBy('product_name', 'asc')
-                            ->get();
+            ->get();
         $data['sources'] = Source::orderBy('id', 'asc')
-                            ->get();
+            ->get();
         $data['types'] = Type::orderBy('id', 'asc')
-                        ->where('deleted_at', null)
-                        ->get();
+            ->where('deleted_at', null)
+            ->get();
         return view('order.create', $data);
     }
 
@@ -209,24 +201,23 @@ class OrderControllers extends Controller
         $data['disabled_'] = '';
         $data['url'] = 'update';
         $data['orders'] = Order::where('id', $id)
-                            ->first();
+            ->first();
         $data['details_order'] = DetailOrder::with('product')
-                                ->where('id_order', $id)
-                                ->get();
+            ->where('id_order', $id)
+            ->get();
         $data['products'] = Product::orderBy('product_name', 'asc')
-                            ->get();
+            ->get();
         $data['sources'] = Source::orderBy('id', 'asc')
-                            ->get();
+            ->get();
         $data['types'] = Type::orderBy('id', 'asc')
-                        ->where('deleted_at', null)
-                        ->get();
+            ->where('deleted_at', null)
+            ->get();
         return view('order.create', $data);
     }
 
     // Update Function to Database
     public function update(Request $req)
     {
-        date_default_timezone_set("Asia/Bangkok");
         $datenow = date('Y-m-d H:i:s');
         $order_pay = Order::where('id', $req->id)->update([
             'product_id' => $req->prods,
@@ -241,9 +232,9 @@ class OrderControllers extends Controller
             'updated_by' => Auth::user()->username
         ]);
 
-        if(Auth::guard('admin')->check()){
+        if (Auth::guard('admin')->check()) {
             return redirect()->route('admin.order.index')->with(['success' => 'Data successfully updated!']);
-        }else{
+        } else {
             return redirect()->route('user.order.index')->with(['success' => 'Data successfully updated!']);
         }
     }
@@ -251,42 +242,41 @@ class OrderControllers extends Controller
     // Delete Data Function
     public function delete(Request $req)
     {
-        date_default_timezone_set("Asia/Bangkok");
         $datenow = date('Y-m-d H:i:s');
-        $exec_1 = Order::where('id', $req->id )->update([
-            'deleted_at'=>$datenow,
-            'updated_at'=>$datenow,
-            'updated_by'=>Auth::user()->id
+        $exec_1 = Order::where('id', $req->id)->update([
+            'deleted_at' => $datenow,
+            'updated_at' => $datenow,
+            'updated_by' => Auth::user()->id
         ]);
 
-        $exec_2 = DetailOrder::where('id_order', $req->id )->update([
-            'deleted_at'=>$datenow,
-            'updated_at'=>$datenow
+        $exec_2 = DetailOrder::where('id_order', $req->id)->update([
+            'deleted_at' => $datenow,
+            'updated_at' => $datenow
         ]);
 
         if ($exec_1 && $exec_2) {
             Session::flash('success', 'Data successfully deleted!');
-          } else {
+        } else {
             Session::flash('gagal', 'Error Data');
-          }
+        }
     }
 
     // Index View and Scope Data
     public function export(Request $req)
     {
 
-        if($req->bulan==0){
+        if ($req->bulan == 0) {
             $orders = Order::with('details.product', 'source')
-                        ->whereYear('date_order', $req->tahun)
-                        ->orderBy('date_order', 'ASC')
-                        ->get();
+                ->whereYear('date_order', $req->tahun)
+                ->orderBy('date_order', 'ASC')
+                ->get();
 
             $sum = Order::selectRaw("
                         SUM(entry_price) as total_income,
                         SUM(platform_fee) as total_platform_fee,
                         SUM(profit) as total_profit")
-                    ->whereYear('date_order', $req->tahun)
-                    ->first();
+                ->whereYear('date_order', $req->tahun)
+                ->first();
 
             $data =  [
                 'success' => 'success',
@@ -296,15 +286,14 @@ class OrderControllers extends Controller
             ];
 
             // return view('order.export', $data);
-            return Excel::download(new ReportOrderExport($data), 'Reports_Order_'.$req->tahun.'.xlsx');
-
-        }else{
+            return Excel::download(new ReportOrderExport($data), 'Reports_Order_' . $req->tahun . '.xlsx');
+        } else {
 
             $orders = Order::with('details.product', 'source')
-                        ->whereYear('date_order', $req->tahun)
-                        ->whereMonth('date_order', $req->bulan)
-                        ->orderBy('date_order', 'ASC')
-                        ->get();
+                ->whereYear('date_order', $req->tahun)
+                ->whereMonth('date_order', $req->bulan)
+                ->orderBy('date_order', 'ASC')
+                ->get();
 
             // foreach($orders as $order){
 
@@ -326,9 +315,9 @@ class OrderControllers extends Controller
                         SUM(entry_price) as total_income,
                         SUM(platform_fee) as total_platform_fee,
                         SUM(profit) as total_profit")
-                    ->whereYear('date_order', $req->tahun)
-                    ->whereMonth('date_order', $req->bulan)
-                    ->first();
+                ->whereYear('date_order', $req->tahun)
+                ->whereMonth('date_order', $req->bulan)
+                ->first();
 
             $data =  [
                 'success' => 'success',
@@ -341,9 +330,7 @@ class OrderControllers extends Controller
 
             // return view('order.export', $data);
 
-            return Excel::download(new ReportOrderExport($data), 'Reports_Order_'.date("F", mktime(0, 0, 0, $req->bulan, 1)).'_'.$req->tahun.'.xlsx');
-
+            return Excel::download(new ReportOrderExport($data), 'Reports_Order_' . date("F", mktime(0, 0, 0, $req->bulan, 1)) . '_' . $req->tahun . '.xlsx');
         }
-
     }
 }

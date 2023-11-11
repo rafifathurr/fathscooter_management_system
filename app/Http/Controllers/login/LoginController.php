@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\login;
 
 use App\Http\Controllers\Controller;
-use Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,7 +12,8 @@ class LoginController extends Controller
     {
         return view('auth.login');
     }
-    public function authenticate(Request $request){
+    public function authenticate(Request $request)
+    {
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required',
@@ -28,8 +28,8 @@ class LoginController extends Controller
             return redirect()->back()->with(['gagal' => 'These credentials do not match our records.']);
         }
     }
-    public function logout(){
-        // dd('masuk');
+    public function logout()
+    {
         if (Auth::guard('user')->check()) {
             Auth::guard('user')->logout();
         } elseif (Auth::guard('admin')->check()) {

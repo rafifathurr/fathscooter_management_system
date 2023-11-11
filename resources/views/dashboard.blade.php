@@ -2,12 +2,12 @@
 <html lang="en">
 @include('layouts.head')
 <style>
-.v-center {
-   display: flex;
-   align-items: center;
-}
-
+    .v-center {
+        display: flex;
+        align-items: center;
+    }
 </style>
+
 <body>
     @csrf
     <div class="wrapper">
@@ -36,11 +36,11 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-4 v-center" >
+                                        <div class="col-md-4 v-center">
                                             <i class="fa fa-list" style="font-size:50px;"></i>
                                         </div>
                                         <div class="col-md-8">
-                                        <div class="card-title">Total Products</div>
+                                            <div class="card-title">Total Products</div>
                                             <div class="card-body">
                                                 <h2 style="text-align:right;" id="counter_all">0</h2>
                                             </div>
@@ -53,7 +53,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-4 v-center" >
+                                        <div class="col-md-4 v-center">
                                             <i class="fa fa-check-circle" style="font-size:50px;color:#05c305;"></i>
                                         </div>
                                         <div class="col-md-8">
@@ -70,7 +70,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-4 v-center" >
+                                        <div class="col-md-4 v-center">
                                             <i class="fa fa-ban" style="font-size:50px;color:red;"></i>
                                         </div>
                                         <div class="col-md-8">
@@ -114,39 +114,50 @@
                         <div class="col-md-5">
                             <div class="card full-height">
                                 <div class="card-body">
-                                    <div class="card-title">Financial Accumulation <br><strong>{{date('M Y')}}</strong></div>
+                                    <div class="card-title">Financial Accumulation
+                                        <br><strong>{{ date('M Y') }}</strong></div>
                                     <div class="row py-3">
                                         <div class="col-md-12 d-flex flex-column justify-content-around">
                                             <div>
                                                 <h6 class="fw-bold text-uppercase text-success op-8">Total Income</h6>
                                                 <div style="display:flex">
-                                                    <h4 class="fw-bold">Rp. {{number_format($totalincome, 0 , ',' , '.')}},-</h4>
-                                                    @if($totalincomelast < $totalincome)
-                                                        <i class="fa fa-arrow-up" style="color:#31ce36;font-size:18px;margin-top: 0.22rem !important;margin-left:10px;"></i>
+                                                    <h4 class="fw-bold">Rp.
+                                                        {{ number_format($totalincome, 0, ',', '.') }},-</h4>
+                                                    @if ($totalincomelast < $totalincome)
+                                                        <i class="fa fa-arrow-up"
+                                                            style="color:#31ce36;font-size:18px;margin-top: 0.22rem !important;margin-left:10px;"></i>
                                                     @elseif($totalincomelast > $totalincome)
-                                                        <i class="fa fa-arrow-down" style="color:#f25961;font-size:18px;margin-top: 0.22rem !important;margin-left:10px;"></i>
+                                                        <i class="fa fa-arrow-down"
+                                                            style="color:#f25961;font-size:18px;margin-top: 0.22rem !important;margin-left:10px;"></i>
                                                     @endif
                                                 </div>
                                             </div>
                                             <div>
-                                                <h6 class="fw-bold text-uppercase text-success op-8" style="color:#1269db !important;">Total Profit</h6>
+                                                <h6 class="fw-bold text-uppercase text-success op-8"
+                                                    style="color:#1269db !important;">Total Profit</h6>
                                                 <div style="display:flex">
-                                                    <h4 class="fw-bold">Rp. {{number_format($totalprofit,0,',','.')}},-</h4>
-                                                    @if($totalprofitlast < $totalprofit)
-                                                        <i class="fa fa-arrow-up" style="color:#31ce36;font-size:18px;margin-top: 0.22rem !important;margin-left:10px;"></i>
+                                                    <h4 class="fw-bold">Rp.
+                                                        {{ number_format($totalprofit, 0, ',', '.') }},-</h4>
+                                                    @if ($totalprofitlast < $totalprofit)
+                                                        <i class="fa fa-arrow-up"
+                                                            style="color:#31ce36;font-size:18px;margin-top: 0.22rem !important;margin-left:10px;"></i>
                                                     @elseif($totalprofitlast > $totalprofit)
-                                                        <i class="fa fa-arrow-down" style="color:#f25961;font-size:18px;margin-top: 0.22rem !important;margin-left:10px;"></i>
+                                                        <i class="fa fa-arrow-down"
+                                                            style="color:#f25961;font-size:18px;margin-top: 0.22rem !important;margin-left:10px;"></i>
                                                     @endif
                                                 </div>
                                             </div>
                                             <div>
                                                 <h6 class="fw-bold text-uppercase text-danger op-8">Total Tax</h6>
                                                 <div style="display:flex">
-                                                    <h4 class="fw-bold">Rp. {{number_format($totaltax,0,',','.')}},-</h4>
-                                                    @if($totaltaxlast < $totaltax)
-                                                        <i class="fa fa-arrow-up" style="color:#f25961;font-size:18px;margin-top: 0.22rem !important;margin-left:10px;"></i>
+                                                    <h4 class="fw-bold">Rp. {{ number_format($totaltax, 0, ',', '.') }},-
+                                                    </h4>
+                                                    @if ($totaltaxlast < $totaltax)
+                                                        <i class="fa fa-arrow-up"
+                                                            style="color:#f25961;font-size:18px;margin-top: 0.22rem !important;margin-left:10px;"></i>
                                                     @elseif($totaltaxlast > $totaltax)
-                                                        <i class="fa fa-arrow-down" style="color:#31ce36;font-size:18px;margin-top: 0.22rem !important;margin-left:10px;"></i>
+                                                        <i class="fa fa-arrow-down"
+                                                            style="color:#31ce36;font-size:18px;margin-top: 0.22rem !important;margin-left:10px;"></i>
                                                     @endif
                                                 </div>
                                             </div>
@@ -194,7 +205,8 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="card-head-row">
-                                        <div class="card-title"><strong>Month Profit of {{date('Y')}}</strong> </div>
+                                        <div class="card-title"><strong>Month Profit of {{ date('Y') }}</strong>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -213,17 +225,17 @@
                                     <div class="card-title">Top Sales Products</div>
                                 </div>
                                 <div class="card-body pb-0">
-                                @foreach($topproduct as $tp)
-                                    <div class="d-flex">
-                                        <div class="flex-1 pt-1 ml-2">
-                                            <h6 class="fw-bold mb-1">{{$tp->product->product_name}}</h6>
+                                    @foreach ($topproduct as $tp)
+                                        <div class="d-flex">
+                                            <div class="flex-1 pt-1 ml-2">
+                                                <h6 class="fw-bold mb-1">{{ $tp->product->product_name }}</h6>
+                                            </div>
+                                            <div class="d-flex ml-auto align-items-center">
+                                                <h3 class="text-info fw-bold">+{{ $tp->total }}</h3>
+                                            </div>
                                         </div>
-                                        <div class="d-flex ml-auto align-items-center">
-                                            <h3 class="text-info fw-bold">+{{$tp->total}}</h3>
-                                        </div>
-                                    </div>
-                                    <div class="separator-dashed"></div>
-                                @endforeach
+                                        <div class="separator-dashed"></div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -233,16 +245,16 @@
                                     <div class="card-title">Top Sales Payment Type</div>
                                 </div>
                                 <div class="card-body pb-0">
-                                    @foreach($topsource as $ts)
-                                    <div class="d-flex">
-                                        <div class="flex-1 pt-1 ml-2">
-                                            <h6 class="fw-bold mb-1">{{$ts->source->source}}</h6>
+                                    @foreach ($topsource as $ts)
+                                        <div class="d-flex">
+                                            <div class="flex-1 pt-1 ml-2">
+                                                <h6 class="fw-bold mb-1">{{ $ts->source->source }}</h6>
+                                            </div>
+                                            <div class="d-flex ml-auto align-items-center">
+                                                <h3 class="text-info fw-bold">+{{ $ts->total }}</h3>
+                                            </div>
                                         </div>
-                                        <div class="d-flex ml-auto align-items-center">
-                                            <h3 class="text-info fw-bold">+{{$ts->total}}</h3>
-                                        </div>
-                                    </div>
-                                    <div class="separator-dashed"></div>
+                                        <div class="separator-dashed"></div>
                                     @endforeach
                                 </div>
                             </div>
@@ -251,102 +263,97 @@
                 </div>
                 @include('layouts.footer')
                 <script>
-
-                    @if($allprods > 0)
-                        let allprods = {{$allprods}};
+                    @if ($allprods > 0)
+                        let allprods = {{ $allprods }};
                         let counts = setInterval(updatedprods);
                         let upto = 0;
 
-                        function updatedprods(){
-                            var count= document.getElementById("counter_all");
-                            count.innerHTML=++upto;
-                            if(upto===allprods)
-                            {
+                        function updatedprods() {
+                            var count = document.getElementById("counter_all");
+                            count.innerHTML = ++upto;
+                            if (upto === allprods) {
                                 clearInterval(counts);
                             }
                         }
                     @endif
 
-                    @if($activeprods > 0)
-                        let active = {{$activeprods}};
+                    @if ($activeprods > 0)
+                        let active = {{ $activeprods }};
                         let countszz = setInterval(updatedactive);
                         let uptos = 0;
 
-                        function updatedactive(){
-                            var countx= document.getElementById("counter_active");
-                            countx.innerHTML=++uptos;
-                            if(uptos===active)
-                            {
+                        function updatedactive() {
+                            var countx = document.getElementById("counter_active");
+                            countx.innerHTML = ++uptos;
+                            if (uptos === active) {
                                 clearInterval(countszz);
                             }
                         }
                     @endif
 
-                    @if($inactiveprods > 0)
-                        let inactive = {{$inactiveprods}};
+                    @if ($inactiveprods > 0)
+                        let inactive = {{ $inactiveprods }};
                         let countszzz = setInterval(updateinactive);
                         let uptosz = 0;
 
-                        function updateinactive(){
-                            var county= document.getElementById("counter_inactive");
-                            county.innerHTML=++uptosz;
-                            if(uptosz===inactive)
-                            {
+                        function updateinactive() {
+                            var county = document.getElementById("counter_inactive");
+                            county.innerHTML = ++uptosz;
+                            if (uptosz === inactive) {
                                 clearInterval(countszzz);
                             }
                         }
                     @endif
-
                 </script>
                 <script>
                     var ctx = document.getElementById('statisticsChart').getContext('2d');
                     var ctx_2 = document.getElementById('statisticsChartYear').getContext('2d');
 
                     <?php
-                        $year=[];
-                        $mos=[];
-                        $inc=[];
-                        $profs=[];
-                        $profsyear=[];
+                    $year = [];
+                    $mos = [];
+                    $inc = [];
+                    $profs = [];
+                    $profsyear = [];
                     ?>
-                    @foreach($years as $y)
-                            <?php
-                            $year[] = $y;
-                            ?>
+                    @foreach ($years as $y)
+                        <?php
+                        $year[] = $y;
+                        ?>
                     @endforeach
-                    @foreach($month as $mo)
-                        @foreach($mo as $m)
+                    @foreach ($month as $mo)
+                        @foreach ($mo as $m)
                             <?php
                             $mos[] = $m;
                             ?>
                         @endforeach
                     @endforeach
-                    @foreach($incomepermonth as $in)
+                    @foreach ($incomepermonth as $in)
                         <?php
                         $inc[] = $in->income;
                         ?>
                     @endforeach
-                    @foreach($profityear as $py)
-                        @foreach($py as $p)
+                    @foreach ($profityear as $py)
+                        @foreach ($py as $p)
                             <?php
                             $profsyear[] = $p;
                             ?>
                         @endforeach
                     @endforeach
-                    @foreach($profitpermonth as $pm)
-                        @foreach($pm as $p)
+                    @foreach ($profitpermonth as $pm)
+                        @foreach ($pm as $p)
                             <?php
                             $profs[] = $p;
                             ?>
                         @endforeach
                     @endforeach
-                    @if(json_encode($dayofweeks)!='[]')
-                        @foreach($dayofweeks as $day)
+                    @if (json_encode($dayofweeks) != '[]')
+                        @foreach ($dayofweeks as $day)
                             <?php
                             $days[] = $day->name_day;
                             ?>
                         @endforeach
-                        @foreach($calofday as $cal)
+                        @foreach ($calofday as $cal)
                             <?php
                             $cals[] = $cal->total;
                             ?>
@@ -354,8 +361,8 @@
                         var days = @json($days);
                         var cal = @json($cals);
                     @else
-                        var days =[];
-                        var cal =[];
+                        var days = [];
+                        var cal = [];
                     @endif
                     var month = @json($mos);
                     var income = @json($inc);
@@ -367,10 +374,10 @@
                     Circles.create({
                         id: 'circles-1',
                         radius: 45,
-                        value: {{$countorderday}},
-                        maxValue: {{$countorderlastday}},
+                        value: {{ $countorderday }},
+                        maxValue: {{ $countorderlastday }},
                         width: 7,
-                        text: "{{$countorderday}}",
+                        text: "{{ $countorderday }}",
                         colors: ['#f1f1f1', '#FF9E27'],
                         duration: 400,
                         wrpClass: 'circles-wrp',
@@ -382,10 +389,10 @@
                     Circles.create({
                         id: 'circles-2',
                         radius: 45,
-                        value: {{$countordermonth}},
-                        maxValue: {{$countorderlastmonth}},
+                        value: {{ $countordermonth }},
+                        maxValue: {{ $countorderlastmonth }},
                         width: 7,
-                        text: "{{$countordermonth}}",
+                        text: "{{ $countordermonth }}",
                         colors: ['#f1f1f1', '#2BB930'],
                         duration: 400,
                         wrpClass: 'circles-wrp',
@@ -397,10 +404,10 @@
                     Circles.create({
                         id: 'circles-3',
                         radius: 45,
-                        value: {{$countorderyear}},
-                        maxValue: {{$countorderlastyear}},
+                        value: {{ $countorderyear }},
+                        maxValue: {{ $countorderlastyear }},
                         width: 7,
-                        text: "{{$countorderyear}}",
+                        text: "{{ $countorderyear }}",
                         colors: ['#f1f1f1', '#F25961'],
                         duration: 400,
                         wrpClass: 'circles-wrp',
@@ -412,10 +419,10 @@
                     Circles.create({
                         id: 'circles-4',
                         radius: 45,
-                        value: {{$countorderall}},
-                        maxValue: {{$countorderall}},
+                        value: {{ $countorderall }},
+                        maxValue: {{ $countorderall }},
                         width: 7,
-                        text: "{{$countorderall}}",
+                        text: "{{ $countorderall }}",
                         colors: ['#f1f1f1', '#1269db'],
                         duration: 400,
                         wrpClass: 'circles-wrp',
@@ -428,7 +435,7 @@
                         type: 'line',
                         data: {
                             labels: year,
-                            datasets: [ {
+                            datasets: [{
                                 label: "Profit",
                                 borderColor: '#31ce36',
                                 pointRadius: 0,
@@ -439,7 +446,7 @@
                                 data: profityear
                             }]
                         },
-                        options : {
+                        options: {
                             responsive: true,
                             maintainAspectRatio: false,
                             legend: {
@@ -447,18 +454,23 @@
                             },
                             tooltips: {
                                 bodySpacing: 4,
-                                mode:"nearest",
+                                mode: "nearest",
                                 intersect: 0,
-                                position:"nearest",
-                                xPadding:10,
-                                yPadding:10,
-                                caretPadding:10,
+                                position: "nearest",
+                                xPadding: 10,
+                                yPadding: 10,
+                                caretPadding: 10,
                                 callbacks: {
                                     label: (item) => `Rp. ${item.yLabel} ,-`,
                                 },
                             },
-                            layout:{
-                                padding:{left:5,right:5,top:15,bottom:15}
+                            layout: {
+                                padding: {
+                                    left: 5,
+                                    right: 5,
+                                    top: 15,
+                                    bottom: 15
+                                }
                             },
                             scales: {
                                 yAxes: [{
@@ -467,7 +479,7 @@
                                         beginAtZero: true,
                                         maxTicksLimit: 10,
                                         padding: 10,
-                                        precision:0
+                                        precision: 0
                                     },
                                     gridLines: {
                                         drawTicks: false,
@@ -488,7 +500,8 @@
                                 var text = [];
                                 text.push('<ul class="' + chart.id + '-legend html-legend">');
                                 for (var i = 0; i < chart.data.datasets.length; i++) {
-                                    text.push('<li><span style="background-color:' + chart.data.datasets[i].legendColor + '"></span>');
+                                    text.push('<li><span style="background-color:' + chart.data.datasets[i].legendColor +
+                                        '"></span>');
                                     if (chart.data.datasets[i].label) {
                                         text.push(chart.data.datasets[i].label);
                                     }
@@ -504,7 +517,7 @@
                         type: 'line',
                         data: {
                             labels: month,
-                            datasets: [ {
+                            datasets: [{
                                 label: "Profit",
                                 borderColor: '#1269db',
                                 pointRadius: 0,
@@ -515,7 +528,7 @@
                                 data: profitmonth
                             }]
                         },
-                        options : {
+                        options: {
                             responsive: true,
                             maintainAspectRatio: false,
                             legend: {
@@ -523,18 +536,23 @@
                             },
                             tooltips: {
                                 bodySpacing: 4,
-                                mode:"nearest",
+                                mode: "nearest",
                                 intersect: 0,
-                                position:"nearest",
-                                xPadding:10,
-                                yPadding:10,
-                                caretPadding:10,
+                                position: "nearest",
+                                xPadding: 10,
+                                yPadding: 10,
+                                caretPadding: 10,
                                 callbacks: {
                                     label: (item) => `Rp. ${item.yLabel} ,-`,
                                 },
                             },
-                            layout:{
-                                padding:{left:5,right:5,top:15,bottom:15}
+                            layout: {
+                                padding: {
+                                    left: 5,
+                                    right: 5,
+                                    top: 15,
+                                    bottom: 15
+                                }
                             },
                             scales: {
                                 yAxes: [{
@@ -564,7 +582,8 @@
                                 var text = [];
                                 text.push('<ul class="' + chart.id + '-legend html-legend">');
                                 for (var i = 0; i < chart.data.datasets.length; i++) {
-                                    text.push('<li><span style="background-color:' + chart.data.datasets[i].legendColor + '"></span>');
+                                    text.push('<li><span style="background-color:' + chart.data.datasets[i].legendColor +
+                                        '"></span>');
                                     if (chart.data.datasets[i].label) {
                                         text.push(chart.data.datasets[i].label);
                                     }

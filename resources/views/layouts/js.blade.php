@@ -27,22 +27,20 @@
 <!-- Atlantis DEMO methods, don't include it in your project! -->
 <script src="{{ asset('js/setting-demo.js') }}"></script>
 <script src="{{ asset('js/demo.js') }}"></script>
-<script src="{{url('js/plugin/inputmask/jquery.inputmask.bundle.js')}}"></script>
+<script src="{{ url('js/plugin/inputmask/jquery.inputmask.bundle.js') }}"></script>
 
 <script type="text/javascript">
-
     $('.numeric').inputmask({
-        alias:"numeric",
+        alias: "numeric",
         prefix: "Rp.",
-        digits:0,
-        repeat:20,
-        digitsOptional:false,
-        decimalProtect:true,
-        groupSeparator:".",
+        digits: 0,
+        repeat: 20,
+        digitsOptional: false,
+        decimalProtect: true,
+        groupSeparator: ".",
         placeholder: '0',
-        radixPoint:","
+        radixPoint: ","
     });
 
     $('.numeric').prop('required', true);
-
 </script>

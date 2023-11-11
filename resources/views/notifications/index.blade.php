@@ -3,6 +3,7 @@
 @include('layouts.head')
 <style>
 </style>
+
 <body>
     <div class="wrapper">
         @include('layouts.sidebar')
@@ -12,21 +13,12 @@
                     <div class="page-inner py-5">
                         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                             <div>
-                                <h2 class="pb-2 fw-bold">{{($title)}}</h2>
+                                <h2 class="pb-2 fw-bold">{{ $title }}</h2>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="page-inner mt--5">
-                    <!-- Button -->
-                    <!-- <div class="d-flex">
-                        <a class="btn btn-primary btn-round ml-auto mb-3" href="{{ route('admin.role.create') }}">
-                            <i class="fa fa-plus"></i>
-                            Add User Role
-                        </a>
-                    </div> -->
-                    <br>
-                    <br>
 
                     <!-- Table -->
                     <div class="table-responsive">
@@ -46,11 +38,12 @@
                                         style="width: 100%;">
                                         <thead>
                                             <tr role="row">
-                                                <th class="sorting_asc" tabindex="0" aria-controls="add-row" width="15%">
+                                                <th class="sorting_asc" tabindex="0" aria-controls="add-row"
+                                                    width="15%">
                                                     <center>No</center>
                                                 </th>
-                                                <th width="55%" class="sorting" tabindex="0" aria-controls="add-row"
-                                                    rowspan="1" colspan="1"
+                                                <th width="55%" class="sorting" tabindex="0"
+                                                    aria-controls="add-row" rowspan="1" colspan="1"
                                                     aria-label="Position: activate to sort column ascending"
                                                     style="font-weight:900;">
                                                     <center>Notification</center>
@@ -64,29 +57,31 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <?php $num = 0; ?>
-                                        @foreach($all_notif as $notif)
-                                            <tr role="row" class="odd">
-                                                <td>
-                                                    <center>{{$num=$num+1}}</center>
-                                                </td>
-                                                <td class="sorting_1">
-                                                    {{$notif->product_name}}
-                                                    Stock is Running Out!
-                                                </td>
-                                                <td>
-                                                    <center>
-                                                        <div class="form-button-action">
-                                                            <a href="{{route('admin.product.edit', $notif->id) }}" data-toggle="tooltip" title="Edit"
-                                                                class="btn btn-link btn-simple-primary btn-lg"
-                                                                data-original-title="Edit Product" control-id="ControlID-16">
-                                                                <i class="fa fa-eye"></i>
-                                                            </a>
-                                                        </div>
-                                                    </center>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                            <?php $num = 0; ?>
+                                            @foreach ($all_notif as $notif)
+                                                <tr role="row" class="odd">
+                                                    <td>
+                                                        <center>{{ $num = $num + 1 }}</center>
+                                                    </td>
+                                                    <td class="sorting_1">
+                                                        {{ $notif->product_name }}
+                                                        Stock is Running Out!
+                                                    </td>
+                                                    <td>
+                                                        <center>
+                                                            <div class="form-button-action">
+                                                                <a href="{{ route('admin.product.edit', $notif->id) }}"
+                                                                    data-toggle="tooltip" title="Edit"
+                                                                    class="btn btn-link btn-simple-primary btn-lg"
+                                                                    data-original-title="Edit Product"
+                                                                    control-id="ControlID-16">
+                                                                    <i class="fa fa-eye"></i>
+                                                                </a>
+                                                            </div>
+                                                        </center>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -108,28 +103,6 @@
         </div>
     </div>
 </body>
-
-<script>
-    function destroy(id) {
-    var token = $('meta[name="csrf-token"]').attr('content');
-
-    swal({
-          title: "",
-          text: "Are you sure want to delete this record?",
-          icon: "warning",
-          buttons: ['Cancel', 'OK'],
-          // dangerMode: true,
-      }).then((willDelete) => {
-          if (willDelete) {
-            $.post("{{route('admin.role.delete')}}",{ id:id,_token:token},function(data){
-                location.reload();
-            })
-          } else {
-            return false;
-          }
-      });
-  }
-</script>
 
 @include('layouts.swal')
 

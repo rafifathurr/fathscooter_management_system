@@ -11,7 +11,7 @@
                     <div class="page-inner py-5">
                         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                             <div>
-                                <h2 class="pb-2 fw-bold">{{($title)}}</h2>
+                                <h2 class="pb-2 fw-bold">{{ $title }}</h2>
                             </div>
                         </div>
                     </div>
@@ -48,8 +48,8 @@
                                                     aria-label="Name: activate to sort column descending">
                                                     <center>No</center>
                                                 </th>
-                                                <th width="30%" class="sorting" tabindex="0" aria-controls="add-row"
-                                                    rowspan="1" colspan="1"
+                                                <th width="30%" class="sorting" tabindex="0"
+                                                    aria-controls="add-row" rowspan="1" colspan="1"
                                                     aria-label="Position: activate to sort column ascending"
                                                     style="font-weight:900;">
                                                     <center>Year</center>
@@ -69,46 +69,55 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <?php $num = 0; ?>
-                                        @foreach($analysis as $anls)
-                                            <tr role="row" class="odd">
-                                                <td>
-                                                    <center>{{$num=$num+1}}</center>
-                                                </td>
-                                                <td>
-                                                    <center>{{$anls->year}}</center>
-                                                </td>
-                                                {{-- <td>
+                                            <?php $num = 0; ?>
+                                            @foreach ($analysis as $anls)
+                                                <tr role="row" class="odd">
+                                                    <td>
+                                                        <center>{{ $num = $num + 1 }}</center>
+                                                    </td>
+                                                    <td>
+                                                        <center>{{ $anls->year }}</center>
+                                                    </td>
+                                                    {{-- <td>
                                                     <center>{{ $monthName = date('F', mktime(0, 0, 0, $anls->month, 1)) }}</center>
                                                 </td> --}}
-                                                <td>
-                                                    <center>
-                                                        <div class="form-button-action">
-                                                            <a href="{{route('admin.analysis.summary', $anls->id) }}" data-toggle="tooltip" title="Summary"
-                                                                class="btn btn-link btn-simple-primary btn-lg"
-                                                                data-original-title="Summary" control-id="ControlID-16">
-                                                                <i class="fa fa-list-alt"></i>
-                                                            </a>
-                                                            <a href="{{route('admin.analysis.detail', $anls->id) }}" data-toggle="tooltip" title="Detail"
-                                                                class="btn btn-link btn-simple-primary btn-lg"
-                                                                data-original-title="Detail" control-id="ControlID-16">
-                                                                <i class="fa fa-eye"></i>
-                                                            </a>
-                                                            <a href="{{route('admin.analysis.edit', $anls->id) }}" data-toggle="tooltip" title="Edit"
-                                                                class="btn btn-link btn-simple-primary btn-lg"
-                                                                data-original-title="Edit" control-id="ControlID-16">
-                                                                <i class="fa fa-edit" style="color:grey;"></i>
-                                                            </a>
-                                                            <button type="submit" onclick="destroy({{$anls->id}})" data-toggle="tooltip" title="Delete"
-                                                                class="btn btn-link btn-simple-danger"
-                                                                data-original-title="Delete" control-id="ControlID-17">
-                                                                <i class="fa fa-trash" style="color:red;"></i>
-                                                            </button>
-                                                        </div>
-                                                    </center>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                                    <td>
+                                                        <center>
+                                                            <div class="form-button-action">
+                                                                <a href="{{ route('admin.analysis.summary', $anls->id) }}"
+                                                                    data-toggle="tooltip" title="Summary"
+                                                                    class="btn btn-link btn-simple-primary btn-lg"
+                                                                    data-original-title="Summary"
+                                                                    control-id="ControlID-16">
+                                                                    <i class="fa fa-list-alt"></i>
+                                                                </a>
+                                                                <a href="{{ route('admin.analysis.detail', $anls->id) }}"
+                                                                    data-toggle="tooltip" title="Detail"
+                                                                    class="btn btn-link btn-simple-primary btn-lg"
+                                                                    data-original-title="Detail"
+                                                                    control-id="ControlID-16">
+                                                                    <i class="fa fa-eye"></i>
+                                                                </a>
+                                                                <a href="{{ route('admin.analysis.edit', $anls->id) }}"
+                                                                    data-toggle="tooltip" title="Edit"
+                                                                    class="btn btn-link btn-simple-primary btn-lg"
+                                                                    data-original-title="Edit"
+                                                                    control-id="ControlID-16">
+                                                                    <i class="fa fa-edit" style="color:grey;"></i>
+                                                                </a>
+                                                                <button type="submit"
+                                                                    onclick="destroy({{ $anls->id }})"
+                                                                    data-toggle="tooltip" title="Delete"
+                                                                    class="btn btn-link btn-simple-danger"
+                                                                    data-original-title="Delete"
+                                                                    control-id="ControlID-17">
+                                                                    <i class="fa fa-trash" style="color:red;"></i>
+                                                                </button>
+                                                            </div>
+                                                        </center>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -132,17 +141,17 @@
 </body>
 <script>
     $(document).ready(function() {
-        $('#add_analysis').on('click', function(){
+        $('#add_analysis').on('click', function() {
             const div = document.createElement("form");
-            div.method='POST';
-            div.action='{{route("admin.analysis.create")}}';
+            div.method = 'POST';
+            div.action = '{{ route('admin.analysis.create') }}';
             $(div).html(
-                "<input name='_token' value='{{ csrf_token() }}' type='hidden'>"+
-                "<select id='tahun' name='tahun' onchange='getMonth()' class='form-control'>"+
-                "<option value='' style='display: none;' selected=''>- Choose Year -</option>"+
-                "@foreach($years as $year)" +
-                "<option value='{{$year->tahun}}'>{{ $year->tahun }}</option>"+
-                "@endforeach"+
+                "<input name='_token' value='{{ csrf_token() }}' type='hidden'>" +
+                "<select id='tahun' name='tahun' onchange='getMonth()' class='form-control'>" +
+                "<option value='' style='display: none;' selected=''>- Choose Year -</option>" +
+                "@foreach ($years as $year)" +
+                "<option value='{{ $year->tahun }}'>{{ $year->tahun }}</option>" +
+                "@endforeach" +
                 "</select>"
             );
             swal({
@@ -150,10 +159,10 @@
                 content: div,
                 buttons: [true, "Export"]
             }).then((result) => {
-                if(result == true){
-                    if($('#tahun').val() != ''){
+                if (result == true) {
+                    if ($('#tahun').val() != '') {
                         div.submit();
-                    }else{
+                    } else {
                         swal({
                             icon: 'warning',
                             title: 'Oops !',
@@ -168,29 +177,29 @@
     })
 
     function destroy(id) {
-    var token = $('meta[name="csrf-token"]').attr('content');
+        var token = $('meta[name="csrf-token"]').attr('content');
 
-    swal({
-          title: "",
-          text: "Are you sure want to delete this record?",
-          icon: "warning",
-          buttons: ['Cancel', 'OK'],
-          // dangerMode: true,
-      }).then((willDelete) => {
-          if (willDelete) {
-            $.post("{{route('admin.analysis.delete')}}",
-            {
-                id:id,
-                _token:token
-            },function(data){
-                location.reload();
-            })
-          } else {
-            return false;
-          }
-      });
-  }
+        swal({
+            title: "",
+            text: "Are you sure want to delete this record?",
+            icon: "warning",
+            buttons: ['Cancel', 'OK'],
+            // dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.post("{{ route('admin.analysis.delete') }}", {
+                    id: id,
+                    _token: token
+                }, function(data) {
+                    location.reload();
+                })
+            } else {
+                return false;
+            }
+        });
+    }
 </script>
 
 @include('layouts.swal')
+
 </html>

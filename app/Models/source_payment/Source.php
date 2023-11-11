@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Source extends Model
 {
     protected $primaryKey = 'id';
-  
-      protected $table = "source_payment";
-  
-      protected $guarded = [];
 
-      public $timestamps = false;
-  }
+    protected $table = "source_payment";
+
+    protected $guarded = [];
+
+    public $timestamps = false;
+}

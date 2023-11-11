@@ -6,10 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\supplier\Supplier;
 
 use Illuminate\Http\Request;
-use Auth;
 use Session;
-use DB;
-use PDF;
 
 class SupplierControllers extends Controller
 {
@@ -24,7 +21,7 @@ class SupplierControllers extends Controller
     {
         return view('supplier.index', [
             "title" => "List Supplier",
-            "suppliers" => Supplier::all()->where('deleted_at',null)
+            "suppliers" => Supplier::all()->where('deleted_at', null)
         ]);
     }
 
@@ -40,7 +37,6 @@ class SupplierControllers extends Controller
     // Store Function to Database
     public function store(Request $req)
     {
-        date_default_timezone_set("Asia/Bangkok");
         $datenow = date('Y-m-d H:i:s');
         $supplier_pay = Supplier::create([
             'supplier' => $req->supplier,
@@ -74,7 +70,6 @@ class SupplierControllers extends Controller
     // Update Function to Database
     public function update(Request $req)
     {
-        date_default_timezone_set("Asia/Bangkok");
         $datenow = date('Y-m-d H:i:s');
         $supplier_pay = Supplier::where('id', $req->id)->update([
             'supplier' => $req->supplier,
@@ -89,17 +84,15 @@ class SupplierControllers extends Controller
     public function delete(Request $req)
     {
         $datenow = date('Y-m-d H:i:s');
-        $exec = Supplier::where('id', $req->id )->update([
-            'updated_at'=> $datenow,
-            'deleted_at'=> $datenow
+        $exec = Supplier::where('id', $req->id)->update([
+            'updated_at' => $datenow,
+            'deleted_at' => $datenow
         ]);
 
         if ($exec) {
             Session::flash('success', 'Data successfully deleted!');
-          } else {
+        } else {
             Session::flash('gagal', 'Error Data');
-          }
+        }
     }
-
-
 }

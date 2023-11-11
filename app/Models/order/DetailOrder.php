@@ -9,15 +9,14 @@ class DetailOrder extends Model
 {
     protected $primaryKey = 'id';
 
-      protected $table = "details_order";
+    protected $table = "details_order";
 
-      protected $guarded = [];
+    protected $guarded = [];
 
-      public $timestamps = false;
+    public $timestamps = false;
 
-      public function product()
-      {
+    public function product()
+    {
         return $this->belongsTo('App\Models\product\Product', 'id_product', 'id');
-      }
-
-  }
+    }
+}

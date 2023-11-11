@@ -9,19 +9,19 @@ class DetailAnalysis extends Model
 {
     protected $primaryKey = 'id';
 
-      protected $table = "detail_analysis";
+    protected $table = "detail_analysis";
 
-      protected $guarded = [];
+    protected $guarded = [];
 
-      public $timestamps = false;
+    public $timestamps = false;
 
-      public function analysis()
-      {
+    public function analysis()
+    {
         return $this->belongsTo('App\Models\analysis\Analysis', 'id_analysis', 'id');
-      }
+    }
 
-       public function product()
-      {
+    public function product()
+    {
         return $this->belongsTo('App\Models\product\Product', 'id_product', 'id');
-      }
-  }
+    }
+}

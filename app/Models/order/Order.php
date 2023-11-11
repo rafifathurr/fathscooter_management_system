@@ -9,29 +9,29 @@ class Order extends Model
 {
     protected $primaryKey = 'id';
 
-      protected $table = "orders";
+    protected $table = "orders";
 
-      protected $guarded = [];
+    protected $guarded = [];
 
-      public $timestamps = false;
+    public $timestamps = false;
 
-      public function details()
-      {
+    public function details()
+    {
         return $this->belongsTo('App\Models\order\DetailOrder', 'id', 'id_order');
-      }
+    }
 
-      public function source()
-      {
+    public function source()
+    {
         return $this->belongsTo('App\Models\source_payment\Source', 'source_id', 'id');
-      }
+    }
 
-      public function createdby()
-      {
+    public function createdby()
+    {
         return $this->belongsTo('App\Models\users\User', 'created_by', 'id');
-      }
+    }
 
-      public function updatedby()
-      {
+    public function updatedby()
+    {
         return $this->belongsTo('App\Models\users\User', 'updated_by', 'id');
-      }
-  }
+    }
+}

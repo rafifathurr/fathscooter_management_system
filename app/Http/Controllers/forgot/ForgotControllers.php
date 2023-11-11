@@ -6,10 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\users\User;
 
 use Illuminate\Http\Request;
-use Auth;
-use Session;
-use DB;
-use PDF;
 
 class ForgotControllers extends Controller
 {
@@ -23,23 +19,23 @@ class ForgotControllers extends Controller
     // Store Function to Database
     public function updatepass(Request $req)
     {
-        date_default_timezone_set("Asia/Bangkok");
+
         $datenow = date('Y-m-d H:i:s');
 
         $exec = count(User::where('email', $req->email)->get());
 
-        if($exec == 1){
-            if($req->password == $req->repassword){
+        if ($exec == 1) {
+            if ($req->password == $req->repassword) {
                 $email_update = User::where('email', $req->email)->update([
                     'password' => bcrypt($req->password),
                     'updated_at' => $datenow
                 ]);
 
                 return redirect('/')->with(['success' => 'Success Change Password!']);
-            }else{
+            } else {
                 return redirect()->route('forgot.index')->with(['gagal' => 'Unmatch Password!']);
             }
-        }else{
+        } else {
             return redirect()->route('forgot.index')->with(['gagal' => 'Email Not Exist!']);
         }
     }
@@ -67,7 +63,7 @@ class ForgotControllers extends Controller
     // // Update Function to Database
     // public function update(Request $req)
     // {
-    //     date_default_timezone_set("Asia/Bangkok");
+    //
     //     $datenow = date('Y-m-d H:i:s');
     //     $supplier_pay = Supplier::where('id', $req->id)->update([
     //         'supplier' => $req->supplier,

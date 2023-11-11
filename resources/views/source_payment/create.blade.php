@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 @include('layouts.head')
+
 <body>
     <div class="wrapper">
         @include('layouts.sidebar')
@@ -10,7 +11,7 @@
                     <div class="page-inner py-5">
                         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                             <div>
-                                <h2 class="text-black pb-2 fw-bold">{{$title}}</h2>
+                                <h2 class="text-black pb-2 fw-bold">{{ $title }}</h2>
                             </div>
                         </div>
                     </div>
@@ -19,16 +20,23 @@
                     <section class="content container-fluid">
                         <div class="box box-primary">
                             <div class="box-body">
-                                <form id="form_add" action="{{ route('admin.source_payment.' . $url) }}" method="post" enctype="multipart/form-data" >
+                                <form id="form_add" action="{{ route('admin.source_payment.' . $url) }}" method="post"
+                                    enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     <br>
                                     <div class="row">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-11">
-                                            <label class="col-md-6">Source Payment <span style="color: red;">*</span></label>
+                                            <label class="col-md-6">Source Payment <span
+                                                    style="color: red;">*</span></label>
                                             <div class="col-md-11">
-                                                <input type="hidden" class="form-control" id="id" name="id" autocomplete="off" @isset($sources) value="{{ $sources->id }}" readonly @endisset required>
-                                                <input type="text" name="sumber" id="sumber" class="form-control"  step="1" @if (isset($sources)) value="{{ $sources->source }}" @endisset autocomplete="off" required {{ $disabled_ }} style="width:100%;">
+                                                <input type="hidden" class="form-control" id="id" name="id"
+                                                    autocomplete="off"
+                                                    @isset($sources) value="{{ $sources->id }}" readonly @endisset
+                                                    required>
+                                                <input type="text" name="sumber" id="sumber" class="form-control"
+                                                    step="1"
+                                                    @if (isset($sources)) value="{{ $sources->source }}" @endisset autocomplete="off" required {{ $disabled_ }} style="width:100%;">
                                             </div>
                                         </div>
                                     </div>
@@ -47,8 +55,8 @@
                                         <div style="float:right;">
                                             @if ($title == 'Add Source Payment')
                                                 <div class="col-md-10" style="margin-right: 20px;">
-                                                    <a href="{{ route('admin.source_payment.index')}}" type="button" class="btn btn-danger">
-                                                        <i class="fa fa-arrow-left"></i>&nbsp; 
+                                                    <a href="{{ route('admin.source_payment.index') }}" type="button" class="btn btn-danger">
+                                                        <i class="fa fa-arrow-left"></i>&nbsp;
                                                         Back
                                                     </a>
                                                     <button type="submit" class="btn btn-primary" style="margin-left:10px;">
@@ -58,8 +66,8 @@
                                                 </div>
                                             @elseif ($title == 'Edit Source Payment')
                                                 <div class="col-md-10" style="margin-right: 20px;">
-                                                    <a href="{{ route('admin.source_payment.index')}}" type="button" class="btn btn-danger">
-                                                        <i class="fa fa-arrow-left"></i>&nbsp; 
+                                                    <a href="{{ route('admin.source_payment.index') }}" type="button" class="btn btn-danger">
+                                                        <i class="fa fa-arrow-left"></i>&nbsp;
                                                         Back
                                                     </a>
                                                     <button type="submit" class="btn btn-primary" style="margin-left:10px;">
@@ -69,14 +77,13 @@
                                                 </div>
                                             @else
                                                 <div class="col-md-10" style="margin-right: 20px;">
-                                                    <a href="{{ route('admin.source_payment.index')}}" type="button" class="btn btn-danger">
-                                                        <i class="fa fa-arrow-left"></i>&nbsp; 
+                                                    <a href="{{ route('admin.source_payment.index') }}" type="button" class="btn btn-danger">
+                                                        <i class="fa fa-arrow-left"></i>&nbsp;
                                                         Back
                                                     </a>
-                                                </div>
-                                            @endif
-                                        </div>
-                                    </div>
+                                                </div> @endif
+                                                    </div>
+                                            </div>
                                 </form>
                             </div>
                         </div>
@@ -87,4 +94,5 @@
         </div>
     </div>
 </body>
+
 </html>

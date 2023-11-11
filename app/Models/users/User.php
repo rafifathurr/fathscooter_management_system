@@ -9,14 +9,14 @@ class User extends Model
 {
     protected $primaryKey = 'id';
 
-      protected $table = "users";
+    protected $table = "users";
 
-      protected $guarded = [];
+    protected $guarded = [];
 
-      public $timestamps = false;
-      
-      public function role()
-      {
+    public $timestamps = false;
+
+    public function role()
+    {
         return $this->belongsTo('App\Models\role\Role', 'role_id', 'id');
-      }
-  }
+    }
+}

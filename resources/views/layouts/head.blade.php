@@ -1,6 +1,6 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>FathScooter Management - {{($title)}}</title>
+    <title>FathScooter Management</title>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -27,17 +27,17 @@
         });
     </script>
     <style>
-        .h2{
-            color:black !important;
+        .h2 {
+            color: black !important;
         }
 
-        .create{
-            background-color:white;
-            border-radius:5px;
-            padding:5px;
+        .create {
+            background-color: white;
+            border-radius: 5px;
+            padding: 5px;
         }
 
-        .btn-primary{
+        .btn-primary {
             color: white !important;
         }
     </style>

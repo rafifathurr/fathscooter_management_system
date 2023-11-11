@@ -32,9 +32,8 @@ class CategoryControllers extends Controller
     // Store Function to Database
     public function store(Request $req)
     {
-        date_default_timezone_set("Asia/Bangkok");
         $datenow = date('Y-m-d H:i:s');
-        $category_prod = Category::create([  
+        $category_prod = Category::create([
             'category' => $req->category,
             'note' => $req->note,
             'created_at' => $datenow
@@ -47,8 +46,8 @@ class CategoryControllers extends Controller
     public function detail($id)
     {
         $data['title'] = "Detail Category Product";
-        $data['disabled_'] = 'disabled'; 
-        $data['url'] = 'create';   
+        $data['disabled_'] = 'disabled';
+        $data['url'] = 'create';
         $data['categories'] = Category::where('id', $id)->first();
         return view('category.create', $data);
     }
@@ -57,8 +56,8 @@ class CategoryControllers extends Controller
     public function edit($id)
     {
         $data['title'] = "Edit Category Product";
-        $data['disabled_'] = ''; 
-        $data['url'] = 'update';   
+        $data['disabled_'] = '';
+        $data['url'] = 'update';
         $data['categories'] = Category::where('id', $id)->first();
         return view('category.create', $data);
     }
@@ -66,14 +65,13 @@ class CategoryControllers extends Controller
     // Update Function to Database
     public function update(Request $req)
     {
-        date_default_timezone_set("Asia/Bangkok");
         $datenow = date('Y-m-d H:i:s');
         $category_prod = Category::where('id', $req->id)
-                        ->update([  
-                            'category' => $req->category,
-                            'note' => $req->note,
-                            'updated_at' => $datenow
-                        ]);
+            ->update([
+                'category' => $req->category,
+                'note' => $req->note,
+                'updated_at' => $datenow
+            ]);
 
         return redirect()->route('admin.category.index')->with(['success' => 'Data successfully updated!']);
     }
@@ -81,19 +79,16 @@ class CategoryControllers extends Controller
     // Delete Data Function
     public function delete(Request $req)
     {
-        date_default_timezone_set("Asia/Bangkok");
         $datenow = date('Y-m-d H:i:s');
-        $exec = Category::where('id', $req->id )
-                ->update([
-                    'deleted_at' => $datenow
-                ]);
+        $exec = Category::where('id', $req->id)
+            ->update([
+                'deleted_at' => $datenow
+            ]);
 
         if ($exec) {
             Session::flash('success', 'Data successfully deleted!');
-          } else {
+        } else {
             Session::flash('gagal', 'Error Data');
-          }
+        }
     }
-
-
 }

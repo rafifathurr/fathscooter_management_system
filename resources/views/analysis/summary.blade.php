@@ -29,7 +29,8 @@
                                 <h4><b>Economic Order Quantity Analysis</b></h4>
                                 <br>
                                 <div class="col-md-12">
-                                    <h6>The Summary of <b>The Top 5 Products</b> of The Economic Order Quantity Analysis in {{ $year }} : </h6>
+                                    <h6>The Summary of <b>The Top 5 Products</b> of The Economic Order Quantity Analysis
+                                        in {{ $year }} : </h6>
                                 </div>
                                 <table class="table table-striped table-bordered table-hover" width="100%"
                                     style="text-align: center;">
@@ -81,7 +82,8 @@
                             <div class="box-body">
                                 <h4><b>Reorder Point Analysis</b></h4>
                                 <div class="col-md-12">
-                                    <h6>The Summary of <b>The Top 5 Products</b> of The Reorder Point Analysis in {{ $year }} : </h6>
+                                    <h6>The Summary of <b>The Top 5 Products</b> of The Reorder Point Analysis in
+                                        {{ $year }} : </h6>
                                 </div>
                                 <table class="table table-striped table-bordered table-hover" width="100%"
                                     style="text-align: center;overflow-x: auto;">

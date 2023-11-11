@@ -6,10 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\role\Role;
 
 use Illuminate\Http\Request;
-use Auth;
 use Session;
-use DB;
-use PDF;
 
 class RoleControllers extends Controller
 {
@@ -24,7 +21,7 @@ class RoleControllers extends Controller
     {
         return view('role.index', [
             "title" => "List User Roles",
-            "roles" => Role::all()->where('deleted_at',null)
+            "roles" => Role::all()->where('deleted_at', null)
         ]);
     }
 
@@ -40,7 +37,6 @@ class RoleControllers extends Controller
     // Store Function to Database
     public function store(Request $req)
     {
-        date_default_timezone_set("Asia/Bangkok");
         $datenow = date('Y-m-d H:i:s');
         $role_pay = Role::create([
             'role' => $req->role,
@@ -74,7 +70,6 @@ class RoleControllers extends Controller
     // Update Function to Database
     public function update(Request $req)
     {
-        date_default_timezone_set("Asia/Bangkok");
         $datenow = date('Y-m-d H:i:s');
         $role_pay = Role::where('id', $req->id)->update([
             'role' => $req->role,
@@ -89,15 +84,15 @@ class RoleControllers extends Controller
     public function delete(Request $req)
     {
         $datenow = date('Y-m-d H:i:s');
-        $exec = Role::where('id', $req->id )->update([
-            'updated_at'=> $datenow,
-            'deleted_at'=> $datenow
+        $exec = Role::where('id', $req->id)->update([
+            'updated_at' => $datenow,
+            'deleted_at' => $datenow
         ]);
 
         if ($exec) {
             Session::flash('success', 'Data successfully deleted!');
-          } else {
+        } else {
             Session::flash('gagal', 'Error Data');
-          }
+        }
     }
 }

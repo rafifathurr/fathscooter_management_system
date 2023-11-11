@@ -9,9 +9,9 @@ class Supplier extends Model
 {
     protected $primaryKey = 'id';
 
-      protected $table = "supplier";
+    protected $table = "supplier";
 
-      protected $guarded = [];
+    protected $guarded = [];
 
-      public $timestamps = false;
-  }
+    public $timestamps = false;
+}

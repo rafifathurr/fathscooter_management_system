@@ -146,17 +146,16 @@
         <div class="sidebar-content">
             <ul class="nav nav-primary">
                 @if (Auth::guard('admin')->check())
+                    <li class="nav-section">
+                        <span class="sidebar-mini-icon">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </span>
+                        <h4 class="text-section">Dashboard</h4>
+                    </li>
                     <li class="nav-item {{ $title === 'Dashboard' ? 'active' : '' }}">
                         <a href="{{ route('admin.dashboard.index') }}" aria-expanded="false">
                             <i class="fas fa-chart-bar"></i>
                             <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <li
-                        class="nav-item {{ $title === 'Analysis' || $title === 'Add Analysis' || $title === 'Edit Analysis' || $title === 'Detail Analysis' || $title === 'Summary Analysis' ? 'active' : '' }}">
-                        <a href="{{ route('admin.analysis.index') }}" aria-expanded="false">
-                            <i class="fas fa-chart-line"></i>
-                            <p>Analysis</p>
                         </a>
                     </li>
                     <li
@@ -166,18 +165,25 @@
                             <p>Order</p>
                         </a>
                     </li>
+                    <li class="nav-section">
+                        <span class="sidebar-mini-icon">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </span>
+                        <h4 class="text-section">Master Data</h4>
+                    </li>
+                    <li
+                        class="nav-item {{ $title === 'Analysis' || $title === 'Add Analysis' || $title === 'Edit Analysis' || $title === 'Detail Analysis' || $title === 'Summary Analysis' ? 'active' : '' }}">
+                        <a href="" aria-expanded="false">
+                            <i class="fas fa-boxes"></i>
+                            <p>Bundling Package</p>
+                        </a>
+                    </li>
                     <li
                         class="nav-item {{ $title === 'List Products' || $title === 'Add Products' || $title === 'Edit Products' || $title === 'Detail Products' ? 'active' : '' }}">
                         <a href="{{ route('admin.product.index') }}" class="collapsed" aria-expanded="false">
                             <i class="fas fa-boxes"></i>
                             <p>Product</p>
                         </a>
-                    </li>
-                    <li class="nav-section">
-                        <span class="sidebar-mini-icon">
-                            <i class="fa fa-ellipsis-h"></i>
-                        </span>
-                        <h4 class="text-section">Master Data</h4>
                     </li>
                     <li
                         class="nav-item {{ $title === 'List Supplier' || $title === 'Add Supplier' || $title === 'Edit Supplier' || $title === 'Detail Supplier' ? 'active' : '' }}">

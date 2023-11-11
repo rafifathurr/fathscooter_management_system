@@ -9,9 +9,9 @@ class Type extends Model
 {
     protected $primaryKey = 'id';
 
-      protected $table = "type_buy";
+    protected $table = "type_buy";
 
-      protected $guarded = [];
+    protected $guarded = [];
 
-      public $timestamps = false;
-  }
+    public $timestamps = false;
+}

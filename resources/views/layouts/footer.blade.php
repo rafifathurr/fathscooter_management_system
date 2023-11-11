@@ -50,11 +50,10 @@
 <!-- Atlantis DEMO methods, don't include it in your project! -->
 <script src="{{ asset('js/setting-demo.js') }}"></script>
 <script src="{{ asset('js/demo.js') }}"></script>
-<script src="{{url('js/plugin/inputmask/jquery.inputmask.bundle.js')}}"></script>
+<script src="{{ url('js/plugin/inputmask/jquery.inputmask.bundle.js') }}"></script>
 
 <script type="text/javascript">
-
-    function AlertData(){
+    function AlertData() {
         swal({
             title: "Incomplete Data!",
             text: "Please Complete The Data First",
@@ -65,22 +64,21 @@
     }
 
     $('.numeric').inputmask({
-        alias:"numeric",
+        alias: "numeric",
         prefix: "Rp.",
-        digits:0,
-        repeat:20,
-        digitsOptional:false,
-        decimalProtect:true,
-        groupSeparator:".",
-        radixPoint:",",
-        radixFocus:true,
-        autoGroup:true,
-        autoUnmask:false,
+        digits: 0,
+        repeat: 20,
+        digitsOptional: false,
+        decimalProtect: true,
+        groupSeparator: ".",
+        radixPoint: ",",
+        radixFocus: true,
+        autoGroup: true,
+        autoUnmask: false,
         clearMaskOnLostFocus: false,
-        onBeforeMask: function (value, opts) {
+        onBeforeMask: function(value, opts) {
             return value;
         },
-        removeMaskOnSubmit:true
+        removeMaskOnSubmit: true
     });
-
 </script>

@@ -2,16 +2,17 @@
 <html lang="en">
 @include('layouts.head')
 <style>
-    .swal-button--cancel{
-        color:white;
-        background-color:red;
+    .swal-button--cancel {
+        color: white;
+        background-color: red;
     }
 
-    .swal-button--confirm{
-        color:white;
-        background-color:#509dc1;
+    .swal-button--confirm {
+        color: white;
+        background-color: #509dc1;
     }
 </style>
+
 <body>
     <div class="wrapper">
         @include('layouts.sidebar')
@@ -21,7 +22,7 @@
                     <div class="page-inner py-5">
                         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                             <div>
-                                <h2 class="text-black pb-2 fw-bold">{{$title}}</h2>
+                                <h2 class="text-black pb-2 fw-bold">{{ $title }}</h2>
                             </div>
                         </div>
                     </div>
@@ -30,7 +31,8 @@
                     <section class="content container-fluid">
                         <div class="box box-primary">
                             <div class="box-body">
-                                <form id="form_add" action="{{ route('admin.role.' . $url) }}" method="post" enctype="multipart/form-data" >
+                                <form id="form_add" action="{{ route('admin.role.' . $url) }}" method="post"
+                                    enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     <br>
                                     <div class="row">
@@ -38,8 +40,13 @@
                                         <div class="col-md-11">
                                             <label class="col-md-6">User Role <span style="color: red;">*</span></label>
                                             <div class="col-md-11">
-                                                <input type="hidden" class="form-control" id="id" name="id" autocomplete="off" @isset($roles) value="{{ $roles->id }}" readonly @endisset required>
-                                                <input type="text" name="role" id="role" class="form-control"  step="1" @if (isset($roles)) value="{{ $roles->role }}" @endisset autocomplete="off" required {{ $disabled_ }} style="width:100%;">
+                                                <input type="hidden" class="form-control" id="id" name="id"
+                                                    autocomplete="off"
+                                                    @isset($roles) value="{{ $roles->id }}" readonly @endisset
+                                                    required>
+                                                <input type="text" name="role" id="role" class="form-control"
+                                                    step="1"
+                                                    @if (isset($roles)) value="{{ $roles->role }}" @endisset autocomplete="off" required {{ $disabled_ }} style="width:100%;">
                                             </div>
                                         </div>
                                     </div>
@@ -58,7 +65,7 @@
                                         <div style="float:right;">
                                             @if ($title == 'Add User Roles')
                                                 <div class="col-md-10" style="margin-right: 20px;">
-                                                    <a href="{{ route('admin.role.index')}}" type="button" class="btn btn-danger">
+                                                    <a href="{{ route('admin.role.index') }}" type="button" class="btn btn-danger">
                                                         <i class="fa fa-arrow-left"></i>&nbsp;
                                                         Back
                                                     </a>
@@ -69,7 +76,7 @@
                                                 </div>
                                             @elseif ($title == 'Edit User Roles')
                                                 <div class="col-md-10" style="margin-right: 20px;">
-                                                    <a href="{{ route('admin.role.index')}}" type="button" class="btn btn-danger">
+                                                    <a href="{{ route('admin.role.index') }}" type="button" class="btn btn-danger">
                                                         <i class="fa fa-arrow-left"></i>&nbsp;
                                                         Back
                                                     </a>
@@ -80,14 +87,13 @@
                                                 </div>
                                             @else
                                                 <div class="col-md-10" style="margin-right: 20px;">
-                                                    <a href="{{ route('admin.role.index')}}" type="button" class="btn btn-danger">
+                                                    <a href="{{ route('admin.role.index') }}" type="button" class="btn btn-danger">
                                                         <i class="fa fa-arrow-left"></i>&nbsp;
                                                         Back
                                                     </a>
-                                                </div>
-                                            @endif
-                                        </div>
-                                    </div>
+                                                </div> @endif
+                                                    </div>
+                                            </div>
                                 </form>
                             </div>
                         </div>
@@ -100,4 +106,5 @@
     </div>
 </body>
 @include('layouts.swal')
+
 </html>

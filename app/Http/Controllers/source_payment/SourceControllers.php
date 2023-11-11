@@ -6,10 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\source_payment\Source;
 
 use Illuminate\Http\Request;
-use Auth;
 use Session;
-use DB;
-use PDF;
 
 class SourceControllers extends Controller
 {
@@ -24,7 +21,7 @@ class SourceControllers extends Controller
     {
         return view('source_payment.index', [
             "title" => "List Source Payment",
-            "sources" => Source::all()->where('deleted_at',null)
+            "sources" => Source::all()->where('deleted_at', null)
         ]);
     }
 
@@ -40,9 +37,8 @@ class SourceControllers extends Controller
     // Store Function to Database
     public function store(Request $req)
     {
-        date_default_timezone_set("Asia/Bangkok");
         $datenow = date('Y-m-d H:i:s');
-        $source_pay = Source::create([  
+        $source_pay = Source::create([
             'source' => $req->sumber,
             'note' => $req->note,
             'created_at' => $datenow
@@ -55,8 +51,8 @@ class SourceControllers extends Controller
     public function detail($id)
     {
         $data['title'] = "Detail Source Payment";
-        $data['disabled_'] = 'disabled'; 
-        $data['url'] = 'create';   
+        $data['disabled_'] = 'disabled';
+        $data['url'] = 'create';
         $data['sources'] = Source::where('id', $id)->first();
         return view('source_payment.create', $data);
     }
@@ -65,8 +61,8 @@ class SourceControllers extends Controller
     public function edit($id)
     {
         $data['title'] = "Edit Source Payment";
-        $data['disabled_'] = ''; 
-        $data['url'] = 'update';   
+        $data['disabled_'] = '';
+        $data['url'] = 'update';
         $data['sources'] = Source::where('id', $id)->first();
         return view('source_payment.create', $data);
     }
@@ -74,9 +70,8 @@ class SourceControllers extends Controller
     // Update Function to Database
     public function update(Request $req)
     {
-        date_default_timezone_set("Asia/Bangkok");
         $datenow = date('Y-m-d H:i:s');
-        $source_pay = Source::where('id', $req->id)->update([  
+        $source_pay = Source::where('id', $req->id)->update([
             'source' => $req->sumber,
             'note' => $req->note,
             'updated_at' => $datenow
@@ -89,17 +84,15 @@ class SourceControllers extends Controller
     public function delete(Request $req)
     {
         $datenow = date('Y-m-d H:i:s');
-        $exec = Source::where('id', $req->id )->update([
-            'updated_at'=> $datenow,
-            'deleted_at'=> $datenow
+        $exec = Source::where('id', $req->id)->update([
+            'updated_at' => $datenow,
+            'deleted_at' => $datenow
         ]);
 
         if ($exec) {
             Session::flash('success', 'Data successfully deleted!');
-          } else {
+        } else {
             Session::flash('gagal', 'Error Data');
-          }
+        }
     }
-
-
 }

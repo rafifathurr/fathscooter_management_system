@@ -7,10 +7,7 @@ use App\Models\users\User;
 use App\Models\role\Role;
 
 use Illuminate\Http\Request;
-use Auth;
 use Session;
-use DB;
-use PDF;
 
 class UsersControllers extends Controller
 {
@@ -25,8 +22,8 @@ class UsersControllers extends Controller
     {
         return view('users.index', [
             "title" => "List User",
-            "users" => User::all()->where('deleted_at',null),
-            "roles" => Role::all()->where('deleted_at',null)
+            "users" => User::all()->where('deleted_at', null),
+            "roles" => Role::all()->where('deleted_at', null)
         ]);
     }
 
@@ -37,7 +34,7 @@ class UsersControllers extends Controller
         $data['url'] = 'store';
         $data['disabled_'] = '';
         $data['roles'] = Role::all();
-        $data['required'] ='required';
+        $data['required'] = 'required';
         return view('users.create', $data);
     }
 
@@ -48,11 +45,11 @@ class UsersControllers extends Controller
         $exec_2 = User::where('username', $request->username)->first();
         $exec_3 = User::where('phone', $request->phone)->first();
 
-        if($exec || $exec_2 || $exec_3){
+        if ($exec || $exec_2 || $exec_3) {
             return back()->with(['gagal' => 'Your Email, Username or Phone Already Exist!']);
-        }else{
-            if($request->password == $request->repassword){
-                date_default_timezone_set("Asia/Bangkok");
+        } else {
+            if ($request->password == $request->repassword) {
+
                 $datenow = date('Y-m-d H:i:s');
                 $sample = User::create([
                     'username' => $request->username,
@@ -65,10 +62,9 @@ class UsersControllers extends Controller
                     'created_at' => $datenow
                 ]);
                 return redirect()->route('admin.users.index')->with(['success' => 'Data successfully stored!']);
-            }else{
+            } else {
                 return back()->with(['gagal' => 'Password Not Match!']);
             }
-           
         }
     }
 
@@ -80,7 +76,7 @@ class UsersControllers extends Controller
         $data['url'] = 'create';
         $data['users'] = User::where('id', $id)->first();
         $data['roles'] = Role::all();
-        $data['required'] ='';
+        $data['required'] = '';
         return view('users.create', $data);
     }
 
@@ -92,7 +88,7 @@ class UsersControllers extends Controller
         $data['url'] = 'update';
         $data['users'] = User::where('id', $id)->first();
         $data['roles'] = Role::all();
-        $data['required'] ='';
+        $data['required'] = '';
         return view('users.create', $data);
     }
 
@@ -103,9 +99,9 @@ class UsersControllers extends Controller
         $exec_2 = User::where('username', $req->username)->first();
         $exec_3 = User::where('phone', $req->phone)->first();
 
-        if($req->password && $req->repassword){
-            if($req->password == $req->repassword){
-                date_default_timezone_set("Asia/Bangkok");
+        if ($req->password && $req->repassword) {
+            if ($req->password == $req->repassword) {
+
                 $datenow = date('Y-m-d H:i:s');
                 $user_pay = User::where('id', $req->id)->update([
                     'username' => $req->username,
@@ -118,15 +114,15 @@ class UsersControllers extends Controller
                     'updated_at' => $datenow
                 ]);
                 return redirect()->route('admin.users.index')->with(['success' => 'Data successfully updated!']);
-            }else{
+            } else {
                 return back()->with(['gagal' => 'Password Not Match!']);
             }
-        }else{
-            if($exec || $exec_2 || $exec_3){
+        } else {
+            if ($exec || $exec_2 || $exec_3) {
                 return back()->with(['gagal' => 'Your Email, Username or Phone Already Exist!']);
-            }else{
-                if($req->password == $req->repassword){
-                    date_default_timezone_set("Asia/Bangkok");
+            } else {
+                if ($req->password == $req->repassword) {
+
                     $datenow = date('Y-m-d H:i:s');
                     $user_pay = User::where('id', $req->id)->update([
                         'username' => $req->username,
@@ -138,7 +134,7 @@ class UsersControllers extends Controller
                         'updated_at' => $datenow
                     ]);
                     return redirect()->route('admin.users.index')->with(['success' => 'Data successfully updated!']);
-                }else{
+                } else {
                     return back()->with(['gagal' => 'Password Not Match!']);
                 }
             }
@@ -149,17 +145,15 @@ class UsersControllers extends Controller
     public function delete(Request $req)
     {
         $datenow = date('Y-m-d H:i:s');
-        $exec = User::where('id', $req->id )->update([
-            'updated_at'=> $datenow,
-            'deleted_at'=> $datenow
+        $exec = User::where('id', $req->id)->update([
+            'updated_at' => $datenow,
+            'deleted_at' => $datenow
         ]);
 
         if ($exec) {
             Session::flash('success', 'Data successfully deleted!');
-          } else {
+        } else {
             Session::flash('gagal', 'Error Data');
-          }
+        }
     }
-
-
 }

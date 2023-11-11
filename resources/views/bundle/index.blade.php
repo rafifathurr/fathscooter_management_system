@@ -59,13 +59,7 @@
                                                     aria-controls="add-row" rowspan="1" colspan="1"
                                                     aria-label="Position: activate to sort column ascending"
                                                     style="font-weight:900;">
-                                                    <center>Product</center>
-                                                </th>
-                                                <th width="10%" class="sorting" tabindex="0"
-                                                    aria-controls="add-row" rowspan="1" colspan="1"
-                                                    aria-label="Position: activate to sort column ascending"
-                                                    style="font-weight:900;">
-                                                    <center>Code</center>
+                                                    <center>Bundle Name</center>
                                                 </th>
                                                 {{-- @if (Auth::guard('admin')->check())
                                                     <th width="15%" class="sorting" tabindex="0" aria-controls="add-row"
@@ -103,96 +97,80 @@
                                         </thead>
                                         <tbody>
                                             <?php $num = 0; ?>
-                                            @foreach ($products as $prod)
-                                                <tr role="row" class="odd">
-                                                    <td>
-                                                        <center>{{ $num = $num + 1 }}</center>
-                                                    </td>
-                                                    <td>
-                                                        {{ $prod->product_name }}
-                                                    </td>
-                                                    <td>
-                                                        <center>{{ $prod->code }}</center>
-                                                    </td>
-                                                    {{-- @if (Auth::guard('admin')->check())
+                                            {{-- @foreach ($products as $prod)
+                                            <tr role="row" class="odd">
+                                                <td>
+                                                    <center>{{$num=$num+1}}</center>
+                                                </td>
+                                                <td>
+                                                    {{$prod->product_name}}
+                                                </td>
+                                                <td>
+                                                    <center>{{$prod->code}}</center>
+                                                </td>
+                                                {{-- @if (Auth::guard('admin')->check())
                                                     <td style="text-align:right">
                                                         Rp. {{number_format($prod->base_price,0,',','.')}}
                                                     </td>
                                                 @endif
                                                 <td style="text-align:right">
                                                     Rp. {{number_format($prod->selling_price,0,',','.')}}
-                                                </td> --}}
-                                                    <td>
-                                                        @if ($prod->status == 'Active')
-                                                            <center
-                                                                style="background-color:#05c305; color:white; padding:2px; border-radius:5px;">
-                                                                {{ $prod->status }}</center>
+                                                </td>
+                                                <td>
+                                                    @if ($prod->status == 'Active')
+                                                        <center style="background-color:#05c305; color:white; padding:2px; border-radius:5px;">{{$prod->status}}</center>
+                                                    @else
+                                                        <center style="background-color:red; color:white; padding:2px; border-radius:5px;">{{$prod->status}}</center>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($prod->stock <= 2)
+                                                   <center style="color:red !important;">{{$prod->stock}}</center>
+                                                   @else
+                                                   <center>{{$prod->stock}}</center>
+                                                   @endif
+                                                </td>
+                                                <td>
+                                                    <center>
+                                                        <div class="form-button-action">
+                                                        @if (Auth::guard('admin')->check())
+                                                            <a href="{{route('admin.product.detail', $prod->id) }}" data-toggle="tooltip" title="Detail"
+                                                                class="btn btn-link btn-simple-primary btn-lg"
+                                                                data-original-title="Detail" control-id="ControlID-16">
+                                                                <i class="fa fa-eye"></i>
+                                                            </a>
+                                                            <a href="{{route('admin.product.edit', $prod->id) }}" data-toggle="tooltip" title="Edit"
+                                                                class="btn btn-link btn-simple-primary btn-lg"
+                                                                data-original-title="Edit" control-id="ControlID-16">
+                                                                <i class="fa fa-edit" style="color:grey;"></i>
+                                                            </a>
+                                                            <button type="submit" onclick="destroy({{$prod->id}})" data-toggle="tooltip" title="Delete"
+                                                                class="btn btn-link btn-simple-danger"
+                                                                data-original-title="Delete" control-id="ControlID-17">
+                                                                <i class="fa fa-trash" style="color:red;"></i>
+                                                            </button>
                                                         @else
-                                                            <center
-                                                                style="background-color:red; color:white; padding:2px; border-radius:5px;">
-                                                                {{ $prod->status }}</center>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if ($prod->stock <= 2)
-                                                            <center style="color:red !important;">{{ $prod->stock }}
-                                                            </center>
-                                                        @else
-                                                            <center>{{ $prod->stock }}</center>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        <center>
-                                                            <div class="form-button-action">
-                                                                @if (Auth::guard('admin')->check())
-                                                                    <a href="{{ route('admin.product.detail', $prod->id) }}"
-                                                                        data-toggle="tooltip" title="Detail"
-                                                                        class="btn btn-link btn-simple-primary btn-lg"
-                                                                        data-original-title="Detail"
-                                                                        control-id="ControlID-16">
-                                                                        <i class="fa fa-eye"></i>
-                                                                    </a>
-                                                                    <a href="{{ route('admin.product.edit', $prod->id) }}"
-                                                                        data-toggle="tooltip" title="Edit"
-                                                                        class="btn btn-link btn-simple-primary btn-lg"
-                                                                        data-original-title="Edit"
-                                                                        control-id="ControlID-16">
-                                                                        <i class="fa fa-edit" style="color:grey;"></i>
-                                                                    </a>
-                                                                    <button type="submit"
-                                                                        onclick="destroy({{ $prod->id }})"
-                                                                        data-toggle="tooltip" title="Delete"
-                                                                        class="btn btn-link btn-simple-danger"
-                                                                        data-original-title="Delete"
-                                                                        control-id="ControlID-17">
-                                                                        <i class="fa fa-trash" style="color:red;"></i>
-                                                                    </button>
-                                                                @else
-                                                                    <a href="{{ route('user.product.detail', $prod->id) }}"
-                                                                        data-toggle="tooltip" title="Detail"
-                                                                        class="btn btn-link btn-simple-primary btn-lg"
-                                                                        data-original-title="Detail"
-                                                                        control-id="ControlID-16">
-                                                                        <i class="fa fa-eye"></i>
-                                                                    </a>
-                                                                    <a href="{{ route('user.product.edit', $prod->id) }}"
-                                                                        data-toggle="tooltip" title="Edit"
-                                                                        class="btn btn-link btn-simple-primary btn-lg"
-                                                                        data-original-title="Edit"
-                                                                        control-id="ControlID-16">
-                                                                        <i class="fa fa-edit" style="color:grey;"></i>
-                                                                    </a>
-                                                                    <!-- <button type="submit" onclick="destroy({{ $prod->id }})" data-toggle="tooltip" title="Delete"
+                                                            <a href="{{route('user.product.detail', $prod->id) }}" data-toggle="tooltip" title="Detail"
+                                                                class="btn btn-link btn-simple-primary btn-lg"
+                                                                data-original-title="Detail" control-id="ControlID-16">
+                                                                <i class="fa fa-eye"></i>
+                                                            </a>
+                                                            <a href="{{route('user.product.edit', $prod->id) }}" data-toggle="tooltip" title="Edit"
+                                                                class="btn btn-link btn-simple-primary btn-lg"
+                                                                data-original-title="Edit" control-id="ControlID-16">
+                                                                <i class="fa fa-edit" style="color:grey;"></i>
+                                                            </a>
+                                                            <!-- <button type="submit" onclick="destroy({{$prod->id}})" data-toggle="tooltip" title="Delete"
                                                                 class="btn btn-link btn-simple-danger"
                                                                 data-original-title="Delete" control-id="ControlID-17">
                                                                 <i class="fa fa-trash" style="color:red;"></i>
                                                             </button> -->
-                                                                @endif
-                                                            </div>
-                                                        </center>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
+                                                        @endif
+                                                        </div>
+                                                    </center>
+                                                </td>
+                                            </tr>
+                                        @endforeach --}}
                                         </tbody>
                                     </table>
                                 </div>
@@ -202,8 +180,7 @@
                                     <div class="dataTables_info" id="add-row_info"></div>
                                 </div>
                                 <div class="col-sm-12 col-md-7">
-                                    <div class="dataTables_paginate paging_simple_numbers" id="add-row_paginate">
-                                    </div>
+                                    <div class="dataTables_paginate paging_simple_numbers" id="add-row_paginate"></div>
                                 </div>
                             </div>
                         </div>

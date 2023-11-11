@@ -9,9 +9,9 @@ class Role extends Model
 {
     protected $primaryKey = 'id';
 
-      protected $table = "users_role";
+    protected $table = "users_role";
 
-      protected $guarded = [];
+    protected $guarded = [];
 
-      public $timestamps = false;
-  }
+    public $timestamps = false;
+}

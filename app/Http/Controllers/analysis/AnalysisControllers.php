@@ -24,19 +24,17 @@ class AnalysisControllers extends Controller
     // Index View and Scope Data
     public function index()
     {
-        date_default_timezone_set("Asia/Jakarta");
 
         return view('analysis.index', [
             "title" => "Analysis",
-            "analysis" => Analysis::orderBy('month', 'DESC')->where('deleted_at',null)->get(),
-            "years" => Order::select(DB::raw('YEAR(date_order) as tahun'))->orderBy(DB::raw('YEAR(date_order)'), 'desc')->where('deleted_at',null)->groupBy(DB::raw("YEAR(date_order)"))->get(),
+            "analysis" => Analysis::orderBy('month', 'DESC')->where('deleted_at', null)->get(),
+            "years" => Order::select(DB::raw('YEAR(date_order) as tahun'))->orderBy(DB::raw('YEAR(date_order)'), 'desc')->where('deleted_at', null)->groupBy(DB::raw("YEAR(date_order)"))->get(),
         ]);
     }
 
     // Create View Data
     public function create(Request $req)
     {
-        date_default_timezone_set("Asia/Jakarta");
         $year = $req->tahun;
 
         $data['title'] = "Add Analysis";
@@ -48,36 +46,35 @@ class AnalysisControllers extends Controller
                                     AVG(details_order.base_price_save) as setupcost,
                                     SUM(details_order.qty) as demandpermonth
                                 ')
-                                ->join('orders', 'orders.id', '=', 'details_order.id_order')
-                                ->join('product', 'product.id', '=', 'details_order.id_product')
-                                ->whereYear('orders.date_order', $year)
-                                ->groupBy('product.id')
-                                ->groupBy('product.product_name')
-                                ->get();
+            ->join('orders', 'orders.id', '=', 'details_order.id_order')
+            ->join('product', 'product.id', '=', 'details_order.id_product')
+            ->whereYear('orders.date_order', $year)
+            ->groupBy('product.id')
+            ->groupBy('product.product_name')
+            ->get();
 
-       $data_prods = DetailOrder::selectRaw('
+        $data_prods = DetailOrder::selectRaw('
                                 product.id as id_product,
                                 product.product_name
                             ')
-                            ->join('orders', 'orders.id', '=', 'details_order.id_order')
-                            ->join('product', 'product.id', '=', 'details_order.id_product')
-                            ->whereYear('orders.date_order', $year)
-                            ->groupBy('product.id')
-                            ->groupBy('product.product_name')
-                            ->get();
+            ->join('orders', 'orders.id', '=', 'details_order.id_order')
+            ->join('product', 'product.id', '=', 'details_order.id_product')
+            ->whereYear('orders.date_order', $year)
+            ->groupBy('product.id')
+            ->groupBy('product.product_name')
+            ->get();
 
-        foreach($data_prods as $prods){
+        foreach ($data_prods as $prods) {
 
             $data['details_2'][] = DetailOrder::selectRaw('
                                     AVG(details_order.qty) as avg_sales,
                                     MAX(details_order.qty) as max_sales
                                 ')
-                                ->join('orders', 'orders.id', '=', 'details_order.id_order')
-                                ->where('details_order.id_product', $prods->id_product)
-                                ->whereYear('orders.date_order', $year)
-                                ->groupBy(DB::raw('MONTH(orders.date_order)'))
-                                ->first();
-
+                ->join('orders', 'orders.id', '=', 'details_order.id_order')
+                ->where('details_order.id_product', $prods->id_product)
+                ->whereYear('orders.date_order', $year)
+                ->groupBy(DB::raw('MONTH(orders.date_order)'))
+                ->first();
         }
         $data['disabled_'] = '';
         return view('analysis.create', $data);
@@ -87,7 +84,6 @@ class AnalysisControllers extends Controller
     public function store(Request $req)
     {
 
-        date_default_timezone_set("Asia/Jakarta");
         $datenow = date('Y-m-d H:i:s');
 
         $analysis = Analysis::create([
@@ -97,10 +93,10 @@ class AnalysisControllers extends Controller
             'created_by' => Auth::user()->id
         ]);
 
-        if($analysis){
+        if ($analysis) {
             $total_arr = count($req->id_product);
 
-            for($i = 0; $i<$total_arr; $i++){
+            for ($i = 0; $i < $total_arr; $i++) {
 
                 $details = DetailAnalysis::create([
                     'id_analysis' => $analysis->id,
@@ -117,23 +113,18 @@ class AnalysisControllers extends Controller
                     'rop' => $req->rop[$i],
                     'created_at' => $datenow
                 ]);
-
             }
 
-            if($details){
+            if ($details) {
 
                 return redirect()->route('admin.analysis.index')->with(['success' => 'Data successfully stored!']);
-
             }
-
         }
-
     }
 
     // Edit Data View by id
     public function edit($id)
     {
-        date_default_timezone_set("Asia/Jakarta");
         $year = date('Y', strtotime('-1 years'));
         // $month = date('m', strtotime('-1 month'));
 
@@ -143,17 +134,17 @@ class AnalysisControllers extends Controller
         $data['disabled_'] = 'disabled';
         $data['url'] = 'update';
         $data['analysis'] = Analysis::where('id', $id)
-                                ->first();
+            ->first();
 
         $data['details'] = DetailAnalysis::with('product')
-                            ->where('id_analysis', $id)
-                            ->orderBy('eoq_value','desc')
-                            ->get();
+            ->where('id_analysis', $id)
+            ->orderBy('eoq_value', 'desc')
+            ->get();
 
         $data['details_2'] = DetailAnalysis::with('product')
-                            ->where('id_analysis', $id)
-                            ->orderBy('rop','desc')
-                            ->get();
+            ->where('id_analysis', $id)
+            ->orderBy('rop', 'desc')
+            ->get();
 
         return view('analysis.create', $data);
     }
@@ -162,52 +153,47 @@ class AnalysisControllers extends Controller
     public function update(Request $req)
     {
 
-        date_default_timezone_set("Asia/Jakarta");
         $datenow = date('Y-m-d H:i:s');
 
 
 
         $analysis = Analysis::where('id', $req->id_analysis)
-                    ->update([
-                        // 'month' => $req->month,
-                        'year' => $req->year,
-                        'updated_at' => $datenow,
-                        'updated_by' => Auth::user()->id
-                    ]);
+            ->update([
+                // 'month' => $req->month,
+                'year' => $req->year,
+                'updated_at' => $datenow,
+                'updated_by' => Auth::user()->id
+            ]);
 
         $check = DetailAnalysis::where('id_analysis', $req->id_analysis)->get();
 
-        if($analysis){
+        if ($analysis) {
             $total_arr = count($req->id_product);
 
-            for($i = 0; $i<$total_arr; $i++){
+            for ($i = 0; $i < $total_arr; $i++) {
                 $details = DetailAnalysis::where('id_analysis', $req->id_analysis)
-                ->where('id', $check[$i]->id)
-                ->update([
-                    'id_product' => $req->id_product[$i],
-                    'demand' => $req->demandpermonth[$i],
-                    'setupcost' => $req->setupcost[$i],
-                    'holdingcost' => $req->holdingcost[$i],
-                    'eoq_value' => $req->eoq[$i],
-                    'avg_sales' => $req->avg_sales[$i],
-                    'max_sales' => $req->max_sales[$i],
-                    'avg_lead_time' => $req->avg_lead_time[$i],
-                    'max_lead_time' => $req->max_lead_time[$i],
-                    'safety_stock' => $req->safety_stock[$i],
-                    'rop' => $req->rop[$i],
-                    'updated_at' => $datenow
-                ]);
-
+                    ->where('id', $check[$i]->id)
+                    ->update([
+                        'id_product' => $req->id_product[$i],
+                        'demand' => $req->demandpermonth[$i],
+                        'setupcost' => $req->setupcost[$i],
+                        'holdingcost' => $req->holdingcost[$i],
+                        'eoq_value' => $req->eoq[$i],
+                        'avg_sales' => $req->avg_sales[$i],
+                        'max_sales' => $req->max_sales[$i],
+                        'avg_lead_time' => $req->avg_lead_time[$i],
+                        'max_lead_time' => $req->max_lead_time[$i],
+                        'safety_stock' => $req->safety_stock[$i],
+                        'rop' => $req->rop[$i],
+                        'updated_at' => $datenow
+                    ]);
             }
 
-            if($details){
+            if ($details) {
 
                 return redirect()->route('admin.analysis.index')->with(['success' => 'Data successfully updated!']);
-
             }
-
         }
-
     }
 
     // Detail Data View by id
@@ -217,13 +203,13 @@ class AnalysisControllers extends Controller
         $data['disabled_'] = 'disabled';
         $data['url'] = 'create';
         $data['details'] = DetailAnalysis::with('product')
-                            ->where('id_analysis', $id)
-                            ->orderBy('eoq_value','desc')
-                            ->get();
+            ->where('id_analysis', $id)
+            ->orderBy('eoq_value', 'desc')
+            ->get();
         $data['details_2'] = DetailAnalysis::with('product')
-                            ->where('id_analysis', $id)
-                            ->orderBy('rop','desc')
-                            ->get();
+            ->where('id_analysis', $id)
+            ->orderBy('rop', 'desc')
+            ->get();
         return view('analysis.create', $data);
     }
 
@@ -231,21 +217,21 @@ class AnalysisControllers extends Controller
     public function summary($id)
     {
         $analysis = Analysis::where('id', $id)
-                    ->first();
+            ->first();
 
         $data['title'] = "Summary Analysis";
         $data['year'] = $analysis->year;
         $data['disabled_'] = 'disabled';
         $data['details'] = DetailAnalysis::with('product')
-                            ->where('id_analysis', $id)
-                            ->orderBy('eoq_value','desc')
-                            ->limit(5)
-                            ->get();
+            ->where('id_analysis', $id)
+            ->orderBy('eoq_value', 'desc')
+            ->limit(5)
+            ->get();
         $data['details_2'] = DetailAnalysis::with('product')
-                            ->where('id_analysis', $id)
-                            ->orderBy('rop','desc')
-                            ->limit(5)
-                            ->get();
+            ->where('id_analysis', $id)
+            ->orderBy('rop', 'desc')
+            ->limit(5)
+            ->get();
         return view('analysis.summary', $data);
     }
 
@@ -253,21 +239,21 @@ class AnalysisControllers extends Controller
     public function delete(Request $req)
     {
         $datenow = date('Y-m-d H:i:s');
-        $exec_1 = Analysis::where('id', $req->id )->update([
-            'deleted_at'=>$datenow,
-            'updated_at'=>$datenow,
-            'updated_by'=>Auth::user()->id
+        $exec_1 = Analysis::where('id', $req->id)->update([
+            'deleted_at' => $datenow,
+            'updated_at' => $datenow,
+            'updated_by' => Auth::user()->id
         ]);
 
-        $exec_2 = DetailAnalysis::where('id_analysis', $req->id )->update([
-            'deleted_at'=>$datenow,
-            'updated_at'=>$datenow
+        $exec_2 = DetailAnalysis::where('id_analysis', $req->id)->update([
+            'deleted_at' => $datenow,
+            'updated_at' => $datenow
         ]);
 
         if ($exec_1 && $exec_2) {
             Session::flash('success', 'Data successfully deleted!');
-          } else {
+        } else {
             Session::flash('gagal', 'Error Data');
-          }
+        }
     }
 }

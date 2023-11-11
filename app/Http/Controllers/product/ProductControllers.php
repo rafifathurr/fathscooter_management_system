@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Auth;
 use Session;
-use DB;
-use PDF;
 
 class ProductControllers extends Controller
 {
@@ -27,7 +25,7 @@ class ProductControllers extends Controller
     {
         return view('product.index', [
             "title" => "List Products",
-            "products" => Product::all()->where('deleted_at',null)
+            "products" => Product::all()->where('deleted_at', null)
         ]);
     }
 
@@ -45,7 +43,6 @@ class ProductControllers extends Controller
     // Store Function to Database
     public function store(Request $req)
     {
-        date_default_timezone_set("Asia/Bangkok");
         $datenow = date('Y-m-d H:i:s');
 
         $product_pay = Product::create([
@@ -62,21 +59,19 @@ class ProductControllers extends Controller
             'created_by' => Auth::user()->id
         ]);
 
-        $destination='Uploads/Product/';
+        $destination = 'Uploads/Product/';
         if ($req->hasFile('uploads')) {
             $file = $req->file('uploads');
-            $name_file = time().'_'.$req->file('uploads')->getClientOriginalName();
-            Storage::disk('Uploads')->putFileAs($destination,$file,$name_file);
+            $name_file = time() . '_' . $req->file('uploads')->getClientOriginalName();
+            Storage::disk('Uploads')->putFileAs($destination, $file, $name_file);
             Product::where('id', $product_pay->id)->update(['upload' => $name_file]);
-          }
-
-        if(Auth::guard('admin')->check()){
-            return redirect()->route('admin.product.index')->with(['success' => 'Data successfully stored!']);
-        }else{
-            return redirect()->route('user.product.index')->with(['success' => 'Data successfully stored!']);
         }
 
-
+        if (Auth::guard('admin')->check()) {
+            return redirect()->route('admin.product.index')->with(['success' => 'Data successfully stored!']);
+        } else {
+            return redirect()->route('user.product.index')->with(['success' => 'Data successfully stored!']);
+        }
     }
 
     // Detail Data View by id
@@ -106,7 +101,6 @@ class ProductControllers extends Controller
     // Update Function to Database
     public function update(Request $req)
     {
-        date_default_timezone_set("Asia/Bangkok");
         $datenow = date('Y-m-d H:i:s');
         $product_pay = Product::where('id', $req->id)->update([
             'product_name' => $req->name,
@@ -122,17 +116,17 @@ class ProductControllers extends Controller
             'updated_by' => Auth::user()->id
         ]);
 
-        $destination='Uploads/Product/';
+        $destination = 'Uploads/Product/';
         if ($req->hasFile('uploads')) {
             $file = $req->file('uploads');
-            $name_file = time().'_'.$req->file('uploads')->getClientOriginalName();
-            Storage::disk('Uploads')->putFileAs($destination,$file,$name_file);
+            $name_file = time() . '_' . $req->file('uploads')->getClientOriginalName();
+            Storage::disk('Uploads')->putFileAs($destination, $file, $name_file);
             Product::where('id', $req->id)->update(['upload' => $name_file]);
-          }
+        }
 
-        if(Auth::guard('admin')->check()){
+        if (Auth::guard('admin')->check()) {
             return redirect()->route('admin.product.index')->with(['success' => 'Data successfully updated!']);
-        }else{
+        } else {
             return redirect()->route('user.product.index')->with(['success' => 'Data successfully updated!']);
         }
     }
@@ -141,16 +135,16 @@ class ProductControllers extends Controller
     public function delete(Request $req)
     {
         $datenow = date('Y-m-d H:i:s');
-        $exec = Product::where('id', $req->id )->update([
-            'deleted_at'=>$datenow,
-            'updated_at'=>$datenow,
-            'updated_by'=>Auth::user()->id
+        $exec = Product::where('id', $req->id)->update([
+            'deleted_at' => $datenow,
+            'updated_at' => $datenow,
+            'updated_by' => Auth::user()->id
         ]);
 
         if ($exec) {
             Session::flash('success', 'Data successfully deleted!');
-          } else {
+        } else {
             Session::flash('gagal', 'Error Data');
-          }
+        }
     }
 }
