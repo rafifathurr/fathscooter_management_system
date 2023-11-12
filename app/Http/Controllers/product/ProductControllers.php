@@ -147,4 +147,12 @@ class ProductControllers extends Controller
             Session::flash('gagal', 'Error Data');
         }
     }
+
+    // Bundle Index
+    public function indexBundle()
+    {
+        return view('bundle.index', [
+            "title" => "List Bundling Product",
+        ]);
+    }
 }

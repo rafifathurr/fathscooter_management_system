@@ -85,6 +85,17 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::post('export', 'OrderControllers@export')->name('export');
         });
 
+        // ROUTE TO BUNDLE CONTROLLERS
+        Route::namespace('product')->prefix('bundle')->name('bundle.')->group(function () {
+            Route::get('/', 'ProductControllers@indexBundle')->name('index');
+            // Route::get('create', 'ProductControllers@create')->name('create');
+            // Route::post('store', 'ProductControllers@store')->name('store');
+            // Route::get('detail/{id}', 'ProductControllers@detail')->name('detail');
+            // Route::get('edit/{id}', 'ProductControllers@edit')->name('edit');
+            // Route::post('update', 'ProductControllers@update')->name('update');
+            // Route::post('delete', 'ProductControllers@delete')->name('delete');
+        });
+
         // ROUTE TO PRODUCT CONTROLLERS
         Route::namespace('product')->prefix('product')->name('product.')->group(function () {
             Route::get('/', 'ProductControllers@index')->name('index');

@@ -172,8 +172,8 @@
                         <h4 class="text-section">Master Data</h4>
                     </li>
                     <li
-                        class="nav-item {{ $title === 'Analysis' || $title === 'Add Analysis' || $title === 'Edit Analysis' || $title === 'Detail Analysis' || $title === 'Summary Analysis' ? 'active' : '' }}">
-                        <a href="" aria-expanded="false">
+                        class="nav-item {{ $title === 'List Bundling Product' || $title === 'Add Analysis' || $title === 'Edit Analysis' || $title === 'Detail Analysis' || $title === 'Summary Analysis' ? 'active' : '' }}">
+                        <a href="{{ route('admin.bundle.index') }}" aria-expanded="false">
                             <i class="fas fa-boxes"></i>
                             <p>Bundling Package</p>
                         </a>
