@@ -20,7 +20,7 @@ class SourceControllers extends Controller
     public function index()
     {
         return view('source_payment.index', [
-            "title" => "List Source Payment",
+            "title" => "List Source Purchase",
             "sources" => Source::all()->where('deleted_at', null)
         ]);
     }
@@ -28,7 +28,7 @@ class SourceControllers extends Controller
     // Create View Data
     public function create()
     {
-        $data['title'] = "Add Source Payment";
+        $data['title'] = "Add Source Purchase";
         $data['url'] = 'store';
         $data['disabled_'] = '';
         return view('source_payment.create', $data);
@@ -44,13 +44,13 @@ class SourceControllers extends Controller
             'created_at' => $datenow
         ]);
 
-        return redirect()->route('admin.source_payment.index')->with(['success' => 'Data successfully stored!']);
+        return redirect()->route('admin.source_purchase.index')->with(['success' => 'Data successfully stored!']);
     }
 
     // Detail Data View by id
     public function detail($id)
     {
-        $data['title'] = "Detail Source Payment";
+        $data['title'] = "Detail Source Purchase";
         $data['disabled_'] = 'disabled';
         $data['url'] = 'create';
         $data['sources'] = Source::where('id', $id)->first();
@@ -60,7 +60,7 @@ class SourceControllers extends Controller
     // Edit Data View by id
     public function edit($id)
     {
-        $data['title'] = "Edit Source Payment";
+        $data['title'] = "Edit Source Purchase";
         $data['disabled_'] = '';
         $data['url'] = 'update';
         $data['sources'] = Source::where('id', $id)->first();
@@ -77,7 +77,7 @@ class SourceControllers extends Controller
             'updated_at' => $datenow
         ]);
 
-        return redirect()->route('admin.source_payment.index')->with(['success' => 'Data successfully updated!']);
+        return redirect()->route('admin.source_purchase.index')->with(['success' => 'Data successfully updated!']);
     }
 
     // Delete Data Function

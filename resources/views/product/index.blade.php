@@ -124,13 +124,11 @@
                                                 </td> --}}
                                                     <td>
                                                         @if ($prod->status == 'Active')
-                                                            <center
-                                                                style="background-color:#05c305; color:white; padding:2px; border-radius:5px;">
-                                                                {{ $prod->status }}</center>
+                                                            <span class="badge badge-success">
+                                                                {{ $prod->status }}</span>
                                                         @else
-                                                            <center
-                                                                style="background-color:red; color:white; padding:2px; border-radius:5px;">
-                                                                {{ $prod->status }}</center>
+                                                            <span class="badge badge-danger">
+                                                                {{ $prod->status }}</span>
                                                         @endif
                                                     </td>
                                                     <td>
@@ -182,11 +180,6 @@
                                                                         control-id="ControlID-16">
                                                                         <i class="fa fa-edit" style="color:grey;"></i>
                                                                     </a>
-                                                                    <!-- <button type="submit" onclick="destroy({{ $prod->id }})" data-toggle="tooltip" title="Delete"
-                                                                class="btn btn-link btn-simple-danger"
-                                                                data-original-title="Delete" control-id="ControlID-17">
-                                                                <i class="fa fa-trash" style="color:red;"></i>
-                                                            </button> -->
                                                                 @endif
                                                             </div>
                                                         </center>

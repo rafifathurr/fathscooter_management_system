@@ -21,9 +21,9 @@
                     <div class="d-flex">
                         @if (Auth::guard('admin')->check())
                             <a class="btn btn-primary btn-round ml-auto mb-3"
-                                href="{{ route('admin.product.create') }}">
+                                href="{{ route('admin.bundle.create') }}">
                                 <i class="fa fa-plus"></i>
-                                Add Product
+                                Add Bundling
                             </a>
                         @else
                             <div class="mb-3">

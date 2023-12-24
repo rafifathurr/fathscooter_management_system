@@ -155,4 +155,13 @@ class ProductControllers extends Controller
             "title" => "List Bundling Product",
         ]);
     }
+
+    public function createBundle()
+    {
+        $data['title'] = "Add Bundle";
+        $data['url'] = 'store';
+        $data['disabled_'] = '';
+        $data['product'] = Product::whereNull('deleted_at')->get();
+        return view('bundle.create', $data);
+    }
 }

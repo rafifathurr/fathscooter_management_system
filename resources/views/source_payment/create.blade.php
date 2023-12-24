@@ -20,14 +20,14 @@
                     <section class="content container-fluid">
                         <div class="box box-primary">
                             <div class="box-body">
-                                <form id="form_add" action="{{ route('admin.source_payment.' . $url) }}" method="post"
+                                <form id="form_add" action="{{ route('admin.source_purchase.' . $url) }}" method="post"
                                     enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     <br>
                                     <div class="row">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-11">
-                                            <label class="col-md-6">Source Payment <span
+                                            <label class="col-md-6">Source Purchase <span
                                                     style="color: red;">*</span></label>
                                             <div class="col-md-11">
                                                 <input type="hidden" class="form-control" id="id" name="id"
@@ -53,9 +53,9 @@
                                     <br>
                                     <div class="modal-footer">
                                         <div style="float:right;">
-                                            @if ($title == 'Add Source Payment')
+                                            @if ($title == 'Add Source Purchase')
                                                 <div class="col-md-10" style="margin-right: 20px;">
-                                                    <a href="{{ route('admin.source_payment.index') }}" type="button" class="btn btn-danger">
+                                                    <a href="{{ route('admin.source_purchase.index') }}" type="button" class="btn btn-danger">
                                                         <i class="fa fa-arrow-left"></i>&nbsp;
                                                         Back
                                                     </a>
@@ -64,9 +64,9 @@
                                                         Save
                                                     </button>
                                                 </div>
-                                            @elseif ($title == 'Edit Source Payment')
+                                            @elseif ($title == 'Edit Source Purchase')
                                                 <div class="col-md-10" style="margin-right: 20px;">
-                                                    <a href="{{ route('admin.source_payment.index') }}" type="button" class="btn btn-danger">
+                                                    <a href="{{ route('admin.source_purchase.index') }}" type="button" class="btn btn-danger">
                                                         <i class="fa fa-arrow-left"></i>&nbsp;
                                                         Back
                                                     </a>
@@ -77,7 +77,7 @@
                                                 </div>
                                             @else
                                                 <div class="col-md-10" style="margin-right: 20px;">
-                                                    <a href="{{ route('admin.source_payment.index') }}" type="button" class="btn btn-danger">
+                                                    <a href="{{ route('admin.source_purchase.index') }}" type="button" class="btn btn-danger">
                                                         <i class="fa fa-arrow-left"></i>&nbsp;
                                                         Back
                                                     </a>

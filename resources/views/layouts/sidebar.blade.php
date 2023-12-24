@@ -1,3 +1,6 @@
+<?php
+use App\Models\Menu;
+?>
 <div class="main-header">
     <!-- Logo Header -->
     <div class="logo-header" data-background-color="blue">
@@ -127,10 +130,7 @@
                             </li>
                             <li>
                                 <div class="dropdown-divider"></div>
-                                <form action="{{ url('/auth/logout') }}" method="post">
-                                    @csrf
-                                    <button class="dropdown-item">Logout</button>
-                                </form>
+                                <a href="{{ route('login.logout') }}" class="dropdown-item">Logout</a>
                             </li>
                         </div>
                     </ul>
@@ -145,103 +145,30 @@
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
             <ul class="nav nav-primary">
-                @if (Auth::guard('admin')->check())
-                    <li class="nav-section">
-                        <span class="sidebar-mini-icon">
-                            <i class="fa fa-ellipsis-h"></i>
-                        </span>
-                        <h4 class="text-section">Dashboard</h4>
-                    </li>
-                    <li class="nav-item {{ $title === 'Dashboard' ? 'active' : '' }}">
-                        <a href="{{ route('admin.dashboard.index') }}" aria-expanded="false">
-                            <i class="fas fa-chart-bar"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <li
-                        class="nav-item {{ $title === 'List Order' || $title === 'Add Order' || $title === 'Edit Order' || $title === 'Detail Order' ? 'active' : '' }}">
-                        <a href="{{ route('admin.order.index') }}" aria-expanded="false">
-                            <i class="fas fa-clipboard-list"></i>
-                            <p>Order</p>
-                        </a>
-                    </li>
-                    <li class="nav-section">
-                        <span class="sidebar-mini-icon">
-                            <i class="fa fa-ellipsis-h"></i>
-                        </span>
-                        <h4 class="text-section">Master Data</h4>
-                    </li>
-                    <li
-                        class="nav-item {{ $title === 'List Bundling Product' || $title === 'Add Analysis' || $title === 'Edit Analysis' || $title === 'Detail Analysis' || $title === 'Summary Analysis' ? 'active' : '' }}">
-                        <a href="{{ route('admin.bundle.index') }}" aria-expanded="false">
-                            <i class="fas fa-boxes"></i>
-                            <p>Bundling Package</p>
-                        </a>
-                    </li>
-                    <li
-                        class="nav-item {{ $title === 'List Products' || $title === 'Add Products' || $title === 'Edit Products' || $title === 'Detail Products' ? 'active' : '' }}">
-                        <a href="{{ route('admin.product.index') }}" class="collapsed" aria-expanded="false">
-                            <i class="fas fa-boxes"></i>
-                            <p>Product</p>
-                        </a>
-                    </li>
-                    <li
-                        class="nav-item {{ $title === 'List Supplier' || $title === 'Add Supplier' || $title === 'Edit Supplier' || $title === 'Detail Supplier' ? 'active' : '' }}">
-                        <a href="{{ route('admin.supplier.index') }}" class="collapsed" aria-expanded="false">
-                            <i class="fas fa-warehouse"></i>
-                            <p>Master Supplier</p>
-                        </a>
-                    </li>
-                    <li
-                        class="nav-item {{ $title === 'List Category Product' || $title === 'Add Category Product' || $title === 'Edit Category Product' || $title === 'Detail Category Product' ? 'active' : '' }}">
-                        <a href="{{ route('admin.category.index') }}" class="collapsed" aria-expanded="false">
-                            <i class="fas fa-th"></i>
-                            <p>Master Category</p>
-                        </a>
-                    </li>
-                    <li
-                        class="nav-item {{ $title === 'List Source Payment' || $title === 'Add Source Payment' || $title === 'Edit Source Payment' || $title === 'Detail Source Payment' ? 'active' : '' }}">
-                        <a href="{{ route('admin.source_payment.index') }}" class="collapsed" aria-expanded="false">
-                            <i class="fas fa-wallet"></i>
-                            <p>Master Payment</p>
-                        </a>
-                    </li>
-                    <li class="nav-section">
-                        <span class="sidebar-mini-icon">
-                            <i class="fa fa-ellipsis-h"></i>
-                        </span>
-                        <h4 class="text-section">User Management</h4>
-                    </li>
-                    <li
-                        class="nav-item {{ $title === 'List User' || $title === 'Add User' || $title === 'Edit User' || $title === 'Detail User' ? 'active' : '' }}"">
-                        <a href="{{ route('admin.users.index') }}" class="collapsed" aria-expanded="false">
-                            <i class="fa fa-user-plus"></i>
-                            <p>Create User</p>
-                        </a>
-                    </li>
-                    <li
-                        class="nav-item {{ $title === 'List User Roles' || $title === 'Add User Roles' || $title === 'Edit User Roles' || $title === 'Detail User Roles' ? 'active' : '' }}">
-                        <a href="{{ route('admin.role.index') }}" class="collapsed" aria-expanded="false">
-                            <i class="fas fa-user-cog"></i>
-                            <p>User Role</p>
-                        </a>
-                    </li>
-                @else
-                    <li
-                        class="nav-item {{ $title === 'List Order' || $title === 'Add Order' || $title === 'Edit Order' || $title === 'Detail Order' ? 'active' : '' }}">
-                        <a href="{{ route('user.order.index') }}" aria-expanded="false">
-                            <i class="fas fa-clipboard-list"></i>
-                            <p>Order</p>
-                        </a>
-                    </li>
-                    <li
-                        class="nav-item {{ $title === 'List Products' || $title === 'Add Products' || $title === 'Edit Products' || $title === 'Detail Products' ? 'active' : '' }}">
-                        <a href="{{ route('user.product.index') }}" class="collapsed" aria-expanded="false">
-                            <i class="fas fa-boxes"></i>
-                            <p>Product</p>
-                        </a>
-                    </li>
-                @endif
+                @foreach (Menu::listMenu() as $generate)
+                    @if (Auth::guard($generate['auth'])->check())
+                        @foreach ($generate['menu'] as $menus)
+                            <li class="nav-section">
+                                <span class="sidebar-mini-icon">
+                                    <i class="fa fa-ellipsis-h"></i>
+                                </span>
+                                <h4 class="text-section">{{ $menus['title'] }}</h4>
+                            </li>
+                            @foreach ($menus['list_menu'] as $list_menu)
+                                <?php
+                                    $explode_menus = explode('.', $list_menu['route']);
+                                    $explode_route = explode('.', \Request::route()->getName());
+                                ?>
+                                <li class="nav-item @if (\Request::route()->getName() == $list_menu['route'] || $explode_menus[1] == $explode_route[1]) active @endif">
+                                    <a href="{{ route($list_menu['route']) }}" aria-expanded="false">
+                                        <i class="fas {{ $list_menu['icon'] }}"></i>
+                                        <p>{{ $list_menu['display_name'] }}</p>
+                                    </a>
+                                </li>
+                            @endforeach
+                        @endforeach
+                    @endif
+                @endforeach
             </ul>
         </div>
     </div>

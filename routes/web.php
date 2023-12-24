@@ -34,7 +34,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::namespace('login')->prefix('auth')->name('login.')->group(function () {
         Route::get('/login', 'LoginController@index')->name('index');
         Route::post('/login', 'LoginController@authenticate')->name('authenticate');
-        Route::post('/logout', 'LoginController@logout')->name('logout');
+        Route::get('/logout', 'LoginController@logout')->name('logout');
     });
 
     Route::namespace('forgot')->prefix('auth')->name('forgot.')->group(function () {
@@ -55,7 +55,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
         // ROUTE TO DASHBOARD CONTROLLERS
         Route::namespace('dashboard')->name('dashboard.')->group(function () {
-            Route::get('/dashboard-admin', 'DashboardControllers@index')->name('index');
+            Route::get('/dashboard', 'DashboardControllers@index')->name('index');
         });
 
         // ROUTE TO ANALYSIS CONTROLLERS
@@ -88,7 +88,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
         // ROUTE TO BUNDLE CONTROLLERS
         Route::namespace('product')->prefix('bundle')->name('bundle.')->group(function () {
             Route::get('/', 'ProductControllers@indexBundle')->name('index');
-            // Route::get('create', 'ProductControllers@create')->name('create');
+            Route::get('create', 'ProductControllers@createBundle')->name('create');
             // Route::post('store', 'ProductControllers@store')->name('store');
             // Route::get('detail/{id}', 'ProductControllers@detail')->name('detail');
             // Route::get('edit/{id}', 'ProductControllers@edit')->name('edit');
@@ -108,7 +108,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
         });
 
         // ROUTE TO SOURCE PAYMENT CONTROLLERS
-        Route::namespace('source_payment')->prefix('source-payment')->name('source_payment.')->group(function () {
+        Route::namespace('source_payment')->prefix('source-payment')->name('source_purchase.')->group(function () {
             Route::get('/', 'SourceControllers@index')->name('index');
             Route::get('create', 'SourceControllers@create')->name('create');
             Route::post('store', 'SourceControllers@store')->name('store');

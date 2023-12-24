@@ -20,9 +20,9 @@
                     <!-- Button -->
                     <div class="d-flex">
                         <a class="btn btn-primary btn-round ml-auto mb-3"
-                            href="{{ route('admin.source_payment.create') }}">
+                            href="{{ route('admin.source_purchase.create') }}">
                             <i class="fa fa-plus"></i>
-                            Add Source Payment
+                            Add Source Purchase
                         </a>
                     </div>
 
@@ -74,14 +74,14 @@
                                                     <td>
                                                         <center>
                                                             <div class="form-button-action">
-                                                                <a href="{{ route('admin.source_payment.detail', $source->id) }}"
+                                                                <a href="{{ route('admin.source_purchase.detail', $source->id) }}"
                                                                     data-toggle="tooltip" title="Detail"
                                                                     class="btn btn-link btn-simple-primary btn-lg"
                                                                     data-original-title="Detail"
                                                                     control-id="ControlID-16">
                                                                     <i class="fa fa-eye"></i>
                                                                 </a>
-                                                                <a href="{{ route('admin.source_payment.edit', $source->id) }}"
+                                                                <a href="{{ route('admin.source_purchase.edit', $source->id) }}"
                                                                     data-toggle="tooltip" title="Edit"
                                                                     class="btn btn-link btn-simple-primary btn-lg"
                                                                     data-original-title="Edit"
@@ -134,7 +134,7 @@
             // dangerMode: true,
         }).then((willDelete) => {
             if (willDelete) {
-                $.post("{{ route('admin.source_payment.delete') }}", {
+                $.post("{{ route('admin.source_purchase.delete') }}", {
                     id: id,
                     _token: token
                 }, function(data) {
