@@ -9,12 +9,12 @@ use App\Models\source_payment\Source;
 use App\Models\type_buy\Type;
 use App\Models\product\Product;
 use App\Exports\ReportOrderExport;
+use Illuminate\Contracts\Session\Session;
 use Maatwebsite\Excel\Facades\Excel;
 
 use Illuminate\Http\Request;
-use Auth;
-use Session;
-use DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrderControllers extends Controller
 {
@@ -101,7 +101,6 @@ class OrderControllers extends Controller
             'total_sell_price' => $req->sell_price,
             'platform_fee' => $req->cal_tax,
             'profit' => $req->cal_profit,
-            'source_id' => $req->source_pay,
             'created_at' => $datenow,
             'created_by' => Auth::user()->id
         ]);

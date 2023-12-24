@@ -7,11 +7,10 @@ use App\Models\analysis\Analysis;
 use App\Models\analysis\DetailAnalysis;
 use App\Models\order\DetailOrder;
 use App\Models\order\Order;
-
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
-use Auth;
-use Session;
-use DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AnalysisControllers extends Controller
 {

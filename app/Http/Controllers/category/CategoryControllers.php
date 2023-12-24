@@ -4,8 +4,7 @@ namespace App\Http\Controllers\category;
 
 use App\Http\Controllers\Controller;
 use App\Models\category\Category;
-use Session;
-
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 
 class CategoryControllers extends Controller

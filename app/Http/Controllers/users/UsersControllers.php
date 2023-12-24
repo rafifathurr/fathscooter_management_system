@@ -5,9 +5,8 @@ namespace App\Http\Controllers\users;
 use App\Http\Controllers\Controller;
 use App\Models\users\User;
 use App\Models\role\Role;
-
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
-use Session;
 
 class UsersControllers extends Controller
 {

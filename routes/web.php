@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -89,7 +90,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::namespace('product')->prefix('bundle')->name('bundle.')->group(function () {
             Route::get('/', 'ProductControllers@indexBundle')->name('index');
             Route::get('create', 'ProductControllers@createBundle')->name('create');
-            // Route::post('store', 'ProductControllers@store')->name('store');
+            Route::post('store', 'ProductControllers@store')->name('store');
             // Route::get('detail/{id}', 'ProductControllers@detail')->name('detail');
             // Route::get('edit/{id}', 'ProductControllers@edit')->name('edit');
             // Route::post('update', 'ProductControllers@update')->name('update');

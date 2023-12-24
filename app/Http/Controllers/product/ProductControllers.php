@@ -6,11 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\product\Product;
 use App\Models\category\Category;
 use App\Models\supplier\Supplier;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Facades\Storage;
-
 use Illuminate\Http\Request;
-use Auth;
-use Session;
+use Illuminate\Support\Facades\Auth;
 
 class ProductControllers extends Controller
 {
@@ -146,22 +145,5 @@ class ProductControllers extends Controller
         } else {
             Session::flash('gagal', 'Error Data');
         }
-    }
-
-    // Bundle Index
-    public function indexBundle()
-    {
-        return view('bundle.index', [
-            "title" => "List Bundling Product",
-        ]);
-    }
-
-    public function createBundle()
-    {
-        $data['title'] = "Add Bundle";
-        $data['url'] = 'store';
-        $data['disabled_'] = '';
-        $data['product'] = Product::whereNull('deleted_at')->get();
-        return view('bundle.create', $data);
     }
 }
